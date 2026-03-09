@@ -1,15 +1,48 @@
 import { listCategories } from "@lib/data/categories"
 import { listCollections } from "@lib/data/collections"
+import { listProducts } from "@lib/data/products"
 import { Text, clx } from "@medusajs/ui"
 
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
 import MedusaCTA from "@modules/layout/components/medusa-cta"
 
-export default async function Footer() {
+type FooterProps = {
+  countryCode: string
+}
+
+export default async function Footer({ countryCode }: FooterProps) {
   const { collections } = await listCollections({
     fields: "*products",
   })
-  const productCategories = await listCategories()
+  const [allCategories, { response: siteProducts }] = await Promise.all([
+    listCategories(),
+    listProducts({
+      countryCode,
+      queryParams: {
+        limit: 100,
+        fields: "*categories",
+      },
+    }),
+  ])
+
+  const siteCategoryIds = new Set(
+    siteProducts.products.flatMap((product) =>
+      (product.categories ?? []).map((category) => category.id).filter(Boolean)
+    )
+  )
+
+  const productCategories = allCategories.filter((category) => {
+    if (!category.parent_category) {
+      return (
+        siteCategoryIds.has(category.id) ||
+        (category.category_children ?? []).some((child) =>
+          siteCategoryIds.has(child.id)
+        )
+      )
+    }
+
+    return siteCategoryIds.has(category.id)
+  })
 
   return (
     <footer className="border-t border-ui-border-base w-full">
