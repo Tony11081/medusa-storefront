@@ -32,18 +32,20 @@ const ProductTemplate: React.FC<ProductTemplateProps> = ({
   return (
     <>
       <div
-        className="content-container  flex flex-col small:flex-row small:items-start py-6 relative"
+        className="content-container relative grid gap-6 py-8 lg:grid-cols-[minmax(260px,0.9fr)_minmax(0,1.35fr)_minmax(280px,0.85fr)] lg:items-start"
         data-testid="product-container"
       >
-        <div className="flex flex-col small:sticky small:top-48 small:py-0 small:max-w-[300px] w-full py-8 gap-y-6">
+        <div className="flex w-full flex-col gap-y-6 py-4 lg:sticky lg:top-28 lg:max-w-[340px] lg:py-0">
           <ProductInfo product={product} />
           <ProductTabs product={product} />
         </div>
-        <div className="block w-full relative">
+        <div className="relative block w-full">
           <ImageGallery images={images} />
         </div>
-        <div className="flex flex-col small:sticky small:top-48 small:py-0 small:max-w-[300px] w-full py-8 gap-y-12">
-          <ProductOnboardingCta />
+        <div className="flex w-full flex-col gap-y-6 py-4 lg:sticky lg:top-28 lg:max-w-[340px] lg:py-0">
+          <div className="rounded-[1.8rem] border border-[var(--brand-line)] bg-white/92 p-6">
+            <ProductOnboardingCta />
+          </div>
           <Suspense
             fallback={
               <ProductActions
@@ -53,7 +55,9 @@ const ProductTemplate: React.FC<ProductTemplateProps> = ({
               />
             }
           >
-            <ProductActionsWrapper id={product.id} region={region} />
+            <div className="rounded-[1.8rem] border border-[var(--brand-line)] bg-white/92 p-6 shadow-[0_18px_50px_rgba(16,21,31,0.05)]">
+              <ProductActionsWrapper id={product.id} region={region} />
+            </div>
           </Suspense>
         </div>
       </div>

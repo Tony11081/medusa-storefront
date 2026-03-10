@@ -6,6 +6,7 @@ import Refresh from "@modules/common/icons/refresh"
 
 import Accordion from "./accordion"
 import { HttpTypes } from "@medusajs/types"
+import { countryNames } from "@lib/site-content"
 
 type ProductTabsProps = {
   product: HttpTypes.StoreProduct
@@ -24,7 +25,7 @@ const ProductTabs = ({ product }: ProductTabsProps) => {
   ]
 
   return (
-    <div className="w-full">
+    <div className="w-full rounded-[1.8rem] border border-[var(--brand-line)] bg-white/88 p-4">
       <Accordion type="multiple">
         {tabs.map((tab, i) => (
           <Accordion.Item
@@ -43,7 +44,7 @@ const ProductTabs = ({ product }: ProductTabsProps) => {
 
 const ProductInfoTab = ({ product }: ProductTabsProps) => {
   return (
-    <div className="text-small-regular py-8">
+    <div className="text-small-regular py-6">
       <div className="grid grid-cols-2 gap-x-8">
         <div className="flex flex-col gap-y-4">
           <div>
@@ -52,11 +53,20 @@ const ProductInfoTab = ({ product }: ProductTabsProps) => {
           </div>
           <div>
             <span className="font-semibold">Country of origin</span>
-            <p>{product.origin_country ? product.origin_country : "-"}</p>
+            <p>
+              {product.origin_country
+                ? countryNames[product.origin_country] ??
+                  product.origin_country.toUpperCase()
+                : "-"}
+            </p>
           </div>
           <div>
-            <span className="font-semibold">Type</span>
-            <p>{product.type ? product.type.value : "-"}</p>
+            <span className="font-semibold">Category</span>
+            <p>
+              {(product.categories ?? []).length
+                ? product.categories?.map((category) => category.name).join(", ")
+                : "-"}
+            </p>
           </div>
         </div>
         <div className="flex flex-col gap-y-4">
@@ -80,36 +90,35 @@ const ProductInfoTab = ({ product }: ProductTabsProps) => {
 
 const ShippingInfoTab = () => {
   return (
-    <div className="text-small-regular py-8">
+    <div className="text-small-regular py-6">
       <div className="grid grid-cols-1 gap-y-8">
         <div className="flex items-start gap-x-2">
           <FastDelivery />
           <div>
-            <span className="font-semibold">Fast delivery</span>
+            <span className="font-semibold">Fast dispatch</span>
             <p className="max-w-sm">
-              Your package will arrive in 3-5 business days at your pick up
-              location or in the comfort of your home.
+              Orders are prepared quickly so the capsule can move with you
+              across routine commutes and short-haul travel days.
             </p>
           </div>
         </div>
         <div className="flex items-start gap-x-2">
           <Refresh />
           <div>
-            <span className="font-semibold">Simple exchanges</span>
+            <span className="font-semibold">Straightforward exchanges</span>
             <p className="max-w-sm">
-              Is the fit not quite right? No worries - we&apos;ll exchange your
-              product for a new one.
+              If the fit or finish is not right for your rotation, exchanges are
+              handled with a clear and minimal process.
             </p>
           </div>
         </div>
         <div className="flex items-start gap-x-2">
           <Back />
           <div>
-            <span className="font-semibold">Easy returns</span>
+            <span className="font-semibold">Returns without friction</span>
             <p className="max-w-sm">
-              Just return your product and we&apos;ll refund your money. No
-              questions asked – we&apos;ll do our best to make sure your return
-              is hassle-free.
+              The purchase flow is designed to stay calm before and after
+              delivery, including a clean path for returns when needed.
             </p>
           </div>
         </div>

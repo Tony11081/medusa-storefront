@@ -2,6 +2,28 @@
 @import "tailwindcss/components";
 @import "tailwindcss/utilities";
 
+:root {
+  --brand-ink: #10151f;
+  --brand-paper: #f3eee6;
+  --brand-panel: #fffaf4;
+  --brand-accent: #c5a46d;
+  --brand-line: rgba(16, 21, 31, 0.1);
+  --brand-muted: rgba(16, 21, 31, 0.72);
+  --brand-soft: rgba(16, 21, 31, 0.48);
+}
+
+html {
+  background:
+    radial-gradient(circle at top left, rgba(197, 164, 109, 0.16), transparent 28%),
+    linear-gradient(180deg, #f7f2eb 0%, var(--brand-paper) 58%, #f0e8de 100%);
+}
+
+body {
+  background: transparent;
+  color: var(--brand-ink);
+  font-family: var(--font-body), sans-serif;
+}
+
 @layer utilities {
   /* Chrome, Safari and Opera */
   .no-scrollbar::-webkit-scrollbar {
@@ -51,11 +73,36 @@
 
 @layer components {
   .content-container {
-    @apply max-w-[1440px] w-full mx-auto px-6;
+    @apply max-w-[1400px] w-full mx-auto px-5 sm:px-6 lg:px-8;
   }
 
   .contrast-btn {
     @apply px-4 py-2 border border-black rounded-full hover:bg-black hover:text-white transition-colors duration-200 ease-in;
+  }
+
+  .font-display {
+    font-family: var(--font-heading), serif;
+  }
+
+  .eyebrow {
+    @apply text-[11px] uppercase tracking-[0.22em];
+    color: var(--brand-accent);
+  }
+
+  .brand-button {
+    @apply inline-flex items-center justify-center rounded-full px-5 py-3 text-xs font-semibold uppercase tracking-[0.22em] transition;
+    background: var(--brand-accent);
+    color: var(--brand-ink);
+  }
+
+  .brand-button:hover {
+    @apply opacity-90;
+  }
+
+  .brand-button-secondary {
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.24);
+    color: white;
   }
 
   .text-xsmall-regular {
