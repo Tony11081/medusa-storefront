@@ -32,6 +32,7 @@ const CountrySelect = forwardRef<
   return (
     <NativeSelect
       ref={innerRef}
+      label={placeholder}
       placeholder={placeholder}
       defaultValue={defaultValue}
       {...props}

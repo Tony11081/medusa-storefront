@@ -1,5 +1,5 @@
 import { Label } from "@medusajs/ui"
-import React, { useEffect, useImperativeHandle, useState } from "react"
+import React, { useEffect, useId, useImperativeHandle, useState } from "react"
 
 import Eye from "@modules/common/icons/eye"
 import EyeOff from "@modules/common/icons/eye-off"
@@ -16,10 +16,12 @@ type InputProps = Omit<
 }
 
 const Input = React.forwardRef<HTMLInputElement, InputProps>(
-  ({ type, name, label, touched, required, topLabel, ...props }, ref) => {
+  ({ type, id, name, label, touched, required, topLabel, ...props }, ref) => {
     const inputRef = React.useRef<HTMLInputElement>(null)
+    const generatedId = useId()
     const [showPassword, setShowPassword] = useState(false)
     const [inputType, setInputType] = useState(type)
+    const inputId = id ?? name ?? generatedId
 
     useEffect(() => {
       if (type === "password" && showPassword) {
@@ -36,10 +38,13 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
     return (
       <div className="flex flex-col w-full">
         {topLabel && (
-          <Label className="mb-2 txt-compact-medium-plus">{topLabel}</Label>
+          <Label htmlFor={inputId} className="mb-2 txt-compact-medium-plus">
+            {topLabel}
+          </Label>
         )}
         <div className="flex relative z-0 w-full txt-compact-medium">
           <input
+            id={inputId}
             type={inputType}
             name={name}
             placeholder=" "
@@ -49,7 +54,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
             ref={inputRef}
           />
           <label
-            htmlFor={name}
+            htmlFor={inputId}
             onClick={() => inputRef.current?.focus()}
             className="flex items-center justify-center mx-3 px-1 transition-all absolute duration-300 top-3 -z-1 origin-0 text-ui-fg-subtle"
           >

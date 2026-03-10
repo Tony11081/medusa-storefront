@@ -4,6 +4,7 @@ import {
   SelectHTMLAttributes,
   forwardRef,
   useEffect,
+  useId,
   useImperativeHandle,
   useRef,
   useState,
@@ -11,17 +12,30 @@ import {
 
 export type NativeSelectProps = {
   placeholder?: string
+  label?: string
   errors?: Record<string, unknown>
   touched?: Record<string, unknown>
 } & SelectHTMLAttributes<HTMLSelectElement>
 
 const NativeSelect = forwardRef<HTMLSelectElement, NativeSelectProps>(
   (
-    { placeholder = "Select...", defaultValue, className, children, ...props },
+    {
+      placeholder = "Select...",
+      label,
+      defaultValue,
+      className,
+      children,
+      id,
+      name,
+      ...props
+    },
     ref
   ) => {
     const innerRef = useRef<HTMLSelectElement>(null)
+    const generatedId = useId()
     const [isPlaceholder, setIsPlaceholder] = useState(false)
+    const selectId = id ?? name ?? generatedId
+    const accessibleLabel = label ?? props["aria-label"]
 
     useImperativeHandle<HTMLSelectElement | null, HTMLSelectElement | null>(
       ref,
@@ -38,6 +52,11 @@ const NativeSelect = forwardRef<HTMLSelectElement, NativeSelectProps>(
 
     return (
       <div>
+        {accessibleLabel && (
+          <label htmlFor={selectId} className="sr-only">
+            {accessibleLabel}
+          </label>
+        )}
         <div
           onFocus={() => innerRef.current?.focus()}
           onBlur={() => innerRef.current?.blur()}
@@ -50,8 +69,11 @@ const NativeSelect = forwardRef<HTMLSelectElement, NativeSelectProps>(
           )}
         >
           <select
+            id={selectId}
+            name={name}
             ref={innerRef}
             defaultValue={defaultValue}
+            aria-label={accessibleLabel}
             {...props}
             className="appearance-none flex-1 bg-transparent border-none px-4 py-2.5 transition-colors duration-150 outline-none "
           >
