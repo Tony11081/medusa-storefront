@@ -6,7 +6,7 @@ import { getRegion } from "@lib/data/regions"
 import EditorialHome from "@modules/home/templates/editorial-home"
 
 export const metadata: Metadata = {
-  title: "Technical Wardrobe Essentials",
+  title: "Designer Fabric by the Yard",
   description: siteContent.description,
 }
 
