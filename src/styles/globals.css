@@ -3,25 +3,27 @@
 @import "tailwindcss/utilities";
 
 :root {
-  --brand-ink: #10151f;
-  --brand-paper: #f3eee6;
-  --brand-panel: #fffaf4;
-  --brand-accent: #c5a46d;
-  --brand-line: rgba(16, 21, 31, 0.1);
-  --brand-muted: rgba(16, 21, 31, 0.72);
-  --brand-soft: rgba(16, 21, 31, 0.48);
+  --brand-ink: #18110d;
+  --brand-paper: #efe4d5;
+  --brand-panel: #fff8ef;
+  --brand-accent: #b6823e;
+  --brand-line: rgba(24, 17, 13, 0.1);
+  --brand-muted: rgba(24, 17, 13, 0.72);
+  --brand-soft: rgba(24, 17, 13, 0.48);
 }
 
 html {
   background:
-    radial-gradient(circle at top left, rgba(197, 164, 109, 0.16), transparent 28%),
-    linear-gradient(180deg, #f7f2eb 0%, var(--brand-paper) 58%, #f0e8de 100%);
+    radial-gradient(circle at top left, rgba(182, 130, 62, 0.18), transparent 24%),
+    radial-gradient(circle at top right, rgba(72, 51, 34, 0.08), transparent 18%),
+    linear-gradient(180deg, #f8f1e7 0%, var(--brand-paper) 58%, #e9dccb 100%);
 }
 
 body {
   background: transparent;
   color: var(--brand-ink);
   font-family: var(--font-body), sans-serif;
+  min-height: 100vh;
 }
 
 @layer utilities {
@@ -92,11 +94,12 @@ body {
   .brand-button {
     @apply inline-flex items-center justify-center rounded-full px-5 py-3 text-xs font-semibold uppercase tracking-[0.22em] transition;
     background: var(--brand-accent);
-    color: var(--brand-ink);
+    color: #fff8ef;
   }
 
   .brand-button:hover {
-    @apply opacity-90;
+    @apply opacity-95;
+    transform: translateY(-1px);
   }
 
   .brand-button-secondary {

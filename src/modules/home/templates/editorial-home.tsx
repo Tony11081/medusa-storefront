@@ -2,6 +2,7 @@ import Image from "next/image"
 
 import { HttpTypes } from "@medusajs/types"
 
+import { isExternalImageUrl, normalizeImageUrl } from "@lib/util/images"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
 import ProductPreview from "@modules/products/components/product-preview"
 import { countryNames, siteContent } from "@lib/site-content"
@@ -25,12 +26,13 @@ const EditorialHome = ({ products, region }: EditorialHomeProps) => {
     .filter(Boolean) as HttpTypes.StoreProduct[]
 
   const heroLead = featuredProducts[0]
+  const heroImage = normalizeImageUrl(heroLead?.thumbnail)
 
   return (
     <div className="pb-24">
       <section className="content-container pt-8 pb-10">
-        <div className="relative overflow-hidden rounded-[2rem] bg-[var(--brand-ink)] text-white shadow-[0_30px_90px_rgba(16,21,31,0.18)]">
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(197,164,109,0.32),transparent_34%),radial-gradient(circle_at_bottom_left,rgba(255,255,255,0.12),transparent_28%)]" />
+        <div className="relative overflow-hidden rounded-[2.2rem] bg-[var(--brand-ink)] text-white shadow-[0_30px_90px_rgba(16,21,31,0.18)]">
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(197,164,109,0.32),transparent_34%),radial-gradient(circle_at_bottom_left,rgba(255,255,255,0.12),transparent_28%),linear-gradient(140deg,rgba(0,0,0,0),rgba(12,8,5,0.28))]" />
           <div className="relative grid gap-10 px-6 py-10 md:grid-cols-[1.15fr_0.85fr] md:px-10 md:py-14 xl:px-14 xl:py-16">
             <div className="flex flex-col justify-between gap-10">
               <div className="max-w-2xl">
@@ -43,6 +45,16 @@ const EditorialHome = ({ products, region }: EditorialHomeProps) => {
                 <p className="mt-6 max-w-xl text-base leading-7 text-[rgba(255,245,230,0.78)] md:text-lg">
                   {siteContent.description}
                 </p>
+                <div className="mt-6 flex flex-wrap gap-2">
+                  {["Jacquard", "Leather", "Vinyl", "Upholstery"].map((item) => (
+                    <span
+                      key={item}
+                      className="rounded-full border border-white/15 bg-white/8 px-3 py-1 text-[10px] uppercase tracking-[0.22em] text-[rgba(255,245,230,0.82)]"
+                    >
+                      {item}
+                    </span>
+                  ))}
+                </div>
                 <div className="mt-8 flex flex-wrap gap-3">
                   <LocalizedClientLink href="/store" className="brand-button">
                     Shop the archive
@@ -65,12 +77,13 @@ const EditorialHome = ({ products, region }: EditorialHomeProps) => {
 
             <div className="grid gap-4 md:grid-rows-[minmax(340px,1fr)_auto]">
               <div className="relative overflow-hidden rounded-[1.75rem] border border-white/10 bg-white/5">
-                {heroLead?.thumbnail ? (
+                {heroImage ? (
                   <Image
-                    src={heroLead.thumbnail}
+                    src={heroImage}
                     alt={heroLead.title ?? siteContent.name}
                     fill
                     priority
+                    unoptimized={isExternalImageUrl(heroImage)}
                     className="object-cover"
                   />
                 ) : null}
@@ -242,11 +255,14 @@ function CategoryCard({
   description: string
   product: HttpTypes.StoreProduct | null
 }) {
+  const imageUrl = normalizeImageUrl(product?.thumbnail)
+
   return (
     <LocalizedClientLink
       href={href}
-      className="group relative overflow-hidden rounded-[1.75rem] border border-[var(--brand-line)] bg-white p-6 shadow-[0_18px_50px_rgba(16,21,31,0.05)] transition duration-300 hover:-translate-y-1"
+      className="group relative overflow-hidden rounded-[1.75rem] border border-[var(--brand-line)] bg-[linear-gradient(155deg,rgba(255,255,255,0.98),rgba(243,232,218,0.9))] p-6 shadow-[0_18px_50px_rgba(16,21,31,0.06)] transition duration-300 hover:-translate-y-1 hover:shadow-[0_30px_70px_rgba(16,21,31,0.1)]"
     >
+      <div className="absolute inset-x-0 top-0 h-1 bg-[linear-gradient(90deg,var(--brand-accent),transparent)]" />
       <div className="relative z-10 max-w-[15rem]">
         <p className="eyebrow">{title}</p>
         <h3 className="mt-3 font-display text-4xl leading-none tracking-[-0.03em] text-[var(--brand-ink)]">
@@ -260,12 +276,13 @@ function CategoryCard({
         </span>
       </div>
 
-      {product?.thumbnail ? (
-        <div className="absolute bottom-0 right-0 h-40 w-36 overflow-hidden rounded-tl-[1.4rem] opacity-90 transition duration-500 group-hover:scale-[1.02]">
+      {imageUrl ? (
+        <div className="absolute bottom-0 right-0 h-44 w-40 overflow-hidden rounded-tl-[1.6rem] border-l border-t border-black/5 opacity-95 transition duration-500 group-hover:scale-[1.02]">
           <Image
-            src={product.thumbnail}
+            src={imageUrl}
             alt={product.title ?? title}
             fill
+            unoptimized={isExternalImageUrl(imageUrl)}
             className="object-cover"
           />
         </div>
@@ -275,18 +292,34 @@ function CategoryCard({
 }
 
 function MiniFeatureCard({ product }: { product: HttpTypes.StoreProduct }) {
+  const imageUrl = normalizeImageUrl(product.thumbnail)
+
   return (
     <LocalizedClientLink
       href={`/products/${product.handle}`}
-      className="rounded-[1.4rem] border border-white/10 bg-white/5 p-4 transition hover:bg-white/10"
+      className="group relative overflow-hidden rounded-[1.4rem] border border-white/10 bg-white/5 p-4 transition hover:bg-white/10"
     >
-      <p className="text-[11px] uppercase tracking-[0.22em] text-[rgba(255,245,230,0.58)]">
-        {product.material ?? "Designer textile"}
-      </p>
-      <p className="mt-3 text-lg font-medium text-white">{product.title}</p>
-      <p className="mt-2 text-sm leading-6 text-[rgba(255,245,230,0.74)]">
-        {product.description}
-      </p>
+      {imageUrl ? (
+        <div className="absolute inset-y-0 right-0 w-24 overflow-hidden opacity-70 transition duration-500 group-hover:opacity-90">
+          <Image
+            src={imageUrl}
+            alt={product.title ?? "Featured textile"}
+            fill
+            unoptimized={isExternalImageUrl(imageUrl)}
+            className="object-cover"
+          />
+          <div className="absolute inset-0 bg-gradient-to-l from-transparent to-[rgba(16,21,31,0.92)]" />
+        </div>
+      ) : null}
+      <div className="relative pr-20">
+        <p className="text-[11px] uppercase tracking-[0.22em] text-[rgba(255,245,230,0.58)]">
+          {product.material ?? "Designer textile"}
+        </p>
+        <p className="mt-3 text-lg font-medium text-white">{product.title}</p>
+        <p className="mt-2 text-sm leading-6 text-[rgba(255,245,230,0.74)]">
+          {product.description}
+        </p>
+      </div>
     </LocalizedClientLink>
   )
 }
