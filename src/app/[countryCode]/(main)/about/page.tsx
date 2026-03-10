@@ -54,15 +54,16 @@ export default function AboutPage() {
               Next step
             </p>
             <h2 className="mt-4 font-display text-4xl leading-none tracking-[-0.03em] md:text-5xl">
-              Explore the capsule in full.
+              Browse the textile archive in full.
             </h2>
             <p className="mt-4 max-w-2xl text-sm leading-7 text-[rgba(255,245,230,0.76)]">
-              Start with the core layers, then build out the system through
-              bottoms and carry pieces that travel with the same restraint.
+              Move from jacquard to leather to vinyl, compare the material
+              direction, and source yardage for projects that need a clearer
+              luxury finish.
             </p>
           </div>
           <LocalizedClientLink href="/store" className="brand-button">
-            Enter the store
+            Enter the archive
           </LocalizedClientLink>
         </div>
       </section>

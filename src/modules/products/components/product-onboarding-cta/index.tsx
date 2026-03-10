@@ -3,33 +3,33 @@ import { Text } from "@medusajs/ui"
 function ProductOnboardingCta() {
   return (
     <div className="space-y-5">
-      <p className="eyebrow">Capsule notes</p>
+      <p className="eyebrow">Archive Notes</p>
       <Text className="font-display text-3xl leading-none tracking-[-0.03em] text-[var(--brand-ink)]">
-        Designed to sit cleanly inside a repeat rotation.
+        Selected for upholstery, trim, panels, and custom fabrication.
       </Text>
       <Text className="text-sm leading-7 text-[var(--brand-muted)]">
-        Built for wardrobe continuity rather than novelty drops. Every piece is
-        framed to layer easily, travel well, and keep the styling language
-        consistent.
+        Each listing is presented as a sourcing-ready fabric entry rather than
+        a trend drop. Use the archive to compare texture, pattern, and finish
+        before committing yardage to a project.
       </Text>
       <div className="grid gap-3 border-t border-[var(--brand-line)] pt-4 text-sm leading-6 text-[var(--brand-muted)]">
         <div className="flex items-center justify-between gap-4">
           <span className="text-[11px] uppercase tracking-[0.16em] text-[var(--brand-soft)]">
-            Dispatch
+            Selling unit
           </span>
-          <span>Prepared for fast fulfillment</span>
+          <span>Priced per 1 yard</span>
         </div>
         <div className="flex items-center justify-between gap-4">
           <span className="text-[11px] uppercase tracking-[0.16em] text-[var(--brand-soft)]">
-            Returns
+            Use case
           </span>
-          <span>Clean exchange and return flow</span>
+          <span>Suitable for interiors and specialty craft</span>
         </div>
         <div className="flex items-center justify-between gap-4">
           <span className="text-[11px] uppercase tracking-[0.16em] text-[var(--brand-soft)]">
-            Styling
+            Support
           </span>
-          <span>Works with the wider capsule</span>
+          <span>Review project yardage before purchase</span>
         </div>
       </div>
     </div>

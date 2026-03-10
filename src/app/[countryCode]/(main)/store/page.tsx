@@ -6,7 +6,7 @@ import StoreTemplate from "@modules/store/templates"
 
 export const metadata: Metadata = {
   title: "Store",
-  description: `Explore the ${siteContent.name} capsule of layers, bottoms, and accessories.`,
+  description: `Explore ${siteContent.name} and browse designer jacquard, leather, vinyl, lining, cotton, and upholstery fabric by the yard.`,
 }
 
 type Params = {

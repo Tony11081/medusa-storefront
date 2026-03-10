@@ -15,11 +15,11 @@ type ProductTabsProps = {
 const ProductTabs = ({ product }: ProductTabsProps) => {
   const tabs = [
     {
-      label: "Product Information",
+      label: "Fabric Details",
       component: <ProductInfoTab product={product} />,
     },
     {
-      label: "Shipping & Returns",
+      label: "Shipping & Project Notes",
       component: <ShippingInfoTab />,
     },
   ]
@@ -43,6 +43,8 @@ const ProductTabs = ({ product }: ProductTabsProps) => {
 }
 
 const ProductInfoTab = ({ product }: ProductTabsProps) => {
+  const sellingUnit = product.variants?.[0]?.title || "1 yard"
+
   return (
     <div className="text-small-regular py-6">
       <div className="grid grid-cols-2 gap-x-8">
@@ -50,6 +52,14 @@ const ProductInfoTab = ({ product }: ProductTabsProps) => {
           <div>
             <span className="font-semibold">Material</span>
             <p>{product.material ? product.material : "-"}</p>
+          </div>
+          <div>
+            <span className="font-semibold">Category</span>
+            <p>
+              {(product.categories ?? []).length
+                ? product.categories?.map((category) => category.name).join(", ")
+                : "-"}
+            </p>
           </div>
           <div>
             <span className="font-semibold">Country of origin</span>
@@ -60,16 +70,12 @@ const ProductInfoTab = ({ product }: ProductTabsProps) => {
                 : "-"}
             </p>
           </div>
-          <div>
-            <span className="font-semibold">Category</span>
-            <p>
-              {(product.categories ?? []).length
-                ? product.categories?.map((category) => category.name).join(", ")
-                : "-"}
-            </p>
-          </div>
         </div>
         <div className="flex flex-col gap-y-4">
+          <div>
+            <span className="font-semibold">Selling unit</span>
+            <p>{sellingUnit}</p>
+          </div>
           <div>
             <span className="font-semibold">Weight</span>
             <p>{product.weight ? `${product.weight} g` : "-"}</p>
@@ -95,30 +101,33 @@ const ShippingInfoTab = () => {
         <div className="flex items-start gap-x-2">
           <FastDelivery />
           <div>
-            <span className="font-semibold">Fast dispatch</span>
+            <span className="font-semibold">Cut-to-order handling</span>
             <p className="max-w-sm">
-              Orders are prepared quickly so the capsule can move with you
-              across routine commutes and short-haul travel days.
+              Fabric orders are prepared against the listed yardage unit. Review
+              quantity carefully before placing larger upholstery or interior
+              project orders.
             </p>
           </div>
         </div>
         <div className="flex items-start gap-x-2">
           <Refresh />
           <div>
-            <span className="font-semibold">Straightforward exchanges</span>
+            <span className="font-semibold">Project planning first</span>
             <p className="max-w-sm">
-              If the fit or finish is not right for your rotation, exchanges are
-              handled with a clear and minimal process.
+              Match finish, intended use, and material type before finalizing
+              larger runs. Jacquard, leather, vinyl, and lining each behave
+              differently once specified.
             </p>
           </div>
         </div>
         <div className="flex items-start gap-x-2">
           <Back />
           <div>
-            <span className="font-semibold">Returns without friction</span>
+            <span className="font-semibold">Need sourcing guidance?</span>
             <p className="max-w-sm">
-              The purchase flow is designed to stay calm before and after
-              delivery, including a clean path for returns when needed.
+              Use the archive detail, category context, and product imagery to
+              confirm whether a material fits upholstery, bag-making, trim, or
+              decorative panel work before purchase.
             </p>
           </div>
         </div>

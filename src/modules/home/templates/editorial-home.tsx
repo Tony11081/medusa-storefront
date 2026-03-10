@@ -25,7 +25,6 @@ const EditorialHome = ({ products, region }: EditorialHomeProps) => {
     .filter(Boolean) as HttpTypes.StoreProduct[]
 
   const heroLead = featuredProducts[0]
-  const range = collectPriceRange(products)
 
   return (
     <div className="pb-24">
@@ -39,28 +38,28 @@ const EditorialHome = ({ products, region }: EditorialHomeProps) => {
                   {siteContent.eyebrow}
                 </p>
                 <h1 className="font-display text-5xl leading-[0.92] tracking-[-0.04em] md:text-7xl">
-                  A precise wardrobe system for moving through the city.
+                  Designer fabrics for upholstery, interiors, and custom work.
                 </h1>
                 <p className="mt-6 max-w-xl text-base leading-7 text-[rgba(255,245,230,0.78)] md:text-lg">
                   {siteContent.description}
                 </p>
                 <div className="mt-8 flex flex-wrap gap-3">
                   <LocalizedClientLink href="/store" className="brand-button">
-                    Shop the capsule
+                    Shop the archive
                   </LocalizedClientLink>
                   <LocalizedClientLink
                     href="/about"
                     className="brand-button brand-button-secondary"
                   >
-                    Read the brand brief
+                    Read the sourcing brief
                   </LocalizedClientLink>
                 </div>
               </div>
 
               <div className="grid gap-3 sm:grid-cols-3">
-                <StatCard label="Range" value={range} />
-                <StatCard label="Core pillars" value="Tops / Bottoms / Carry" />
-                <StatCard label="Mood" value="Editorial, technical, restrained" />
+                <StatCard label="Catalog" value={`${products.length} fabric listings`} />
+                <StatCard label="Pricing" value="USD 35-45 per yard" />
+                <StatCard label="Focus" value="Jacquard / Leather / Vinyl" />
               </div>
             </div>
 
@@ -79,14 +78,14 @@ const EditorialHome = ({ products, region }: EditorialHomeProps) => {
                 <div className="absolute inset-x-0 bottom-0 flex items-end justify-between gap-4 p-6">
                   <div>
                     <p className="eyebrow text-[rgba(255,245,230,0.8)]">
-                      Featured layer
+                      Featured textile
                     </p>
                     <h2 className="mt-2 font-display text-4xl leading-none tracking-[-0.03em]">
                       {heroLead?.title ?? siteContent.name}
                     </h2>
                     <p className="mt-3 max-w-sm text-sm leading-6 text-[rgba(255,245,230,0.8)]">
                       {heroLead?.description ??
-                        "Built to move easily across studio sessions, airport gates, and everyday city routes."}
+                        "Selected for upholstery statements, layered interiors, and custom work that benefits from strong pattern and tactile depth."}
                     </p>
                   </div>
                   {heroLead?.handle ? (
@@ -125,14 +124,14 @@ const EditorialHome = ({ products, region }: EditorialHomeProps) => {
       <section className="content-container py-10">
         <div className="grid gap-8 lg:grid-cols-[0.8fr_1.2fr]">
           <div className="space-y-4">
-            <p className="eyebrow">Wardrobe Logic</p>
+            <p className="eyebrow">Material Direction</p>
             <h2 className="font-display text-4xl leading-none tracking-[-0.03em] text-[var(--brand-ink)] md:text-5xl">
-              Built as a tight rotation, not a noisy catalog.
+              Built as a sourcing archive, not a generic marketplace.
             </h2>
             <p className="max-w-md text-base leading-7 text-[var(--brand-muted)]">
-              The assortment is intentionally compact. Tops carry the visual
-              weight, bottoms soften the silhouette, and accessories finish the
-              system without overcomplicating it.
+              The assortment is organized around material families and visual
+              texture. You can move from jacquard to leather to vinyl quickly,
+              compare direction at a glance, and source yardage with less noise.
             </p>
           </div>
           <div className="grid gap-4 md:grid-cols-3">
@@ -156,9 +155,9 @@ const EditorialHome = ({ products, region }: EditorialHomeProps) => {
       <section className="content-container py-8">
         <div className="mb-8 flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
           <div>
-            <p className="eyebrow">Capsule Picks</p>
+            <p className="eyebrow">Material Highlights</p>
             <h2 className="font-display text-4xl leading-none tracking-[-0.03em] text-[var(--brand-ink)] md:text-5xl">
-              The pieces that define the mood.
+              Signature textiles from the current archive.
             </h2>
           </div>
           <LocalizedClientLink
@@ -184,9 +183,9 @@ const EditorialHome = ({ products, region }: EditorialHomeProps) => {
         <div className="rounded-[2rem] border border-[var(--brand-line)] bg-[linear-gradient(145deg,rgba(255,255,255,0.86),rgba(244,237,226,0.92))] px-6 py-8 shadow-[0_18px_60px_rgba(16,21,31,0.07)] md:px-10 md:py-12">
           <div className="grid gap-8 lg:grid-cols-[0.9fr_1.1fr]">
             <div>
-              <p className="eyebrow">From material to movement</p>
+              <p className="eyebrow">From archive to project</p>
               <h2 className="font-display text-4xl leading-none tracking-[-0.03em] text-[var(--brand-ink)] md:text-5xl">
-                Quietly premium. Easy to repeat. Ready to travel.
+                Quietly luxurious. Priced clearly. Ready to specify.
               </h2>
             </div>
             <div className="grid gap-6 md:grid-cols-2">
@@ -196,7 +195,7 @@ const EditorialHome = ({ products, region }: EditorialHomeProps) => {
                   className="rounded-[1.5rem] border border-[var(--brand-line)] bg-white p-5"
                 >
                   <p className="text-xs uppercase tracking-[0.2em] text-[var(--brand-accent)]">
-                    {product.material ?? "Capsule essential"}
+                    {product.material ?? "Designer textile"}
                   </p>
                   <h3 className="mt-3 text-xl font-medium text-[var(--brand-ink)]">
                     {product.title}
@@ -207,7 +206,7 @@ const EditorialHome = ({ products, region }: EditorialHomeProps) => {
                   <p className="mt-4 text-xs uppercase tracking-[0.18em] text-[var(--brand-soft)]">
                     {product.origin_country
                       ? `Origin ${countryNames[product.origin_country] ?? product.origin_country.toUpperCase()}`
-                      : "Global wardrobe staple"}
+                      : "Selected for upholstery and interiors"}
                   </p>
                 </div>
               ))}
@@ -282,7 +281,7 @@ function MiniFeatureCard({ product }: { product: HttpTypes.StoreProduct }) {
       className="rounded-[1.4rem] border border-white/10 bg-white/5 p-4 transition hover:bg-white/10"
     >
       <p className="text-[11px] uppercase tracking-[0.22em] text-[rgba(255,245,230,0.58)]">
-        {product.material ?? "Capsule essential"}
+        {product.material ?? "Designer textile"}
       </p>
       <p className="mt-3 text-lg font-medium text-white">{product.title}</p>
       <p className="mt-2 text-sm leading-6 text-[rgba(255,245,230,0.74)]">
@@ -290,23 +289,6 @@ function MiniFeatureCard({ product }: { product: HttpTypes.StoreProduct }) {
       </p>
     </LocalizedClientLink>
   )
-}
-
-function collectPriceRange(products: HttpTypes.StoreProduct[]) {
-  const prices = products.flatMap((product) =>
-    (product.variants ?? [])
-      .map((variant) => variant.calculated_price?.calculated_amount)
-      .filter((value): value is number => typeof value === "number")
-  )
-
-  if (!prices.length) {
-    return "Curated essentials"
-  }
-
-  const min = Math.min(...prices) / 100
-  const max = Math.max(...prices) / 100
-
-  return `EUR ${min.toFixed(0)}-${max.toFixed(0)}`
 }
 
 export default EditorialHome

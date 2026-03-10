@@ -25,8 +25,18 @@ const StoreTemplate = ({
     >
       <RefinementList sortBy={sort} />
       <div className="w-full">
-        <div className="mb-8 text-2xl-semi">
-          <h1 data-testid="store-page-title">All products</h1>
+        <div className="mb-8">
+          <p className="eyebrow">Textile Archive</p>
+          <h1
+            className="mt-3 font-display text-4xl leading-none tracking-[-0.03em] text-[var(--brand-ink)] md:text-5xl"
+            data-testid="store-page-title"
+          >
+            Designer fabrics by the yard
+          </h1>
+          <p className="mt-4 max-w-2xl text-sm leading-7 text-[var(--brand-muted)]">
+            Browse jacquard, leather, vinyl, lining, denim, cotton, and
+            upholstery materials from the Atelier Fabrics catalog.
+          </p>
         </div>
         <Suspense fallback={<SkeletonProductGrid />}>
           <PaginatedProducts

@@ -1,68 +1,68 @@
 export const siteContent = {
-  name: "AI Live Control",
-  shortName: "ALC",
-  tagline: "Technical wardrobe essentials for city movement.",
+  name: "Atelier Fabrics",
+  shortName: "AF",
+  tagline: "Luxury designer fabrics by the yard.",
   description:
-    "AI Live Control builds a compact capsule of elevated staples, travel-ready layers, and refined accessories for movement between studio, street, and terminal.",
-  eyebrow: "Editorial Capsule 001",
+    "Atelier Fabrics presents a focused archive of luxury designer textiles, upholstery fabric, leather, and vinyl sold by the yard for interiors, soft furnishings, and custom projects.",
+  eyebrow: "Designer Textile Archive",
   navLinks: [
-    { label: "Store", href: "/store" },
+    { label: "Archive", href: "/store" },
     { label: "About", href: "/about" },
   ],
   featureHandles: [
-    "ai-utility-hoodie",
-    "ai-studio-tee",
-    "ai-crossbody-pack",
-    "ai-transit-joggers",
+    "gucci-jacquard-fabric-brown-gj06",
+    "fendi-brown-and-black-jacquard-fabric-fj01",
+    "dior-dark-blue-leather-fabric-dl02",
+    "louis-vuitton-white-embossed-vinyl-ll35",
   ],
   categoryCards: [
     {
-      title: "Tops",
-      href: "/categories/tops",
-      handle: "ai-utility-hoodie",
+      title: "Jacquard",
+      href: "/categories/jacquard",
+      handle: "gucci-jacquard-fabric-brown-gj06",
       description:
-        "Layering pieces that move from early flights to late studio sessions without losing structure.",
+        "Statement woven textiles for headboards, accent seating, panels, and fashion-led upholstery work.",
     },
     {
-      title: "Bottoms",
-      href: "/categories/bottoms",
-      handle: "ai-transit-joggers",
+      title: "Leather",
+      href: "/categories/leather",
+      handle: "dior-dark-blue-leather-fabric-dl02",
       description:
-        "Relaxed silhouettes calibrated for travel days, city miles, and clean everyday repetition.",
+        "Embossed and smooth leather options selected for trim details, bags, seating accents, and bespoke interiors.",
     },
     {
-      title: "Accessories",
-      href: "/categories/accessories",
-      handle: "ai-crossbody-pack",
+      title: "Vinyl",
+      href: "/categories/vinyl",
+      handle: "louis-vuitton-white-embossed-vinyl-ll35",
       description:
-        "Small carry essentials that keep the system tight, functional, and visually quiet.",
+        "Durable coated materials with bold pattern and color for upholstery, wall panels, and custom fabrication.",
     },
   ],
   valueProps: [
     {
-      title: "Capsule Logic",
-      body: "Each piece is selected to layer cleanly, travel lightly, and repeat often without feeling basic.",
+      title: "By The Yard",
+      body: "Every listing is structured around a clear 1 yard selling unit, making project planning simpler from sample order to full run.",
     },
     {
-      title: "Material Restraint",
-      body: "Cotton, fleece, nylon, and steel keep the assortment tactile, durable, and easy to live with.",
+      title: "Interior Focus",
+      body: "The archive is oriented toward upholstery, headboards, wall panels, soft goods, and craft-led custom work rather than generic apparel browsing.",
     },
     {
-      title: "Urban Utility",
-      body: "The visual language is spare, the silhouettes are flexible, and the function stays front and center.",
+      title: "Designer Texture",
+      body: "Jacquard, leather, vinyl, lining, denim, and cotton are grouped to help you source tactile finishes with a stronger luxury point of view.",
     },
   ],
   about: {
     lead:
-      "AI Live Control is a compact wardrobe system for people who move through different settings without changing their visual standards.",
+      "Atelier Fabrics is built as a sourcing-led storefront for luxury designer textiles, with emphasis on tactile surfaces, upholstery potential, and decisive material direction.",
     paragraphs: [
-      "The collection is intentionally tight: structured tops, relaxed bottoms, and low-profile accessories that work together rather than compete for attention.",
-      "Instead of trend-driven product drops, the site is framed like a permanent capsule. The atmosphere is editorial, the pacing is calm, and the details matter more than noise.",
-      "Everything on the storefront is arranged to feel usable, premium, and quietly precise, with enough utility for travel and enough restraint for everyday city wear.",
+      "The catalog centers on recognizable luxury fashion-house materials recontextualized for interiors, furniture accents, custom fabrication, and specialty craft applications.",
+      "Rather than presenting products like a discount marketplace, the storefront is arranged like an editorial archive: quieter typography, stronger texture, and clearer navigation by material family.",
+      "The goal is direct sourcing clarity. You can move from jacquard to leather to vinyl quickly, compare tactile direction, and buy yardage without losing the premium tone of the collection.",
     ],
   },
   footerNote:
-    "A compact capsule for studio days, city movement, and travel between both.",
+    "An editorial archive of designer fabrics, upholstery materials, leather, and vinyl sold by the yard.",
 } as const
 
 export const countryNames: Record<string, string> = {

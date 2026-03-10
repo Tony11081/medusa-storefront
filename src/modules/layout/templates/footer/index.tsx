@@ -155,13 +155,13 @@ export default async function Footer({ countryCode }: FooterProps) {
               </span>
               <ul className="grid grid-cols-1 gap-y-2 txt-small text-[var(--brand-muted)]">
                 <li>
-                  Wardrobe system designed for repeat wear.
+                  Designer materials organized for faster sourcing.
                 </li>
                 <li>
-                  Compact carry options for travel and city use.
+                  Priced around a clear 1 yard selling unit.
                 </li>
                 <li>
-                  Refined materials with minimal visual noise.
+                  Built for upholstery, panels, trim, and custom fabrication.
                 </li>
               </ul>
             </div>
