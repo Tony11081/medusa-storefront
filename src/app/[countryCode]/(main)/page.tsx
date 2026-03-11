@@ -23,7 +23,7 @@ export default async function Home(props: {
     queryParams: {
       limit: 100,
       fields:
-        "*categories,*variants.calculated_price,+variants.inventory_quantity,*variants.images,+metadata,+tags,",
+        "*categories,*variants.calculated_price,*variants.prices,*variants.price_set,+variants.inventory_quantity,*variants.images,+metadata,+tags,",
     },
   })
 
