@@ -40,7 +40,7 @@ const ProductTemplate: React.FC<ProductTemplateProps> = ({
           <ProductTabs product={product} />
         </div>
         <div className="relative block w-full">
-          <ImageGallery images={images} />
+          <ImageGallery product={product} images={images} />
         </div>
         <div className="flex w-full flex-col gap-y-6 py-4 lg:sticky lg:top-28 lg:max-w-[340px] lg:py-0">
           <div className="rounded-[1.8rem] border border-[var(--brand-line)] bg-white/92 p-6">
