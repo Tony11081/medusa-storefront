@@ -2,6 +2,7 @@ export const siteContent = {
   name: "Atelier Fabrics",
   shortName: "AF",
   tagline: "Luxury designer fabrics by the yard.",
+  supportEmail: "support@upholsteryfabric.net",
   description:
     "Atelier Fabrics presents a focused archive of luxury designer textiles, upholstery fabric, leather, and vinyl sold by the yard for interiors, soft furnishings, and custom projects.",
   eyebrow: "Designer Textile Archive",

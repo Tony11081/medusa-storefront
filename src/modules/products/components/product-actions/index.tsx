@@ -2,6 +2,13 @@
 
 import { addToCart } from "@lib/data/cart"
 import { useIntersection } from "@lib/hooks/use-in-view"
+import { siteContent } from "@lib/site-content"
+import {
+  getContinuousYardageNote,
+  getPriceRuleLabel,
+  getSwatchRequestHref,
+  getUseCaseLabel,
+} from "@lib/util/product-details"
 import { HttpTypes } from "@medusajs/types"
 import { Button } from "@medusajs/ui"
 import Divider from "@modules/common/components/divider"
@@ -48,6 +55,13 @@ export default function ProductActions({
   const [quantity, setQuantity] = useState(1)
   const [isAdding, setIsAdding] = useState(false)
   const countryCode = useParams().countryCode as string
+  const priceRuleLabel = useMemo(() => getPriceRuleLabel(product), [product])
+  const continuousYardageNote = useMemo(
+    () => getContinuousYardageNote(product),
+    [product]
+  )
+  const useCaseLabel = useMemo(() => getUseCaseLabel(product), [product])
+  const swatchRequestHref = useMemo(() => getSwatchRequestHref(product), [product])
 
   const visibleOptions = useMemo(() => {
     return (product.options || []).filter((option) => getOptionValues(option).length > 1)
@@ -266,6 +280,45 @@ export default function ProductActions({
             ? "Out of stock"
             : "Add to cart"}
         </Button>
+        <div className="mt-3 rounded-[1.4rem] border border-[var(--brand-line)] bg-[rgba(255,250,244,0.8)] p-4 text-sm leading-6 text-[var(--brand-muted)]">
+          <div className="flex items-start justify-between gap-4">
+            <span className="text-[11px] uppercase tracking-[0.18em] text-[var(--brand-soft)]">
+              Price
+            </span>
+            <span className="text-right text-[var(--brand-ink)]">{priceRuleLabel}</span>
+          </div>
+          <div className="mt-3 flex items-start justify-between gap-4">
+            <span className="text-[11px] uppercase tracking-[0.18em] text-[var(--brand-soft)]">
+              Yardage
+            </span>
+            <span className="max-w-[220px] text-right">{continuousYardageNote}</span>
+          </div>
+          <div className="mt-3 flex items-start justify-between gap-4">
+            <span className="text-[11px] uppercase tracking-[0.18em] text-[var(--brand-soft)]">
+              Best for
+            </span>
+            <span className="max-w-[220px] text-right">{useCaseLabel}</span>
+          </div>
+          <div className="mt-4 border-t border-[var(--brand-line)] pt-4">
+            <p className="text-[var(--brand-ink)]">
+              Need a swatch check or project guidance before you commit?
+            </p>
+            <div className="mt-2 flex flex-wrap gap-3">
+              <a
+                href={swatchRequestHref}
+                className="rounded-full border border-[var(--brand-line)] px-4 py-2 text-xs uppercase tracking-[0.18em] text-[var(--brand-ink)] transition hover:border-[var(--brand-accent)]"
+              >
+                Request swatch help
+              </a>
+              <a
+                href={`mailto:${siteContent.supportEmail}`}
+                className="text-xs uppercase tracking-[0.18em] text-[var(--brand-soft)] underline decoration-[rgba(16,21,31,0.22)] underline-offset-4"
+              >
+                {siteContent.supportEmail}
+              </a>
+            </div>
+          </div>
+        </div>
         <MobileActions
           product={product}
           variant={selectedVariant}

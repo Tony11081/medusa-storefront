@@ -7,6 +7,15 @@ import Refresh from "@modules/common/icons/refresh"
 import Accordion from "./accordion"
 import { HttpTypes } from "@medusajs/types"
 import { countryNames } from "@lib/site-content"
+import { siteContent } from "@lib/site-content"
+import {
+  getCompositionLabel,
+  getContinuousYardageNote,
+  getSellingUnitLabel,
+  getThicknessLabel,
+  getUseCaseLabel,
+  getWidthLabel,
+} from "@lib/util/product-details"
 
 type ProductTabsProps = {
   product: HttpTypes.StoreProduct
@@ -20,7 +29,11 @@ const ProductTabs = ({ product }: ProductTabsProps) => {
     },
     {
       label: "Shipping & Project Notes",
-      component: <ShippingInfoTab />,
+      component: <ShippingInfoTab product={product} />,
+    },
+    {
+      label: "Swatches & Support",
+      component: <SupportInfoTab product={product} />,
     },
   ]
 
@@ -43,7 +56,11 @@ const ProductTabs = ({ product }: ProductTabsProps) => {
 }
 
 const ProductInfoTab = ({ product }: ProductTabsProps) => {
-  const sellingUnit = product.variants?.[0]?.title || "1 yard"
+  const sellingUnit = getSellingUnitLabel(product)
+  const width = getWidthLabel(product)
+  const thickness = getThicknessLabel(product)
+  const composition = getCompositionLabel(product)
+  const useCaseLabel = getUseCaseLabel(product)
 
   return (
     <div className="text-small-regular py-6">
@@ -70,6 +87,10 @@ const ProductInfoTab = ({ product }: ProductTabsProps) => {
                 : "-"}
             </p>
           </div>
+          <div>
+            <span className="font-semibold">Recommended use</span>
+            <p>{useCaseLabel}</p>
+          </div>
         </div>
         <div className="flex flex-col gap-y-4">
           <div>
@@ -77,15 +98,61 @@ const ProductInfoTab = ({ product }: ProductTabsProps) => {
             <p>{sellingUnit}</p>
           </div>
           <div>
+            <span className="font-semibold">Width</span>
+            <p>{width ?? "-"}</p>
+          </div>
+          <div>
+            <span className="font-semibold">Thickness</span>
+            <p>{thickness ?? "-"}</p>
+          </div>
+          <div>
+            <span className="font-semibold">Composition</span>
+            <p>{composition ?? "-"}</p>
+          </div>
+          <div>
             <span className="font-semibold">Weight</span>
             <p>{product.weight ? `${product.weight} g` : "-"}</p>
           </div>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+const ShippingInfoTab = ({ product }: ProductTabsProps) => {
+  const continuousYardageNote = getContinuousYardageNote(product)
+
+  return (
+    <div className="text-small-regular py-6">
+      <div className="grid grid-cols-1 gap-y-8">
+        <div className="flex items-start gap-x-2">
+          <FastDelivery />
           <div>
-            <span className="font-semibold">Dimensions</span>
-            <p>
-              {product.length && product.width && product.height
-                ? `${product.length}L x ${product.width}W x ${product.height}H`
-                : "-"}
+            <span className="font-semibold">Continuous yardage planning</span>
+            <p className="max-w-sm">
+              {continuousYardageNote}
+            </p>
+          </div>
+        </div>
+        <div className="flex items-start gap-x-2">
+          <Refresh />
+          <div>
+            <span className="font-semibold">Review suitability before larger runs</span>
+            <p className="max-w-sm">
+              Color and texture can shift by screen and lighting. For upholstery,
+              trim, headboards, or other larger installations, confirm finish
+              and intended use before placing multi-yard orders.
+            </p>
+          </div>
+        </div>
+        <div className="flex items-start gap-x-2">
+          <Back />
+          <div>
+            <span className="font-semibold">Archive-led purchasing</span>
+            <p className="max-w-sm">
+              These listings are presented as designer archive materials rather
+              than mass-market replenishment stock, so project questions are
+              worth clarifying before checkout.
             </p>
           </div>
         </div>
@@ -94,43 +161,33 @@ const ProductInfoTab = ({ product }: ProductTabsProps) => {
   )
 }
 
-const ShippingInfoTab = () => {
+const SupportInfoTab = ({ product }: ProductTabsProps) => {
+  const swatchHref = `mailto:${siteContent.supportEmail}?subject=${encodeURIComponent(
+    `Project help for ${product.title}`
+  )}`
+
   return (
     <div className="text-small-regular py-6">
-      <div className="grid grid-cols-1 gap-y-8">
-        <div className="flex items-start gap-x-2">
-          <FastDelivery />
-          <div>
-            <span className="font-semibold">Cut-to-order handling</span>
-            <p className="max-w-sm">
-              Fabric orders are prepared against the listed yardage unit. Review
-              quantity carefully before placing larger upholstery or interior
-              project orders.
-            </p>
-          </div>
-        </div>
-        <div className="flex items-start gap-x-2">
-          <Refresh />
-          <div>
-            <span className="font-semibold">Project planning first</span>
-            <p className="max-w-sm">
-              Match finish, intended use, and material type before finalizing
-              larger runs. Jacquard, leather, vinyl, and lining each behave
-              differently once specified.
-            </p>
-          </div>
-        </div>
-        <div className="flex items-start gap-x-2">
-          <Back />
-          <div>
-            <span className="font-semibold">Need sourcing guidance?</span>
-            <p className="max-w-sm">
-              Use the archive detail, category context, and product imagery to
-              confirm whether a material fits upholstery, bag-making, trim, or
-              decorative panel work before purchase.
-            </p>
-          </div>
-        </div>
+      <div className="grid gap-y-4 text-[var(--brand-muted)]">
+        <p>
+          Need a swatch check, more close-up imagery, or help confirming whether
+          this fabric suits upholstery, decorative panels, trim, or bag making?
+        </p>
+        <p>
+          Email
+          {" "}
+          <a
+            className="text-[var(--brand-ink)] underline decoration-[rgba(16,21,31,0.25)] underline-offset-4"
+            href={swatchHref}
+          >
+            {siteContent.supportEmail}
+          </a>
+          {" "}
+          and reference
+          {" "}
+          <span className="font-semibold">{product.handle}</span>
+          .
+        </p>
       </div>
     </div>
   )

@@ -1,6 +1,16 @@
 import { HttpTypes } from "@medusajs/types"
 import { Heading, Text } from "@medusajs/ui"
 import { countryNames } from "@lib/site-content"
+import { siteContent } from "@lib/site-content"
+import {
+  getCompositionLabel,
+  getContinuousYardageNote,
+  getPriceRuleLabel,
+  getSellingUnitLabel,
+  getThicknessLabel,
+  getUseCaseLabel,
+  getWidthLabel,
+} from "@lib/util/product-details"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
 
 type ProductInfoProps = {
@@ -9,6 +19,13 @@ type ProductInfoProps = {
 
 const ProductInfo = ({ product }: ProductInfoProps) => {
   const categories = (product.categories ?? []).map((category) => category.name)
+  const width = getWidthLabel(product)
+  const thickness = getThicknessLabel(product)
+  const composition = getCompositionLabel(product)
+  const sellingUnit = getSellingUnitLabel(product)
+  const continuousYardageNote = getContinuousYardageNote(product)
+  const useCaseLabel = getUseCaseLabel(product)
+  const priceRuleLabel = getPriceRuleLabel(product)
 
   return (
     <div id="product-info">
@@ -37,7 +54,7 @@ const ProductInfo = ({ product }: ProductInfoProps) => {
             </span>
           )}
           <span className="rounded-full border border-[var(--brand-line)] bg-white/72 px-3 py-1 text-[11px] uppercase tracking-[0.18em] text-[var(--brand-ink)]">
-            1 yard unit
+            {sellingUnit} unit
           </span>
         </div>
         <Heading
@@ -57,9 +74,9 @@ const ProductInfo = ({ product }: ProductInfoProps) => {
         <div className="grid gap-3 border-t border-[var(--brand-line)] pt-4 text-sm leading-6 text-[var(--brand-muted)]">
           <div className="flex items-center justify-between gap-4">
             <span className="text-[11px] uppercase tracking-[0.16em] text-[var(--brand-soft)]">
-              Price rule
+              Price
             </span>
-            <span>Fabric USD 35 / Leather or Vinyl USD 45</span>
+            <span>{priceRuleLabel}</span>
           </div>
           <div className="flex items-center justify-between gap-4">
             <span className="text-[11px] uppercase tracking-[0.16em] text-[var(--brand-soft)]">
@@ -67,6 +84,22 @@ const ProductInfo = ({ product }: ProductInfoProps) => {
             </span>
             <span>{product.material ?? "Not specified"}</span>
           </div>
+          {width && (
+            <div className="flex items-center justify-between gap-4">
+              <span className="text-[11px] uppercase tracking-[0.16em] text-[var(--brand-soft)]">
+                Width
+              </span>
+              <span>{width}</span>
+            </div>
+          )}
+          {thickness && (
+            <div className="flex items-center justify-between gap-4">
+              <span className="text-[11px] uppercase tracking-[0.16em] text-[var(--brand-soft)]">
+                Thickness
+              </span>
+              <span>{thickness}</span>
+            </div>
+          )}
           <div className="flex items-center justify-between gap-4">
             <span className="text-[11px] uppercase tracking-[0.16em] text-[var(--brand-soft)]">
               Origin
@@ -79,6 +112,45 @@ const ProductInfo = ({ product }: ProductInfoProps) => {
             </span>
           </div>
         </div>
+        {(composition || continuousYardageNote || useCaseLabel) && (
+          <div className="grid gap-3 border-t border-[var(--brand-line)] pt-4 text-sm leading-6 text-[var(--brand-muted)]">
+            {composition && (
+              <div>
+                <span className="text-[11px] uppercase tracking-[0.16em] text-[var(--brand-soft)]">
+                  Composition
+                </span>
+                <p className="mt-1">{composition}</p>
+              </div>
+            )}
+            <div>
+              <span className="text-[11px] uppercase tracking-[0.16em] text-[var(--brand-soft)]">
+                Yardage
+              </span>
+              <p className="mt-1">{continuousYardageNote}</p>
+            </div>
+            <div>
+              <span className="text-[11px] uppercase tracking-[0.16em] text-[var(--brand-soft)]">
+                Recommended use
+              </span>
+              <p className="mt-1">{useCaseLabel}</p>
+            </div>
+            <div>
+              <span className="text-[11px] uppercase tracking-[0.16em] text-[var(--brand-soft)]">
+                Support
+              </span>
+              <p className="mt-1">
+                Swatch and project questions:
+                {" "}
+                <a
+                  className="text-[var(--brand-ink)] underline decoration-[rgba(16,21,31,0.25)] underline-offset-4"
+                  href={`mailto:${siteContent.supportEmail}`}
+                >
+                  {siteContent.supportEmail}
+                </a>
+              </p>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   )
