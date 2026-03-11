@@ -66,8 +66,26 @@ function getImagesForVariant(
     return product.images
   }
 
-  const imageIdsMap = new Map(variant.images.map((i) => [i.id, true]))
-  return product.images!.filter((i) => imageIdsMap.has(i.id))
+  const selectedColor = variant.title?.split(" / ")[0]?.trim().toLowerCase() || ""
+  const colorTokens = selectedColor
+    .split(/[\/\s-]+/u)
+    .map((token) => token.trim())
+    .filter((token) => token.length >= 3)
+
+  const colorMatchedImages =
+    colorTokens.length > 0
+      ? variant.images.filter((image) => {
+          const url = image.url?.toLowerCase() || ""
+          return (
+            url.includes(selectedColor.replace(/\s+/gu, "-")) ||
+            colorTokens.some((token) => url.includes(token))
+          )
+        })
+      : []
+
+  const finalImages = colorMatchedImages.length ? colorMatchedImages : variant.images
+  const imageIdsMap = new Map(finalImages.map((image) => [image.id, true]))
+  return product.images!.filter((image) => imageIdsMap.has(image.id))
 }
 
 export async function generateMetadata(props: Props): Promise<Metadata> {
