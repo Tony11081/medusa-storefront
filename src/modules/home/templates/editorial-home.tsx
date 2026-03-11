@@ -60,10 +60,10 @@ const EditorialHome = ({ products, region }: EditorialHomeProps) => {
                     Shop the archive
                   </LocalizedClientLink>
                   <LocalizedClientLink
-                    href="/about"
+                    href="/guide"
                     className="brand-button brand-button-secondary"
                   >
-                    Read the sourcing brief
+                    Read the buying guide
                   </LocalizedClientLink>
                 </div>
               </div>
@@ -161,6 +161,66 @@ const EditorialHome = ({ products, region }: EditorialHomeProps) => {
                 </p>
               </div>
             ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="content-container py-10">
+        <div className="rounded-[2rem] border border-[var(--brand-line)] bg-[linear-gradient(145deg,rgba(255,255,255,0.92),rgba(244,237,226,0.94))] p-6 shadow-[0_18px_60px_rgba(16,21,31,0.06)] md:p-10">
+          <div className="grid gap-8 lg:grid-cols-[0.9fr_1.1fr]">
+            <div>
+              <p className="eyebrow">Purchase Clarity</p>
+              <h2 className="font-display text-4xl leading-none tracking-[-0.03em] text-[var(--brand-ink)] md:text-5xl">
+                The details serious buyers usually ask before checkout.
+              </h2>
+              <p className="mt-4 max-w-md text-base leading-7 text-[var(--brand-muted)]">
+                We now surface the practical notes customers care about most:
+                how yardage is prepared, when to ask for a swatch, and how to
+                confirm material suitability before a larger project order.
+              </p>
+              <div className="mt-6 flex flex-wrap gap-3">
+                <LocalizedClientLink
+                  href="/guide"
+                  className="brand-button brand-button-secondary"
+                >
+                  Shipping, swatches & sourcing
+                </LocalizedClientLink>
+                <a
+                  href={`mailto:${siteContent.supportEmail}`}
+                  className="rounded-full border border-[var(--brand-line)] px-4 py-3 text-xs uppercase tracking-[0.22em] text-[var(--brand-soft)] transition hover:border-[var(--brand-accent)] hover:text-[var(--brand-ink)]"
+                >
+                  {siteContent.supportEmail}
+                </a>
+              </div>
+            </div>
+            <div className="grid gap-4 md:grid-cols-3">
+              {[
+                {
+                  title: "Swatch Questions",
+                  body: "Email us before buying larger cuts if you need closer imagery, finish clarification, or project guidance.",
+                },
+                {
+                  title: "Continuous Yardage",
+                  body: "Multiple yards are generally prepared as one continuous cut whenever the roll allows.",
+                },
+                {
+                  title: "Project Fit",
+                  body: "Each material family is better suited to certain applications, from upholstery panels to trim and soft goods.",
+                },
+              ].map((item) => (
+                <div
+                  key={item.title}
+                  className="rounded-[1.5rem] border border-[var(--brand-line)] bg-white p-5"
+                >
+                  <p className="text-xs uppercase tracking-[0.22em] text-[var(--brand-accent)]">
+                    {item.title}
+                  </p>
+                  <p className="mt-4 text-sm leading-7 text-[var(--brand-muted)]">
+                    {item.body}
+                  </p>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </section>

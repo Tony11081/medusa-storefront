@@ -8,6 +8,7 @@ export const siteContent = {
   eyebrow: "Designer Textile Archive",
   navLinks: [
     { label: "Archive", href: "/store" },
+    { label: "Guide", href: "/guide" },
     { label: "About", href: "/about" },
   ],
   featureHandles: [

@@ -163,6 +163,22 @@ export default async function Footer({ countryCode }: FooterProps) {
                 <li>
                   Built for upholstery, panels, trim, and custom fabrication.
                 </li>
+                <li>
+                  <LocalizedClientLink
+                    className="transition hover:text-[var(--brand-ink)]"
+                    href="/guide"
+                  >
+                    Shipping, swatches, and sourcing guide
+                  </LocalizedClientLink>
+                </li>
+                <li>
+                  <a
+                    className="transition hover:text-[var(--brand-ink)]"
+                    href={`mailto:${siteContent.supportEmail}`}
+                  >
+                    {siteContent.supportEmail}
+                  </a>
+                </li>
               </ul>
             </div>
           </div>
