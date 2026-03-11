@@ -29,6 +29,12 @@ const optionsAsKeymap = (
   }, {})
 }
 
+const getOptionValues = (option: HttpTypes.StoreProductOption) => {
+  return Array.from(
+    new Set((option.values ?? []).map((value) => value.value).filter(Boolean))
+  )
+}
+
 export default function ProductActions({
   product,
   disabled,
@@ -42,13 +48,41 @@ export default function ProductActions({
   const [isAdding, setIsAdding] = useState(false)
   const countryCode = useParams().countryCode as string
 
-  // If there is only 1 variant, preselect the options
-  useEffect(() => {
-    if (product.variants?.length === 1) {
-      const variantOptions = optionsAsKeymap(product.variants[0].options)
-      setOptions(variantOptions ?? {})
+  const visibleOptions = useMemo(() => {
+    return (product.options || []).filter((option) => getOptionValues(option).length > 1)
+  }, [product.options])
+
+  const defaultOptions = useMemo(() => {
+    const defaults: Record<string, string> = {}
+
+    for (const option of product.options || []) {
+      const values = getOptionValues(option)
+
+      if (values.length === 1) {
+        defaults[option.id] = values[0]
+      }
     }
-  }, [product.variants])
+
+    if (product.variants?.length === 1) {
+      return {
+        ...defaults,
+        ...(optionsAsKeymap(product.variants[0].options) ?? {}),
+      }
+    }
+
+    return defaults
+  }, [product.options, product.variants])
+
+  useEffect(() => {
+    setOptions((current) => {
+      const nextOptions = {
+        ...defaultOptions,
+        ...current,
+      }
+
+      return isEqual(current, nextOptions) ? current : nextOptions
+    })
+  }, [defaultOptions])
 
   const selectedVariant = useMemo(() => {
     if (!product.variants || product.variants.length === 0) {
@@ -158,9 +192,9 @@ export default function ProductActions({
     <>
       <div className="flex flex-col gap-y-2" ref={actionsRef}>
         <div>
-          {(product.variants?.length ?? 0) > 1 && (
+          {(product.variants?.length ?? 0) > 1 && visibleOptions.length > 0 && (
             <div className="flex flex-col gap-y-4">
-              {(product.options || []).map((option) => {
+              {visibleOptions.map((option) => {
                 return (
                   <div key={option.id}>
                     <OptionSelect
@@ -211,6 +245,7 @@ export default function ProductActions({
         <MobileActions
           product={product}
           variant={selectedVariant}
+          visibleOptions={visibleOptions}
           options={options}
           updateOptions={setOptionValue}
           quantity={quantity}

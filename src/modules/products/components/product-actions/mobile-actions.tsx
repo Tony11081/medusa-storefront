@@ -10,11 +10,11 @@ import { getProductPrice } from "@lib/util/get-product-price"
 import OptionSelect from "./option-select"
 import QuantitySelect from "./quantity-select"
 import { HttpTypes } from "@medusajs/types"
-import { isSimpleProduct } from "@lib/util/product"
 
 type MobileActionsProps = {
   product: HttpTypes.StoreProduct
   variant?: HttpTypes.StoreProductVariant
+  visibleOptions: HttpTypes.StoreProductOption[]
   options: Record<string, string | undefined>
   updateOptions: (title: string, value: string) => void
   quantity: number
@@ -30,6 +30,7 @@ type MobileActionsProps = {
 const MobileActions: React.FC<MobileActionsProps> = ({
   product,
   variant,
+  visibleOptions,
   options,
   updateOptions,
   quantity,
@@ -57,7 +58,11 @@ const MobileActions: React.FC<MobileActionsProps> = ({
     return variantPrice || cheapestPrice || null
   }, [price])
 
-  const isSimple = isSimpleProduct(product)
+  const hasVisibleOptions = visibleOptions.length > 0
+  const selectedOptionsLabel = visibleOptions
+    .map((option) => options[option.id])
+    .filter(Boolean)
+    .join(" / ")
 
   return (
     <>
@@ -107,11 +112,11 @@ const MobileActions: React.FC<MobileActionsProps> = ({
             </div>
             <div
               className={clx("grid w-full gap-x-4", {
-                "grid-cols-3": !isSimple,
-                "grid-cols-2": isSimple,
+                "grid-cols-3": hasVisibleOptions,
+                "grid-cols-2": !hasVisibleOptions,
               })}
             >
-              {!isSimple && <Button
+              {hasVisibleOptions && <Button
                 onClick={open}
                 variant="secondary"
                 className="w-full"
@@ -119,9 +124,7 @@ const MobileActions: React.FC<MobileActionsProps> = ({
               >
                 <div className="flex items-center justify-between w-full">
                   <span>
-                    {variant
-                      ? Object.values(options).join(" / ")
-                      : "Select Options"}
+                    {selectedOptionsLabel || "Select Options"}
                   </span>
                   <ChevronDown />
                 </div>
@@ -189,9 +192,9 @@ const MobileActions: React.FC<MobileActionsProps> = ({
                     </button>
                   </div>
                   <div className="bg-white px-6 py-12">
-                    {(product.variants?.length ?? 0) > 1 && (
+                    {(product.variants?.length ?? 0) > 1 && hasVisibleOptions && (
                       <div className="flex flex-col gap-y-6">
-                        {(product.options || []).map((option) => {
+                        {visibleOptions.map((option) => {
                           return (
                             <div key={option.id}>
                               <OptionSelect
