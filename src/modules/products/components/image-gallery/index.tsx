@@ -7,6 +7,7 @@ import { useMemo } from "react"
 import { useSearchParams } from "next/navigation"
 
 import { isExternalImageUrl, normalizeImageUrl } from "@lib/util/images"
+import { resolveImagesForVariant } from "@lib/util/product-variant-images"
 
 type ImageGalleryProps = {
   product: HttpTypes.StoreProduct
@@ -17,38 +18,12 @@ const ImageGallery = ({ product, images }: ImageGalleryProps) => {
   const searchParams = useSearchParams()
 
   const resolvedImages = useMemo(() => {
-    const selectedVariantId = searchParams.get("v_id")
-
-    if (!selectedVariantId || !product.variants?.length) {
-      return images
-    }
-
-    const variant = product.variants.find((item) => item.id === selectedVariantId)
-
-    if (!variant?.images?.length) {
-      return images
-    }
-
-    const selectedColor =
-      variant.title?.split(" / ")[0]?.trim().toLowerCase() || ""
-    const colorTokens = selectedColor
-      .split(/[\/\s-]+/u)
-      .map((token) => token.trim())
-      .filter((token) => token.length >= 3)
-
-    const filteredImages =
-      colorTokens.length > 0
-        ? variant.images.filter((image) => {
-            const url = image.url?.toLowerCase() || ""
-            return (
-              url.includes(selectedColor.replace(/\s+/gu, "-")) ||
-              colorTokens.some((token) => url.includes(token))
-            )
-          })
-        : []
-
-    return filteredImages.length ? filteredImages : variant.images
-  }, [images, product.variants, searchParams])
+    return resolveImagesForVariant(
+      product,
+      searchParams.get("v_id") || undefined,
+      images
+    )
+  }, [images, product, searchParams])
 
   return (
     <div className="flex items-start relative">

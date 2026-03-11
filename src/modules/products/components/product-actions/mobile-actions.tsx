@@ -8,6 +8,7 @@ import X from "@modules/common/icons/x"
 
 import { getProductPrice } from "@lib/util/get-product-price"
 import OptionSelect from "./option-select"
+import QuantitySelect from "./quantity-select"
 import { HttpTypes } from "@medusajs/types"
 import { isSimpleProduct } from "@lib/util/product"
 
@@ -16,6 +17,9 @@ type MobileActionsProps = {
   variant?: HttpTypes.StoreProductVariant
   options: Record<string, string | undefined>
   updateOptions: (title: string, value: string) => void
+  quantity: number
+  updateQuantity: (value: number) => void
+  maxQuantity: number
   inStock?: boolean
   handleAddToCart: () => void
   isAdding?: boolean
@@ -28,6 +32,9 @@ const MobileActions: React.FC<MobileActionsProps> = ({
   variant,
   options,
   updateOptions,
+  quantity,
+  updateQuantity,
+  maxQuantity,
   inStock,
   handleAddToCart,
   isAdding,
@@ -98,9 +105,12 @@ const MobileActions: React.FC<MobileActionsProps> = ({
                 <div></div>
               )}
             </div>
-            <div className={clx("grid grid-cols-2 w-full gap-x-4", {
-              "!grid-cols-1": isSimple
-            })}>
+            <div
+              className={clx("grid w-full gap-x-4", {
+                "grid-cols-3": !isSimple,
+                "grid-cols-2": isSimple,
+              })}
+            >
               {!isSimple && <Button
                 onClick={open}
                 variant="secondary"
@@ -116,6 +126,13 @@ const MobileActions: React.FC<MobileActionsProps> = ({
                   <ChevronDown />
                 </div>
               </Button>}
+              <QuantitySelect
+                value={quantity}
+                onChange={updateQuantity}
+                max={maxQuantity}
+                disabled={optionsDisabled}
+                compact
+              />
               <Button
                 onClick={handleAddToCart}
                 disabled={!inStock || !variant}

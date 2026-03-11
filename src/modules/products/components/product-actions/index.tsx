@@ -6,6 +6,7 @@ import { HttpTypes } from "@medusajs/types"
 import { Button } from "@medusajs/ui"
 import Divider from "@modules/common/components/divider"
 import OptionSelect from "@modules/products/components/product-actions/option-select"
+import QuantitySelect from "@modules/products/components/product-actions/quantity-select"
 import { isEqual } from "lodash"
 import { useParams, usePathname, useSearchParams } from "next/navigation"
 import { useEffect, useMemo, useRef, useState } from "react"
@@ -37,6 +38,7 @@ export default function ProductActions({
   const searchParams = useSearchParams()
 
   const [options, setOptions] = useState<Record<string, string | undefined>>({})
+  const [quantity, setQuantity] = useState(1)
   const [isAdding, setIsAdding] = useState(false)
   const countryCode = useParams().countryCode as string
 
@@ -92,6 +94,22 @@ export default function ProductActions({
     router.replace(pathname + "?" + params.toString())
   }, [selectedVariant, isValidVariant])
 
+  const maxQuantity = useMemo(() => {
+    if (!selectedVariant) {
+      return 10
+    }
+
+    if (!selectedVariant.manage_inventory || selectedVariant.allow_backorder) {
+      return 10
+    }
+
+    return Math.max(1, Math.min(selectedVariant.inventory_quantity || 1, 10))
+  }, [selectedVariant])
+
+  useEffect(() => {
+    setQuantity((current) => Math.min(current, maxQuantity))
+  }, [maxQuantity])
+
   // check if the selected variant is in stock
   const inStock = useMemo(() => {
     // If we don't manage inventory, we can always add to cart
@@ -128,7 +146,7 @@ export default function ProductActions({
 
     await addToCart({
       variantId: selectedVariant.id,
-      quantity: 1,
+      quantity,
       countryCode,
     })
 
@@ -163,6 +181,13 @@ export default function ProductActions({
 
         <ProductPrice product={product} variant={selectedVariant} />
 
+        <QuantitySelect
+          value={quantity}
+          onChange={setQuantity}
+          max={maxQuantity}
+          disabled={!!disabled || isAdding}
+        />
+
         <Button
           onClick={handleAddToCart}
           disabled={
@@ -188,6 +213,9 @@ export default function ProductActions({
           variant={selectedVariant}
           options={options}
           updateOptions={setOptionValue}
+          quantity={quantity}
+          updateQuantity={setQuantity}
+          maxQuantity={maxQuantity}
           inStock={inStock}
           handleAddToCart={handleAddToCart}
           isAdding={isAdding}

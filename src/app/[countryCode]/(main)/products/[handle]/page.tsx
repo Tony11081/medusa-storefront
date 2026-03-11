@@ -3,6 +3,7 @@ import { notFound } from "next/navigation"
 import { listProducts } from "@lib/data/products"
 import { getRegion, listRegions } from "@lib/data/regions"
 import { siteContent } from "@lib/site-content"
+import { resolveImagesForVariant } from "@lib/util/product-variant-images"
 import ProductTemplate from "@modules/products/templates"
 import { HttpTypes } from "@medusajs/types"
 
@@ -53,41 +54,6 @@ export async function generateStaticParams() {
   }
 }
 
-function getImagesForVariant(
-  product: HttpTypes.StoreProduct,
-  selectedVariantId?: string
-) {
-  if (!selectedVariantId || !product.variants) {
-    return product.images
-  }
-
-  const variant = product.variants!.find((v) => v.id === selectedVariantId)
-  if (!variant || !variant.images.length) {
-    return product.images
-  }
-
-  const selectedColor = variant.title?.split(" / ")[0]?.trim().toLowerCase() || ""
-  const colorTokens = selectedColor
-    .split(/[\/\s-]+/u)
-    .map((token) => token.trim())
-    .filter((token) => token.length >= 3)
-
-  const colorMatchedImages =
-    colorTokens.length > 0
-      ? variant.images.filter((image) => {
-          const url = image.url?.toLowerCase() || ""
-          return (
-            url.includes(selectedColor.replace(/\s+/gu, "-")) ||
-            colorTokens.some((token) => url.includes(token))
-          )
-        })
-      : []
-
-  const finalImages = colorMatchedImages.length ? colorMatchedImages : variant.images
-  const imageIdsMap = new Map(finalImages.map((image) => [image.id, true]))
-  return product.images!.filter((image) => imageIdsMap.has(image.id))
-}
-
 export async function generateMetadata(props: Props): Promise<Metadata> {
   const params = await props.params
   const { handle } = params
@@ -133,11 +99,11 @@ export default async function ProductPage(props: Props) {
     queryParams: { handle: params.handle },
   }).then(({ response }) => response.products[0])
 
-  const images = getImagesForVariant(pricedProduct, selectedVariantId)
-
   if (!pricedProduct) {
     notFound()
   }
+
+  const images = resolveImagesForVariant(pricedProduct, selectedVariantId)
 
   return (
     <ProductTemplate
