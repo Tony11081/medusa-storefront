@@ -1,6 +1,8 @@
 "use client"
 
+import { ChevronUpDown } from "@medusajs/icons"
 import { clx } from "@medusajs/ui"
+import { useId } from "react"
 
 type QuantitySelectProps = {
   value: number
@@ -18,26 +20,41 @@ export default function QuantitySelect({
   compact = false,
 }: QuantitySelectProps) {
   const optionCount = Math.max(1, max)
+  const selectId = useId()
 
   return (
     <div className={clx("flex flex-col gap-y-2", compact && "gap-y-1")}>
-      {!compact && <span className="text-sm">Quantity</span>}
-      <select
-        value={value}
-        onChange={(event) => onChange(Number(event.target.value))}
-        disabled={disabled}
+      {!compact && (
+        <label htmlFor={selectId} className="text-sm">
+          Quantity
+        </label>
+      )}
+      <div
         className={clx(
-          "h-10 rounded-[999px] border border-black/10 bg-white px-4 text-sm text-black outline-none transition focus:border-black/40",
-          compact ? "w-full min-w-[88px]" : "w-full"
+          "relative flex items-center rounded-[999px] border border-black/10 bg-white text-sm text-black transition focus-within:border-black/40",
+          compact ? "w-full min-w-[88px]" : "w-full",
+          disabled && "cursor-not-allowed opacity-60"
         )}
-        data-testid="product-quantity-select"
       >
-        {Array.from({ length: optionCount }, (_, index) => index + 1).map((qty) => (
-          <option key={qty} value={qty}>
-            {qty}
-          </option>
-        ))}
-      </select>
+        <select
+          id={selectId}
+          value={value}
+          onChange={(event) => onChange(Number(event.target.value))}
+          disabled={disabled}
+          aria-label="Quantity"
+          className="h-10 w-full appearance-none rounded-[999px] bg-transparent px-4 pr-10 text-sm font-medium text-black outline-none"
+          data-testid="product-quantity-select"
+        >
+          {Array.from({ length: optionCount }, (_, index) => index + 1).map((qty) => (
+            <option key={qty} value={qty}>
+              {qty}
+            </option>
+          ))}
+        </select>
+        <span className="pointer-events-none absolute inset-y-0 right-4 flex items-center text-black/70">
+          <ChevronUpDown />
+        </span>
+      </div>
     </div>
   )
 }
