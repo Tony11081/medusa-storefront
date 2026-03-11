@@ -2,28 +2,85 @@ import { HttpTypes } from "@medusajs/types"
 import { getPercentageDiff } from "./get-percentage-diff"
 import { convertToLocale } from "./money"
 
+type StoreVariantPrice = {
+  amount?: number | null
+  currency_code?: string | null
+}
+
+const normalizeMoneyAmount = (amount: number, currencyCode: string) => {
+  const fractionDigits = new Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency: currencyCode,
+  }).resolvedOptions().maximumFractionDigits
+
+  return amount / 10 ** fractionDigits
+}
+
+const getStoredPrices = (variant: any): StoreVariantPrice[] => {
+  if (Array.isArray(variant?.prices) && variant.prices.length) {
+    return variant.prices
+  }
+
+  if (Array.isArray(variant?.price_set?.prices) && variant.price_set.prices.length) {
+    return variant.price_set.prices
+  }
+
+  return []
+}
+
 export const getPricesForVariant = (variant: any) => {
-  if (!variant?.calculated_price?.calculated_amount) {
+  if (variant?.calculated_price?.calculated_amount) {
+    return {
+      calculated_price_number: variant.calculated_price.calculated_amount,
+      calculated_price: convertToLocale({
+        amount: variant.calculated_price.calculated_amount,
+        currency_code: variant.calculated_price.currency_code,
+      }),
+      original_price_number: variant.calculated_price.original_amount,
+      original_price: convertToLocale({
+        amount: variant.calculated_price.original_amount,
+        currency_code: variant.calculated_price.currency_code,
+      }),
+      currency_code: variant.calculated_price.currency_code,
+      price_type: variant.calculated_price.calculated_price.price_list_type,
+      percentage_diff: getPercentageDiff(
+        variant.calculated_price.original_amount,
+        variant.calculated_price.calculated_amount
+      ),
+    }
+  }
+
+  const storedPrice = getStoredPrices(variant).find(
+    (price): price is Required<StoreVariantPrice> =>
+      typeof price?.amount === "number" &&
+      Number.isFinite(price.amount) &&
+      typeof price?.currency_code === "string" &&
+      Boolean(price.currency_code)
+  )
+
+  if (!storedPrice) {
     return null
   }
 
+  const normalizedAmount = normalizeMoneyAmount(
+    storedPrice.amount,
+    storedPrice.currency_code
+  )
+
   return {
-    calculated_price_number: variant.calculated_price.calculated_amount,
+    calculated_price_number: normalizedAmount,
     calculated_price: convertToLocale({
-      amount: variant.calculated_price.calculated_amount,
-      currency_code: variant.calculated_price.currency_code,
+      amount: normalizedAmount,
+      currency_code: storedPrice.currency_code,
     }),
-    original_price_number: variant.calculated_price.original_amount,
+    original_price_number: normalizedAmount,
     original_price: convertToLocale({
-      amount: variant.calculated_price.original_amount,
-      currency_code: variant.calculated_price.currency_code,
+      amount: normalizedAmount,
+      currency_code: storedPrice.currency_code,
     }),
-    currency_code: variant.calculated_price.currency_code,
-    price_type: variant.calculated_price.calculated_price.price_list_type,
-    percentage_diff: getPercentageDiff(
-      variant.calculated_price.original_amount,
-      variant.calculated_price.calculated_amount
-    ),
+    currency_code: storedPrice.currency_code,
+    price_type: "default",
+    percentage_diff: "0",
   }
 }
 
@@ -44,11 +101,14 @@ export function getProductPrice({
     }
 
     const cheapestVariant: any = product.variants
-      .filter((v: any) => !!v.calculated_price)
+      .filter((v: any) => !!getPricesForVariant(v))
       .sort((a: any, b: any) => {
+        const priceA = getPricesForVariant(a)
+        const priceB = getPricesForVariant(b)
+
         return (
-          a.calculated_price.calculated_amount -
-          b.calculated_price.calculated_amount
+          (priceA?.calculated_price_number ?? Number.MAX_SAFE_INTEGER) -
+          (priceB?.calculated_price_number ?? Number.MAX_SAFE_INTEGER)
         )
       })[0]
 

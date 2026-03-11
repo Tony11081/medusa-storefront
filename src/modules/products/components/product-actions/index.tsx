@@ -42,6 +42,7 @@ export default function ProductActions({
   const router = useRouter()
   const pathname = usePathname()
   const searchParams = useSearchParams()
+  const requestedVariantId = searchParams.get("v_id")
 
   const [options, setOptions] = useState<Record<string, string | undefined>>({})
   const [quantity, setQuantity] = useState(1)
@@ -51,6 +52,24 @@ export default function ProductActions({
   const visibleOptions = useMemo(() => {
     return (product.options || []).filter((option) => getOptionValues(option).length > 1)
   }, [product.options])
+
+  const defaultVariant = useMemo(() => {
+    if (!product.variants?.length) {
+      return undefined
+    }
+
+    if (requestedVariantId) {
+      const requestedVariant = product.variants.find(
+        (variant) => variant.id === requestedVariantId || variant.sku === requestedVariantId
+      )
+
+      if (requestedVariant) {
+        return requestedVariant
+      }
+    }
+
+    return product.variants[0]
+  }, [product.variants, requestedVariantId])
 
   const defaultOptions = useMemo(() => {
     const defaults: Record<string, string> = {}
@@ -63,15 +82,15 @@ export default function ProductActions({
       }
     }
 
-    if (product.variants?.length === 1) {
+    if (defaultVariant) {
       return {
         ...defaults,
-        ...(optionsAsKeymap(product.variants[0].options) ?? {}),
+        ...(optionsAsKeymap(defaultVariant.options) ?? {}),
       }
     }
 
     return defaults
-  }, [product.options, product.variants])
+  }, [defaultVariant, product.options])
 
   useEffect(() => {
     setOptions((current) => {
@@ -137,6 +156,10 @@ export default function ProductActions({
       return 10
     }
 
+    if (selectedVariant.inventory_quantity == null) {
+      return 10
+    }
+
     return Math.max(1, Math.min(selectedVariant.inventory_quantity || 1, 10))
   }, [selectedVariant])
 
@@ -159,7 +182,8 @@ export default function ProductActions({
     // If there is inventory available, we can add to cart
     if (
       selectedVariant?.manage_inventory &&
-      (selectedVariant?.inventory_quantity || 0) > 0
+      (selectedVariant.inventory_quantity == null ||
+        (selectedVariant?.inventory_quantity || 0) > 0)
     ) {
       return true
     }
