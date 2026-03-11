@@ -1,6 +1,5 @@
 "use client"
 
-import { ChevronUpDown } from "@medusajs/icons"
 import { clx } from "@medusajs/ui"
 import { useId } from "react"
 
@@ -19,7 +18,9 @@ export default function QuantitySelect({
   disabled,
   compact = false,
 }: QuantitySelectProps) {
-  const optionCount = Math.max(1, max)
+  const maxQuantity = Math.max(1, max)
+  const canDecrease = !disabled && value > 1
+  const canIncrease = !disabled && value < maxQuantity
   const selectId = useId()
 
   return (
@@ -31,29 +32,38 @@ export default function QuantitySelect({
       )}
       <div
         className={clx(
-          "relative flex items-center rounded-[999px] border border-black/10 bg-white text-sm text-black transition focus-within:border-black/40",
+          "grid h-10 grid-cols-[40px_1fr_40px] items-center overflow-hidden rounded-[999px] border border-black/10 bg-white text-sm text-black transition",
           compact ? "w-full min-w-[88px]" : "w-full",
           disabled && "cursor-not-allowed opacity-60"
         )}
       >
-        <select
+        <button
+          type="button"
+          onClick={() => canDecrease && onChange(value - 1)}
+          disabled={!canDecrease}
+          aria-label="Decrease quantity"
+          className="flex h-full items-center justify-center border-r border-black/10 text-lg text-black transition hover:bg-black/[0.03] disabled:cursor-not-allowed disabled:text-black/25 disabled:hover:bg-transparent"
+        >
+          -
+        </button>
+        <div
           id={selectId}
-          value={value}
-          onChange={(event) => onChange(Number(event.target.value))}
-          disabled={disabled}
           aria-label="Quantity"
-          className="h-10 w-full appearance-none rounded-[999px] bg-transparent px-4 pr-10 text-sm font-medium text-black outline-none"
+          aria-live="polite"
+          className="flex h-full items-center justify-center text-sm font-medium text-black"
           data-testid="product-quantity-select"
         >
-          {Array.from({ length: optionCount }, (_, index) => index + 1).map((qty) => (
-            <option key={qty} value={qty}>
-              {qty}
-            </option>
-          ))}
-        </select>
-        <span className="pointer-events-none absolute inset-y-0 right-4 flex items-center text-black/70">
-          <ChevronUpDown />
-        </span>
+          {value}
+        </div>
+        <button
+          type="button"
+          onClick={() => canIncrease && onChange(value + 1)}
+          disabled={!canIncrease}
+          aria-label="Increase quantity"
+          className="flex h-full items-center justify-center border-l border-black/10 text-lg text-black transition hover:bg-black/[0.03] disabled:cursor-not-allowed disabled:text-black/25 disabled:hover:bg-transparent"
+        >
+          +
+        </button>
       </div>
     </div>
   )
