@@ -2,9 +2,11 @@ import { HttpTypes } from "@medusajs/types"
 import { Heading, Text } from "@medusajs/ui"
 import { countryNames } from "@lib/site-content"
 import { siteContent } from "@lib/site-content"
+import { getProductEditorialSummary } from "@lib/util/product-content"
 import {
   getCompositionLabel,
   getContinuousYardageNote,
+  getMaterialLabel,
   getPriceRuleLabel,
   getSellingUnitLabel,
   getThicknessLabel,
@@ -26,6 +28,8 @@ const ProductInfo = ({ product }: ProductInfoProps) => {
   const continuousYardageNote = getContinuousYardageNote(product)
   const useCaseLabel = getUseCaseLabel(product)
   const priceRuleLabel = getPriceRuleLabel(product)
+  const editorialSummary = getProductEditorialSummary(product)
+  const materialLabel = getMaterialLabel(product)
 
   return (
     <div id="product-info">
@@ -69,7 +73,7 @@ const ProductInfo = ({ product }: ProductInfoProps) => {
           className="whitespace-pre-line text-base leading-7 text-[var(--brand-muted)]"
           data-testid="product-description"
         >
-          {product.description}
+          {editorialSummary}
         </Text>
         <div className="grid gap-3 border-t border-[var(--brand-line)] pt-4 text-sm leading-6 text-[var(--brand-muted)]">
           <div className="flex items-center justify-between gap-4">
@@ -82,7 +86,7 @@ const ProductInfo = ({ product }: ProductInfoProps) => {
             <span className="text-[11px] uppercase tracking-[0.16em] text-[var(--brand-soft)]">
               Material
             </span>
-            <span>{product.material ?? "Not specified"}</span>
+            <span>{materialLabel}</span>
           </div>
           {width && (
             <div className="flex items-center justify-between gap-4">

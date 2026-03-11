@@ -41,6 +41,7 @@ export default async function ProductPreview({
             images={product.images}
             size="full"
             isFeatured={isFeatured}
+            alt={`${product.title} fabric preview`}
           />
           <div className="pointer-events-none absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-[rgba(15,12,10,0.72)] to-transparent" />
           <div className="absolute left-4 top-4 rounded-full border border-white/25 bg-[rgba(20,16,13,0.58)] px-3 py-1 text-[10px] uppercase tracking-[0.22em] text-white backdrop-blur-md">

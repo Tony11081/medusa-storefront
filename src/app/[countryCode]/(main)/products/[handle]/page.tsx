@@ -1,9 +1,23 @@
 import { Metadata } from "next"
 import { notFound } from "next/navigation"
-import { listProducts } from "@lib/data/products"
+import { listAllProducts, listProducts } from "@lib/data/products"
 import { getRegion, listRegions } from "@lib/data/regions"
 import { siteContent } from "@lib/site-content"
 import { resolveImagesForVariant } from "@lib/util/product-variant-images"
+import {
+  getProductFaqItems,
+  getProductSeoDescription,
+  getProductSeoTitle,
+  resolveDefaultVariant,
+} from "@lib/util/product-content"
+import {
+  absoluteUrl,
+  buildBreadcrumbJsonLd,
+  buildFaqJsonLd,
+  buildProductImageMetadata,
+  buildProductJsonLd,
+} from "@lib/util/seo"
+import JsonLd from "@modules/common/components/json-ld"
 import ProductTemplate from "@modules/products/templates"
 import { HttpTypes } from "@medusajs/types"
 
@@ -23,14 +37,14 @@ export async function generateStaticParams() {
     }
 
     const promises = countryCodes.map(async (country) => {
-      const { response } = await listProducts({
+      const products = await listAllProducts({
         countryCode: country,
         queryParams: { limit: 100, fields: "handle" },
       })
 
       return {
         country,
-        products: response.products,
+        products,
       }
     })
 
@@ -72,13 +86,32 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
     notFound()
   }
 
+  const selectedVariant = resolveDefaultVariant(product)
+  const images = resolveImagesForVariant(product, selectedVariant?.id)
+  const seoTitle = getProductSeoTitle(product)
+  const seoDescription = getProductSeoDescription(product)
+
   return {
-    title: product.title,
-    description: product.description || siteContent.description,
+    title: seoTitle,
+    description: seoDescription,
+    alternates: {
+      canonical: absoluteUrl(`/${params.countryCode}/products/${handle}`),
+    },
     openGraph: {
-      title: `${product.title} | ${siteContent.name}`,
-      description: product.description || siteContent.description,
-      images: product.thumbnail ? [product.thumbnail] : [],
+      title: `${seoTitle} | ${siteContent.name}`,
+      description: seoDescription,
+      url: absoluteUrl(`/${params.countryCode}/products/${handle}`),
+      images: buildProductImageMetadata({
+        product,
+        images,
+        requestedVariantId: selectedVariant?.id,
+      }),
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: `${seoTitle} | ${siteContent.name}`,
+      description: seoDescription,
+      images: images[0]?.url ? [images[0].url] : [],
     },
   }
 }
@@ -103,14 +136,43 @@ export default async function ProductPage(props: Props) {
     notFound()
   }
 
-  const images = resolveImagesForVariant(pricedProduct, selectedVariantId)
+  const resolvedVariant = resolveDefaultVariant(pricedProduct, selectedVariantId)
+  const images = resolveImagesForVariant(pricedProduct, resolvedVariant?.id)
+  const breadcrumb = buildBreadcrumbJsonLd([
+    { name: "Home", path: `/${params.countryCode}` },
+    { name: "Archive", path: `/${params.countryCode}/store` },
+    ...(pricedProduct.categories?.[0]?.handle && pricedProduct.categories?.[0]?.name
+      ? [
+          {
+            name: pricedProduct.categories[0].name,
+            path: `/${params.countryCode}/categories/${pricedProduct.categories[0].handle}`,
+          },
+        ]
+      : []),
+    {
+      name: pricedProduct.title || siteContent.name,
+      path: `/${params.countryCode}/products/${pricedProduct.handle}`,
+    },
+  ])
+  const faq = buildFaqJsonLd(getProductFaqItems(pricedProduct))
+  const productJsonLd = buildProductJsonLd({
+    product: pricedProduct,
+    countryCode: params.countryCode,
+    requestedVariantId: resolvedVariant?.id,
+    images,
+  })
 
   return (
-    <ProductTemplate
-      product={pricedProduct}
-      region={region}
-      countryCode={params.countryCode}
-      images={images}
-    />
+    <>
+      <JsonLd data={breadcrumb} />
+      <JsonLd data={faq} />
+      <JsonLd data={productJsonLd} />
+      <ProductTemplate
+        product={pricedProduct}
+        region={region}
+        countryCode={params.countryCode}
+        images={images}
+      />
+    </>
   )
 }

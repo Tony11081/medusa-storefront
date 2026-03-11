@@ -2,10 +2,27 @@ import { Metadata } from "next"
 
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
 import { siteContent } from "@lib/site-content"
+import { absoluteUrl } from "@lib/util/seo"
 
-export const metadata: Metadata = {
-  title: "About",
-  description: siteContent.description,
+type AboutProps = {
+  params: Promise<{ countryCode: string }>
+}
+
+export async function generateMetadata(props: AboutProps): Promise<Metadata> {
+  const { countryCode } = await props.params
+
+  return {
+    title: `About ${siteContent.name}`,
+    description: siteContent.description,
+    alternates: {
+      canonical: absoluteUrl(`/${countryCode}/about`),
+    },
+    openGraph: {
+      title: `About ${siteContent.name}`,
+      description: siteContent.description,
+      url: absoluteUrl(`/${countryCode}/about`),
+    },
+  }
 }
 
 export default function AboutPage() {

@@ -1,12 +1,12 @@
 import { Metadata } from "next"
 
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
+import JsonLd from "@modules/common/components/json-ld"
 import { siteContent } from "@lib/site-content"
+import { absoluteUrl, buildFaqJsonLd } from "@lib/util/seo"
 
-export const metadata: Metadata = {
-  title: "Shipping, Swatches & Sourcing",
-  description:
-    "Read how Atelier Fabrics handles swatch questions, continuous yardage, project guidance, and order planning before checkout.",
+type GuideProps = {
+  params: Promise<{ countryCode: string }>
 }
 
 const guideCards = [
@@ -42,10 +42,49 @@ const detailRows = [
   },
 ] as const
 
-export default function GuidePage() {
+export async function generateMetadata(props: GuideProps): Promise<Metadata> {
+  const { countryCode } = await props.params
+
+  return {
+    title: "Shipping, Swatches & Sourcing",
+    description:
+      "Read how Atelier Fabrics handles swatch questions, continuous yardage, project guidance, and order planning before checkout.",
+    alternates: {
+      canonical: absoluteUrl(`/${countryCode}/guide`),
+    },
+    openGraph: {
+      title: `Shipping, Swatches & Sourcing | ${siteContent.name}`,
+      description:
+        "Read how Atelier Fabrics handles swatch questions, continuous yardage, project guidance, and order planning before checkout.",
+      url: absoluteUrl(`/${countryCode}/guide`),
+    },
+  }
+}
+
+export default async function GuidePage() {
+  const jsonLd = buildFaqJsonLd([
+    {
+      question: "How are orders sold?",
+      answer:
+        "Listings are sold by the yard, with multiple yards usually prepared as one continuous cut whenever the roll allows.",
+    },
+    {
+      question: "Can I ask about swatches before ordering?",
+      answer:
+        "Yes. Contact support before checkout if you need closer imagery, finish clarification, or project-fit guidance before a larger order.",
+    },
+    {
+      question: "What should I confirm before placing a larger order?",
+      answer:
+        "Confirm finish, intended use, and whether your project requires a continuous run before finalizing larger upholstery or fabrication orders.",
+    },
+  ])
+
   return (
-    <div className="content-container py-10 md:py-16">
-      <section className="grid gap-8 md:grid-cols-[0.82fr_1.18fr]">
+    <>
+      <JsonLd data={jsonLd} />
+      <div className="content-container py-10 md:py-16">
+        <section className="grid gap-8 md:grid-cols-[0.82fr_1.18fr]">
         <div>
           <p className="eyebrow">Customer Guide</p>
           <h1 className="mt-4 font-display text-5xl leading-none tracking-[-0.04em] text-[var(--brand-ink)] md:text-7xl">
@@ -174,7 +213,8 @@ export default function GuidePage() {
             </a>
           </div>
         </div>
-      </section>
-    </div>
+        </section>
+      </div>
+    </>
   )
 }

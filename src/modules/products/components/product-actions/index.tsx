@@ -3,6 +3,7 @@
 import { addToCart } from "@lib/data/cart"
 import { useIntersection } from "@lib/hooks/use-in-view"
 import { siteContent } from "@lib/site-content"
+import { resolveDefaultVariant } from "@lib/util/product-content"
 import {
   getContinuousYardageNote,
   getPriceRuleLabel,
@@ -68,21 +69,7 @@ export default function ProductActions({
   }, [product.options])
 
   const defaultVariant = useMemo(() => {
-    if (!product.variants?.length) {
-      return undefined
-    }
-
-    if (requestedVariantId) {
-      const requestedVariant = product.variants.find(
-        (variant) => variant.id === requestedVariantId || variant.sku === requestedVariantId
-      )
-
-      if (requestedVariant) {
-        return requestedVariant
-      }
-    }
-
-    return product.variants[0]
+    return resolveDefaultVariant(product, requestedVariantId)
   }, [product.variants, requestedVariantId])
 
   const defaultOptions = useMemo(() => {

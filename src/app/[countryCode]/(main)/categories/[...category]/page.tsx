@@ -2,9 +2,13 @@ import { Metadata } from "next"
 import { notFound } from "next/navigation"
 
 import { getCategoryByHandle, listCategories } from "@lib/data/categories"
+import { listProductsWithSort } from "@lib/data/products"
 import { listRegions } from "@lib/data/regions"
+import { absoluteUrl, buildCollectionPageJsonLd } from "@lib/util/seo"
 import { StoreRegion } from "@medusajs/types"
+import JsonLd from "@modules/common/components/json-ld"
 import CategoryTemplate from "@modules/categories/templates"
+import { siteContent } from "@lib/site-content"
 import { SortOptions } from "@modules/store/components/refinement-list/sort-products"
 
 type Props = {
@@ -47,15 +51,25 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
   try {
     const productCategory = await getCategoryByHandle(params.category)
 
-    const title = productCategory.name + " | Medusa Store"
-
-    const description = productCategory.description ?? `${title} category.`
+    const title = `${productCategory.name} Fabric by the Yard`
+    const description =
+      productCategory.description ||
+      `Browse ${productCategory.name.toLowerCase()} fabrics by the yard at ${siteContent.name} for upholstery, wall panels, trim, and custom interiors.`
 
     return {
-      title: `${title} | Medusa Store`,
+      title,
       description,
       alternates: {
-        canonical: `${params.category.join("/")}`,
+        canonical: absoluteUrl(
+          `/${params.countryCode}/categories/${params.category.join("/")}`
+        ),
+      },
+      openGraph: {
+        title: `${title} | ${siteContent.name}`,
+        description,
+        url: absoluteUrl(
+          `/${params.countryCode}/categories/${params.category.join("/")}`
+        ),
       },
     }
   } catch (error) {
@@ -74,12 +88,36 @@ export default async function CategoryPage(props: Props) {
     notFound()
   }
 
+  const pageNumber = page ? parseInt(page) : 1
+  const sort = sortBy || "created_at"
+  const products = await listProductsWithSort({
+    sortBy: sort,
+    page: pageNumber,
+    queryParams: {
+      category_id: [productCategory.id],
+    },
+    countryCode: params.countryCode,
+  }).then(({ response }) => response.products)
+
+  const jsonLd = buildCollectionPageJsonLd({
+    name: productCategory.name || "Category",
+    description:
+      productCategory.description ||
+      `Browse ${productCategory.name.toLowerCase()} fabrics by the yard at ${siteContent.name} for upholstery, wall panels, trim, and custom interiors.`,
+    path: `/${params.countryCode}/categories/${params.category.join("/")}`,
+    products,
+    countryCode: params.countryCode,
+  })
+
   return (
-    <CategoryTemplate
-      category={productCategory}
-      sortBy={sortBy}
-      page={page}
-      countryCode={params.countryCode}
-    />
+    <>
+      <JsonLd data={jsonLd} />
+      <CategoryTemplate
+        category={productCategory}
+        sortBy={sortBy}
+        page={page}
+        countryCode={params.countryCode}
+      />
+    </>
   )
 }

@@ -9,6 +9,7 @@ import ProductInfo from "@modules/products/templates/product-info"
 import SkeletonRelatedProducts from "@modules/skeletons/templates/skeleton-related-products"
 import { notFound } from "next/navigation"
 import { HttpTypes } from "@medusajs/types"
+import LocalizedClientLink from "@modules/common/components/localized-client-link"
 
 import ProductActionsWrapper from "./product-actions-wrapper"
 
@@ -31,6 +32,26 @@ const ProductTemplate: React.FC<ProductTemplateProps> = ({
 
   return (
     <>
+      <div className="content-container pt-6">
+        <nav
+          aria-label="Breadcrumb"
+          className="flex flex-wrap items-center gap-2 text-[11px] uppercase tracking-[0.18em] text-[var(--brand-soft)]"
+        >
+          <LocalizedClientLink href="/">Home</LocalizedClientLink>
+          <span>/</span>
+          <LocalizedClientLink href="/store">Archive</LocalizedClientLink>
+          {product.categories?.[0]?.handle && product.categories?.[0]?.name ? (
+            <>
+              <span>/</span>
+              <LocalizedClientLink href={`/categories/${product.categories[0].handle}`}>
+                {product.categories[0].name}
+              </LocalizedClientLink>
+            </>
+          ) : null}
+          <span>/</span>
+          <span className="text-[var(--brand-ink)]">{product.title}</span>
+        </nav>
+      </div>
       <div
         className="content-container relative grid gap-6 py-8 lg:grid-cols-[minmax(260px,0.9fr)_minmax(0,1.35fr)_minmax(280px,0.85fr)] lg:items-start"
         data-testid="product-container"

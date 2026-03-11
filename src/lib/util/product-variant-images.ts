@@ -1,5 +1,7 @@
 import { HttpTypes } from "@medusajs/types"
 
+import { resolveDefaultVariant } from "@lib/util/product-content"
+
 function getVariantMetadata(variant?: HttpTypes.StoreProductVariant) {
   return (variant?.metadata || {}) as Record<string, unknown>
 }
@@ -93,11 +95,7 @@ export function resolveImagesForVariant(
   selectedVariantId?: string,
   fallbackImages: HttpTypes.StoreProductImage[] = product.images || []
 ) {
-  if (!selectedVariantId || !product.variants?.length) {
-    return fallbackImages
-  }
-
-  const variant = product.variants.find((item) => item.id === selectedVariantId)
+  const variant = resolveDefaultVariant(product, selectedVariantId)
 
   if (!variant) {
     return fallbackImages

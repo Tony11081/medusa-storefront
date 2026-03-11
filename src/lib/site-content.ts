@@ -1,6 +1,7 @@
 export const siteContent = {
   name: "Atelier Fabrics",
   shortName: "AF",
+  siteUrl: "https://upholsteryfabric.net",
   tagline: "Luxury designer fabrics by the yard.",
   supportEmail: "support@upholsteryfabric.net",
   description:

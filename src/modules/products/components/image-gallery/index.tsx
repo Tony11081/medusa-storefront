@@ -7,6 +7,10 @@ import { useMemo } from "react"
 import { useSearchParams } from "next/navigation"
 
 import { isExternalImageUrl, normalizeImageUrl } from "@lib/util/images"
+import {
+  getProductImageAlt,
+  resolveDefaultVariant,
+} from "@lib/util/product-content"
 import { resolveImagesForVariant } from "@lib/util/product-variant-images"
 
 type ImageGalleryProps = {
@@ -30,6 +34,10 @@ const ImageGallery = ({ product, images }: ImageGalleryProps) => {
       <div className="flex flex-col flex-1 small:mx-16 gap-y-4">
         {resolvedImages.map((image, index) => {
           const imageUrl = normalizeImageUrl(image.url)
+          const variant = resolveDefaultVariant(
+            product,
+            searchParams.get("v_id") || undefined
+          )
 
           return (
             <Container
@@ -42,7 +50,11 @@ const ImageGallery = ({ product, images }: ImageGalleryProps) => {
                   src={imageUrl}
                   priority={index <= 2 ? true : false}
                   className="absolute inset-0 rounded-rounded"
-                  alt={`Product image ${index + 1}`}
+                  alt={getProductImageAlt({
+                    product,
+                    index,
+                    variant,
+                  })}
                   fill
                   unoptimized={isExternalImageUrl(imageUrl)}
                   sizes="(max-width: 576px) 280px, (max-width: 768px) 360px, (max-width: 992px) 480px, 800px"

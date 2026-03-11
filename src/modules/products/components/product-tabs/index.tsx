@@ -9,11 +9,15 @@ import { HttpTypes } from "@medusajs/types"
 import { countryNames } from "@lib/site-content"
 import { siteContent } from "@lib/site-content"
 import {
+  getArchiveNotes,
   getCompositionLabel,
   getContinuousYardageNote,
+  getCareLabel,
+  getMaterialLabel,
   getSellingUnitLabel,
   getThicknessLabel,
   getUseCaseLabel,
+  getWeightLabel,
   getWidthLabel,
 } from "@lib/util/product-details"
 
@@ -61,6 +65,10 @@ const ProductInfoTab = ({ product }: ProductTabsProps) => {
   const thickness = getThicknessLabel(product)
   const composition = getCompositionLabel(product)
   const useCaseLabel = getUseCaseLabel(product)
+  const weight = getWeightLabel(product)
+  const care = getCareLabel(product)
+  const archiveNotes = getArchiveNotes(product)
+  const materialLabel = getMaterialLabel(product)
 
   return (
     <div className="text-small-regular py-6">
@@ -68,7 +76,7 @@ const ProductInfoTab = ({ product }: ProductTabsProps) => {
         <div className="flex flex-col gap-y-4">
           <div>
             <span className="font-semibold">Material</span>
-            <p>{product.material ? product.material : "-"}</p>
+            <p>{materialLabel}</p>
           </div>
           <div>
             <span className="font-semibold">Category</span>
@@ -111,10 +119,22 @@ const ProductInfoTab = ({ product }: ProductTabsProps) => {
           </div>
           <div>
             <span className="font-semibold">Weight</span>
-            <p>{product.weight ? `${product.weight} g` : "-"}</p>
+            <p>{weight ?? (product.weight ? `${product.weight} g` : "-")}</p>
+          </div>
+          <div>
+            <span className="font-semibold">Care</span>
+            <p>{care ?? "-"}</p>
           </div>
         </div>
       </div>
+      {archiveNotes && (
+        <div className="mt-6 border-t border-[var(--brand-line)] pt-6">
+          <span className="font-semibold">Archive notes</span>
+          <p className="mt-2 max-w-xl text-[var(--brand-muted)]">
+            {archiveNotes}
+          </p>
+        </div>
+      )}
     </div>
   )
 }

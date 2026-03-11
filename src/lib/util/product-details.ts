@@ -1,3 +1,4 @@
+import { siteContent } from "@lib/site-content"
 import { HttpTypes } from "@medusajs/types"
 
 const normalizeText = (value?: string | null) =>
@@ -50,6 +51,78 @@ export const getThicknessLabel = (product: HttpTypes.StoreProduct) => {
   return pickFirstMatch(description, [
     /thickness(?: of item)?(?: is|:)?\s*([^.;]+)/iu,
   ])
+}
+
+export const getWeightLabel = (product: HttpTypes.StoreProduct) => {
+  const description = normalizeText(product.description)
+
+  return pickFirstMatch(description, [
+    /([0-9]+(?:\.[0-9]+)?\s*(?:gr|g)\s*(?:\/|per)\s*(?:square meter|sqm))/iu,
+    /([0-9]+(?:\.[0-9]+)?\s*(?:oz\/yd²|oz\/yd2))/iu,
+  ])
+}
+
+export const getCareLabel = (product: HttpTypes.StoreProduct) => {
+  const description = normalizeText(product.description).toLowerCase()
+
+  if (description.includes("cold machine wash is possible")) {
+    return "Cold machine wash possible."
+  }
+
+  if (description.includes("dry clean")) {
+    return "Dry clean recommended."
+  }
+
+  return null
+}
+
+export const getArchiveNotes = (product: HttpTypes.StoreProduct) => {
+  return normalizeText(product.description)
+}
+
+export const getMaterialLabel = (product: HttpTypes.StoreProduct) => {
+  if (product.material?.trim()) {
+    return product.material.trim()
+  }
+
+  const haystack = [
+    ...(product.categories ?? []).map((category) => category.name),
+    product.title,
+    product.description,
+  ]
+    .filter(Boolean)
+    .join(" ")
+    .toLowerCase()
+
+  if (haystack.includes("jacquard")) {
+    return "Jacquard"
+  }
+
+  if (haystack.includes("vinyl")) {
+    return "Vinyl"
+  }
+
+  if (haystack.includes("leather")) {
+    return "Leather"
+  }
+
+  if (haystack.includes("lining")) {
+    return "Lining"
+  }
+
+  if (haystack.includes("denim")) {
+    return "Denim"
+  }
+
+  if (haystack.includes("cotton")) {
+    return "Cotton"
+  }
+
+  if (haystack.includes("canvas")) {
+    return "Canvas"
+  }
+
+  return "Designer textile"
 }
 
 export const getCompositionLabel = (product: HttpTypes.StoreProduct) => {
@@ -137,5 +210,5 @@ export const getSwatchRequestHref = (product: HttpTypes.StoreProduct) => {
     `Hello Atelier Fabrics,\n\nI would like more information about ${product.title} (${product.handle}). Please let me know about swatch availability and project guidance.\n`
   )
 
-  return `mailto:support@upholsteryfabric.net?subject=${subject}&body=${body}`
+  return `mailto:${siteContent.supportEmail}?subject=${subject}&body=${body}`
 }
