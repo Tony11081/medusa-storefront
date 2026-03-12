@@ -30,22 +30,32 @@ const getStoredPrices = (variant: any): StoreVariantPrice[] => {
 
 export const getPricesForVariant = (variant: any) => {
   if (variant?.calculated_price?.calculated_amount) {
+    const currencyCode = variant.calculated_price.currency_code
+    const calculatedAmount = normalizeMoneyAmount(
+      variant.calculated_price.calculated_amount,
+      currencyCode
+    )
+    const originalAmount = normalizeMoneyAmount(
+      variant.calculated_price.original_amount,
+      currencyCode
+    )
+
     return {
-      calculated_price_number: variant.calculated_price.calculated_amount,
+      calculated_price_number: calculatedAmount,
       calculated_price: convertToLocale({
-        amount: variant.calculated_price.calculated_amount,
-        currency_code: variant.calculated_price.currency_code,
+        amount: calculatedAmount,
+        currency_code: currencyCode,
       }),
-      original_price_number: variant.calculated_price.original_amount,
+      original_price_number: originalAmount,
       original_price: convertToLocale({
-        amount: variant.calculated_price.original_amount,
-        currency_code: variant.calculated_price.currency_code,
+        amount: originalAmount,
+        currency_code: currencyCode,
       }),
-      currency_code: variant.calculated_price.currency_code,
+      currency_code: currencyCode,
       price_type: variant.calculated_price.calculated_price.price_list_type,
       percentage_diff: getPercentageDiff(
-        variant.calculated_price.original_amount,
-        variant.calculated_price.calculated_amount
+        originalAmount,
+        calculatedAmount
       ),
     }
   }
