@@ -6,6 +6,7 @@ import {
   getProductColorwayCount,
   getProductDisplayTitle,
   getProductEditorialSummary,
+  getProductVariantAxisCountLabel,
 } from "@lib/util/product-content"
 import {
   getCompositionLabel,
@@ -35,6 +36,7 @@ const ProductInfo = ({ product }: ProductInfoProps) => {
   const editorialSummary = getProductEditorialSummary(product)
   const materialLabel = getMaterialLabel(product)
   const colorwayCount = getProductColorwayCount(product)
+  const variantAxisCountLabel = getProductVariantAxisCountLabel(product, colorwayCount)
   const displayTitle = getProductDisplayTitle(product)
 
   return (
@@ -77,7 +79,7 @@ const ProductInfo = ({ product }: ProductInfoProps) => {
         <div className="flex flex-wrap gap-3 text-[11px] uppercase tracking-[0.18em] text-[var(--brand-soft)]">
           <span>{priceRuleLabel}</span>
           <span>{sellingUnit} increments</span>
-          {colorwayCount > 1 ? <span>{colorwayCount} colorways</span> : null}
+          {colorwayCount > 1 ? <span>{variantAxisCountLabel}</span> : null}
         </div>
 
         <Text

@@ -128,6 +128,41 @@ export const getProductColorwayCount = (product: HttpTypes.StoreProduct) => {
   return product.variants?.length || 0
 }
 
+export const getProductVariantAxisLabel = (product: HttpTypes.StoreProduct) => {
+  const variantOption = product.options?.find(
+    (option) => option.title && option.title.toLowerCase() !== "size"
+  )
+
+  const normalized = variantOption?.title?.trim().toLowerCase()
+
+  if (!normalized || normalized === "color") {
+    return "colorway"
+  }
+
+  if (normalized === "finish") {
+    return "finish"
+  }
+
+  if (normalized === "pattern") {
+    return "pattern"
+  }
+
+  return "option"
+}
+
+export const getProductVariantAxisCountLabel = (
+  product: HttpTypes.StoreProduct,
+  count = getProductColorwayCount(product)
+) => {
+  const axis = getProductVariantAxisLabel(product)
+
+  if (axis === "finish") {
+    return `${count} ${count === 1 ? "finish" : "finishes"}`
+  }
+
+  return `${count} ${count === 1 ? axis : `${axis}s`}`
+}
+
 export const getProductEditorialSummary = (product: HttpTypes.StoreProduct) => {
   const sellingUnit = getSellingUnitLabel(product)
   const sellingUnitPhrase =
@@ -136,6 +171,7 @@ export const getProductEditorialSummary = (product: HttpTypes.StoreProduct) => {
       : sellingUnit.toLowerCase()
   const width = getWidthLabel(product)
   const colorwayCount = getProductColorwayCount(product)
+  const variantAxisLabel = getProductVariantAxisCountLabel(product, colorwayCount)
   const useCase = getUseCaseLabel(product).replace(/^Best for\s*/iu, "").replace(/\.$/u, "")
   const displayTitle = getProductDisplayTitle(product)
 
@@ -148,7 +184,7 @@ export const getProductEditorialSummary = (product: HttpTypes.StoreProduct) => {
   }
 
   if (colorwayCount > 1) {
-    parts.push(`Available in ${colorwayCount} colorways.`)
+    parts.push(`Available in ${variantAxisLabel}.`)
   }
 
   parts.push(`${sentenceCase(useCase)}.`)
@@ -172,13 +208,14 @@ export const getProductSeoDescription = (product: HttpTypes.StoreProduct) => {
   const archiveNotes = getContinuousYardageNote(product)
   const useCase = getUseCaseLabel(product)
   const colorwayCount = getProductColorwayCount(product)
+  const variantAxisLabel = getProductVariantAxisCountLabel(product, colorwayCount)
   const title = getProductDisplayTitle(product)
 
   return truncate(
     [
       `${title}.`,
       width ? `${width} wide.` : null,
-      colorwayCount > 1 ? `${colorwayCount} colorways available.` : null,
+      colorwayCount > 1 ? `${variantAxisLabel} available.` : null,
       useCase,
       `${priceRule}.`,
       archiveNotes,
