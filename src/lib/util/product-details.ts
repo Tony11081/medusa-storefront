@@ -4,6 +4,21 @@ import { HttpTypes } from "@medusajs/types"
 const normalizeText = (value?: string | null) =>
   (value || "").replace(/\s+/gu, " ").trim()
 
+const getMetadataString = (
+  product: HttpTypes.StoreProduct,
+  key: string
+) => {
+  const value = product.metadata?.[key]
+
+  if (typeof value !== "string") {
+    return null
+  }
+
+  const normalized = normalizeText(value)
+
+  return normalized || null
+}
+
 const cleanSourceText = (value: string) =>
   value
     .replace(/\bcontinious\b/giu, "continuous")
@@ -29,6 +44,12 @@ const pickFirstMatch = (text: string, patterns: RegExp[]) => {
 }
 
 export const getSellingUnitLabel = (product: HttpTypes.StoreProduct) => {
+  const metadataLabel = getMetadataString(product, "selling_unit")
+
+  if (metadataLabel) {
+    return metadataLabel
+  }
+
   const sizeOption = product.options?.find(
     (option) => option.title?.toLowerCase() === "size"
   )
@@ -49,6 +70,12 @@ export const getSellingUnitLabel = (product: HttpTypes.StoreProduct) => {
 }
 
 export const getWidthLabel = (product: HttpTypes.StoreProduct) => {
+  const metadataLabel = getMetadataString(product, "width_label")
+
+  if (metadataLabel) {
+    return metadataLabel
+  }
+
   const description = normalizeText(product.description)
 
   return pickFirstMatch(description, [
@@ -58,6 +85,12 @@ export const getWidthLabel = (product: HttpTypes.StoreProduct) => {
 }
 
 export const getThicknessLabel = (product: HttpTypes.StoreProduct) => {
+  const metadataLabel = getMetadataString(product, "thickness_label")
+
+  if (metadataLabel) {
+    return metadataLabel
+  }
+
   const description = normalizeText(product.description)
 
   return pickFirstMatch(description, [
@@ -66,15 +99,27 @@ export const getThicknessLabel = (product: HttpTypes.StoreProduct) => {
 }
 
 export const getWeightLabel = (product: HttpTypes.StoreProduct) => {
+  const metadataLabel = getMetadataString(product, "weight_label")
+
+  if (metadataLabel) {
+    return metadataLabel
+  }
+
   const description = normalizeText(product.description)
 
   return pickFirstMatch(description, [
-    /([0-9]+(?:\.[0-9]+)?\s*(?:gr|g)\s*(?:\/|per)\s*(?:square meter|sqm))/iu,
+    /([0-9]+(?:\s*[-–]\s*[0-9]+)?(?:\.[0-9]+)?\s*(?:gr|g)\s*(?:\/|per)\s*(?:square meter|meter square|sqm))/iu,
     /([0-9]+(?:\.[0-9]+)?\s*(?:oz\/yd²|oz\/yd2))/iu,
   ])
 }
 
 export const getCareLabel = (product: HttpTypes.StoreProduct) => {
+  const metadataLabel = getMetadataString(product, "care_label")
+
+  if (metadataLabel) {
+    return metadataLabel
+  }
+
   const description = normalizeText(product.description).toLowerCase()
 
   if (description.includes("cold machine wash is possible")) {
@@ -89,10 +134,20 @@ export const getCareLabel = (product: HttpTypes.StoreProduct) => {
 }
 
 export const getArchiveNotes = (product: HttpTypes.StoreProduct) => {
-  return cleanSourceText(normalizeText(product.description))
+  const sourceNotes =
+    getMetadataString(product, "source_description_original") ||
+    normalizeText(product.description)
+
+  return cleanSourceText(sourceNotes)
 }
 
 export const getMaterialLabel = (product: HttpTypes.StoreProduct) => {
+  const metadataLabel = getMetadataString(product, "material_label")
+
+  if (metadataLabel) {
+    return metadataLabel
+  }
+
   if (product.material?.trim()) {
     return product.material.trim()
   }
@@ -138,6 +193,12 @@ export const getMaterialLabel = (product: HttpTypes.StoreProduct) => {
 }
 
 export const getCompositionLabel = (product: HttpTypes.StoreProduct) => {
+  const metadataLabel = getMetadataString(product, "composition_label")
+
+  if (metadataLabel) {
+    return metadataLabel
+  }
+
   const description = normalizeText(product.description)
   const sentences = description
     .split(/(?<=[.!?])\s+/u)
@@ -159,6 +220,12 @@ export const getCompositionLabel = (product: HttpTypes.StoreProduct) => {
 }
 
 export const getContinuousYardageNote = (product: HttpTypes.StoreProduct) => {
+  const metadataLabel = getMetadataString(product, "continuous_yardage_note")
+
+  if (metadataLabel) {
+    return metadataLabel
+  }
+
   const description = normalizeText(product.description).toLowerCase()
 
   if (
@@ -174,6 +241,12 @@ export const getContinuousYardageNote = (product: HttpTypes.StoreProduct) => {
 }
 
 export const getUseCaseLabel = (product: HttpTypes.StoreProduct) => {
+  const metadataLabel = getMetadataString(product, "use_case_label")
+
+  if (metadataLabel) {
+    return metadataLabel
+  }
+
   const haystack = [
     product.material,
     ...(product.categories ?? []).map((category) => category.name),

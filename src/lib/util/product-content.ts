@@ -129,13 +129,17 @@ export const getProductColorwayCount = (product: HttpTypes.StoreProduct) => {
 }
 
 export const getProductEditorialSummary = (product: HttpTypes.StoreProduct) => {
-  const sellingUnit = getSellingUnitLabel(product).toLowerCase()
+  const sellingUnit = getSellingUnitLabel(product)
+  const sellingUnitPhrase =
+    sellingUnit.toLowerCase() === "1 yard"
+      ? "yard"
+      : sellingUnit.toLowerCase()
   const width = getWidthLabel(product)
   const colorwayCount = getProductColorwayCount(product)
   const useCase = getUseCaseLabel(product).replace(/^Best for\s*/iu, "").replace(/\.$/u, "")
   const displayTitle = getProductDisplayTitle(product)
 
-  const parts = [`${displayTitle} is sold by the ${sellingUnit}.`]
+  const parts = [`${displayTitle} is sold by the ${sellingUnitPhrase}.`]
 
   if (width) {
     parts.push(`Approx. ${width} wide.`)
