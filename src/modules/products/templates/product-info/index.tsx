@@ -2,7 +2,11 @@ import { HttpTypes } from "@medusajs/types"
 import { Heading, Text } from "@medusajs/ui"
 import { countryNames } from "@lib/site-content"
 import { siteContent } from "@lib/site-content"
-import { getProductEditorialSummary } from "@lib/util/product-content"
+import {
+  getProductColorwayCount,
+  getProductDisplayTitle,
+  getProductEditorialSummary,
+} from "@lib/util/product-content"
 import {
   getCompositionLabel,
   getContinuousYardageNote,
@@ -30,6 +34,8 @@ const ProductInfo = ({ product }: ProductInfoProps) => {
   const priceRuleLabel = getPriceRuleLabel(product)
   const editorialSummary = getProductEditorialSummary(product)
   const materialLabel = getMaterialLabel(product)
+  const colorwayCount = getProductColorwayCount(product)
+  const displayTitle = getProductDisplayTitle(product)
 
   return (
     <div id="product-info">
@@ -62,12 +68,17 @@ const ProductInfo = ({ product }: ProductInfoProps) => {
           </span>
         </div>
         <Heading
-          level="h2"
+          level="h1"
           className="font-display text-5xl leading-[0.95] tracking-[-0.04em] text-[var(--brand-ink)]"
           data-testid="product-title"
         >
-          {product.title}
+          {displayTitle}
         </Heading>
+        <div className="flex flex-wrap gap-3 text-[11px] uppercase tracking-[0.18em] text-[var(--brand-soft)]">
+          <span>{priceRuleLabel}</span>
+          <span>{sellingUnit} increments</span>
+          {colorwayCount > 1 ? <span>{colorwayCount} colorways</span> : null}
+        </div>
 
         <Text
           className="whitespace-pre-line text-base leading-7 text-[var(--brand-muted)]"

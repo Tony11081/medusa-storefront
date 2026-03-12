@@ -4,6 +4,18 @@ import { HttpTypes } from "@medusajs/types"
 const normalizeText = (value?: string | null) =>
   (value || "").replace(/\s+/gu, " ").trim()
 
+const cleanSourceText = (value: string) =>
+  value
+    .replace(/\bcontinious\b/giu, "continuous")
+    .replace(/\buncutten\b/giu, "uncut")
+    .replace(/\blether\b/giu, "leather")
+    .replace(/\bwidht\b/giu, "width")
+    .replace(/\bsuch as denim\b/giu, "denim-effect")
+    .replace(/\bbigger patterns\b/giu, "larger pattern scale")
+    .replace(/\bbig patterns\b/giu, "large pattern scale")
+    .replace(/\s+([,.;!?])/gu, "$1")
+    .trim()
+
 const pickFirstMatch = (text: string, patterns: RegExp[]) => {
   for (const pattern of patterns) {
     const match = text.match(pattern)
@@ -77,7 +89,7 @@ export const getCareLabel = (product: HttpTypes.StoreProduct) => {
 }
 
 export const getArchiveNotes = (product: HttpTypes.StoreProduct) => {
-  return normalizeText(product.description)
+  return cleanSourceText(normalizeText(product.description))
 }
 
 export const getMaterialLabel = (product: HttpTypes.StoreProduct) => {

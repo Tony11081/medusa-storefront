@@ -6,6 +6,7 @@ import { siteContent } from "@lib/site-content"
 import { resolveImagesForVariant } from "@lib/util/product-variant-images"
 import {
   getProductFaqItems,
+  getProductDisplayTitle,
   getProductSeoDescription,
   getProductSeoTitle,
   resolveDefaultVariant,
@@ -150,7 +151,7 @@ export default async function ProductPage(props: Props) {
         ]
       : []),
     {
-      name: pricedProduct.title || siteContent.name,
+      name: getProductDisplayTitle(pricedProduct) || siteContent.name,
       path: `/${params.countryCode}/products/${pricedProduct.handle}`,
     },
   ])

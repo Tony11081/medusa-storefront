@@ -1,6 +1,11 @@
 import { Metadata } from "next"
 
-import { absoluteUrl, buildCollectionPageJsonLd } from "@lib/util/seo"
+import { getStoreFaqItems } from "@lib/util/archive-copy"
+import {
+  absoluteUrl,
+  buildCollectionPageJsonLd,
+  buildFaqJsonLd,
+} from "@lib/util/seo"
 import JsonLd from "@modules/common/components/json-ld"
 import { siteContent } from "@lib/site-content"
 import { SortOptions } from "@modules/store/components/refinement-list/sort-products"
@@ -60,6 +65,7 @@ export default async function StorePage(props: Params) {
   return (
     <>
       <JsonLd data={jsonLd} />
+      <JsonLd data={buildFaqJsonLd(getStoreFaqItems())} />
       <StoreTemplate
         sortBy={sortBy}
         page={page}

@@ -4,6 +4,7 @@ import { siteContent } from "@lib/site-content"
 import { normalizeImageUrl } from "@lib/util/images"
 import {
   getCompositionLabel,
+  getMaterialLabel,
   getPriceRuleLabel,
   getSellingUnitLabel,
   getThicknessLabel,
@@ -11,10 +12,13 @@ import {
   getWidthLabel,
 } from "@lib/util/product-details"
 import {
+  getProductDisplayTitle,
   getProductBrand,
   getProductFaqItems,
   getProductImageAlt,
   getProductPriceData,
+  getProductSeoDescription,
+  getVariantColorLabel,
   resolveDefaultVariant,
 } from "@lib/util/product-content"
 
@@ -78,7 +82,7 @@ export const buildCollectionPageJsonLd = ({
           url: absoluteUrl(`/${countryCode}/products/${product.handle}`),
           item: {
             "@type": "Product",
-            name: product.title,
+            name: getProductDisplayTitle(product),
             image: product.thumbnail ? [normalizeImageUrl(product.thumbnail)] : undefined,
             offers: {
               "@type": "Offer",
@@ -141,16 +145,17 @@ export const buildProductJsonLd = ({
   const width = getWidthLabel(product)
   const thickness = getThicknessLabel(product)
   const composition = getCompositionLabel(product)
-  const material = product.material || undefined
+  const material = getMaterialLabel(product)
   const imageUrls = images
     .map((image) => normalizeImageUrl(image.url))
     .filter(Boolean)
+  const color = getVariantColorLabel(variant)
 
   return {
     "@context": "https://schema.org",
     "@type": "Product",
-    name: product.title,
-    description: product.description || siteContent.description,
+    name: getProductDisplayTitle(product),
+    description: getProductSeoDescription(product),
     sku: variant?.sku || undefined,
     image: imageUrls,
     brand: {
@@ -161,6 +166,7 @@ export const buildProductJsonLd = ({
       product.categories?.map((category) => category.name).filter(Boolean).join(", ") ||
       undefined,
     material,
+    color: color || undefined,
     additionalProperty: [
       width
         ? {

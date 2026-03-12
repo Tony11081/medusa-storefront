@@ -3,7 +3,10 @@
 import { addToCart } from "@lib/data/cart"
 import { useIntersection } from "@lib/hooks/use-in-view"
 import { siteContent } from "@lib/site-content"
-import { resolveDefaultVariant } from "@lib/util/product-content"
+import {
+  getProductPriceData,
+  resolveDefaultVariant,
+} from "@lib/util/product-content"
 import {
   getContinuousYardageNote,
   getPriceRuleLabel,
@@ -55,6 +58,7 @@ export default function ProductActions({
   const [options, setOptions] = useState<Record<string, string | undefined>>({})
   const [quantity, setQuantity] = useState(1)
   const [isAdding, setIsAdding] = useState(false)
+  const [didAdd, setDidAdd] = useState(false)
   const countryCode = useParams().countryCode as string
   const priceRuleLabel = useMemo(() => getPriceRuleLabel(product), [product])
   const continuousYardageNote = useMemo(
@@ -168,6 +172,10 @@ export default function ProductActions({
     setQuantity((current) => Math.min(current, maxQuantity))
   }, [maxQuantity])
 
+  useEffect(() => {
+    setDidAdd(false)
+  }, [options, quantity])
+
   // check if the selected variant is in stock
   const inStock = useMemo(() => {
     // If we don't manage inventory, we can always add to cart
@@ -210,8 +218,24 @@ export default function ProductActions({
     })
 
     router.refresh()
+    setDidAdd(true)
     setIsAdding(false)
   }
+
+  const priceData = useMemo(
+    () => getProductPriceData(product, selectedVariant),
+    [product, selectedVariant]
+  )
+
+  const estimatedTotal = useMemo(() => {
+    const formatter = new Intl.NumberFormat("en-US", {
+      style: "currency",
+      currency: priceData.currency_code || "USD",
+      maximumFractionDigits: 2,
+    })
+
+    return formatter.format((priceData.calculated_price_number || 0) * quantity)
+  }, [priceData, quantity])
 
   return (
     <>
@@ -282,6 +306,14 @@ export default function ProductActions({
           </div>
           <div className="mt-3 flex items-start justify-between gap-4">
             <span className="text-[11px] uppercase tracking-[0.18em] text-[var(--brand-soft)]">
+              Estimated total
+            </span>
+            <span className="text-right text-[var(--brand-ink)]">
+              {estimatedTotal}
+            </span>
+          </div>
+          <div className="mt-3 flex items-start justify-between gap-4">
+            <span className="text-[11px] uppercase tracking-[0.18em] text-[var(--brand-soft)]">
               Best for
             </span>
             <span className="max-w-[220px] text-right">{useCaseLabel}</span>
@@ -306,6 +338,17 @@ export default function ProductActions({
             </div>
           </div>
         </div>
+        {didAdd && (
+          <div className="rounded-[1.2rem] border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-900">
+            Added to cart.{" "}
+            <a
+              href={`/${countryCode}/cart`}
+              className="font-medium underline underline-offset-4"
+            >
+              View cart
+            </a>
+          </div>
+        )}
         <MobileActions
           product={product}
           variant={selectedVariant}

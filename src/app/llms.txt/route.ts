@@ -1,6 +1,7 @@
 import { listAllProducts } from "@lib/data/products"
 import { siteContent } from "@lib/site-content"
 import {
+  getProductDisplayTitle,
   getProductEditorialSummary,
   getProductSeoDescription,
 } from "@lib/util/product-content"
@@ -38,7 +39,7 @@ export async function GET() {
     "",
     "## Product Highlights",
     ...highlighted.flatMap((product) => [
-      `- ${product.title}: ${absoluteUrl(`/${COUNTRY_CODE}/products/${product.handle}`)}`,
+      `- ${getProductDisplayTitle(product)}: ${absoluteUrl(`/${COUNTRY_CODE}/products/${product.handle}`)}`,
       `  Summary: ${getProductEditorialSummary(product)}`,
       `  SEO Description: ${getProductSeoDescription(product)}`,
     ]),

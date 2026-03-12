@@ -4,7 +4,12 @@ import { notFound } from "next/navigation"
 import { getCategoryByHandle, listCategories } from "@lib/data/categories"
 import { listProductsWithSort } from "@lib/data/products"
 import { listRegions } from "@lib/data/regions"
-import { absoluteUrl, buildCollectionPageJsonLd } from "@lib/util/seo"
+import { getCategoryPageCopy } from "@lib/util/archive-copy"
+import {
+  absoluteUrl,
+  buildCollectionPageJsonLd,
+  buildFaqJsonLd,
+} from "@lib/util/seo"
 import { StoreRegion } from "@medusajs/types"
 import JsonLd from "@modules/common/components/json-ld"
 import CategoryTemplate from "@modules/categories/templates"
@@ -50,11 +55,10 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
   const params = await props.params
   try {
     const productCategory = await getCategoryByHandle(params.category)
+    const copy = getCategoryPageCopy(productCategory)
 
     const title = `${productCategory.name} Fabric by the Yard`
-    const description =
-      productCategory.description ||
-      `Browse ${productCategory.name.toLowerCase()} fabrics by the yard at ${siteContent.name} for upholstery, wall panels, trim, and custom interiors.`
+    const description = copy.intro
 
     return {
       title,
@@ -101,17 +105,17 @@ export default async function CategoryPage(props: Props) {
 
   const jsonLd = buildCollectionPageJsonLd({
     name: productCategory.name || "Category",
-    description:
-      productCategory.description ||
-      `Browse ${productCategory.name.toLowerCase()} fabrics by the yard at ${siteContent.name} for upholstery, wall panels, trim, and custom interiors.`,
+    description: getCategoryPageCopy(productCategory).intro,
     path: `/${params.countryCode}/categories/${params.category.join("/")}`,
     products,
     countryCode: params.countryCode,
   })
+  const faqJsonLd = buildFaqJsonLd(getCategoryPageCopy(productCategory).faqItems)
 
   return (
     <>
       <JsonLd data={jsonLd} />
+      <JsonLd data={faqJsonLd} />
       <CategoryTemplate
         category={productCategory}
         sortBy={sortBy}

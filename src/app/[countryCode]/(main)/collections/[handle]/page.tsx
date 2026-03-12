@@ -4,7 +4,12 @@ import { notFound } from "next/navigation"
 import { getCollectionByHandle, listCollections } from "@lib/data/collections"
 import { listProductsWithSort } from "@lib/data/products"
 import { listRegions } from "@lib/data/regions"
-import { absoluteUrl, buildCollectionPageJsonLd } from "@lib/util/seo"
+import { getCollectionPageCopy } from "@lib/util/archive-copy"
+import {
+  absoluteUrl,
+  buildCollectionPageJsonLd,
+  buildFaqJsonLd,
+} from "@lib/util/seo"
 import { StoreCollection, StoreRegion } from "@medusajs/types"
 import JsonLd from "@modules/common/components/json-ld"
 import CollectionTemplate from "@modules/collections/templates"
@@ -62,7 +67,7 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
     notFound()
   }
 
-  const description = `Browse ${collection.title} at ${siteContent.name}. Designer fabrics sold by the yard for upholstery, wall panels, soft goods, and custom work.`
+  const description = getCollectionPageCopy(collection).intro
 
   return {
     title: `${collection.title} Designer Fabric`,
@@ -91,6 +96,9 @@ export default async function CollectionPage(props: Props) {
     notFound()
   }
 
+  const pageNumber = page ? parseInt(page) : 1
+  const sort = sortBy || "created_at"
+
   const products = await listProductsWithSort({
     sortBy: sort,
     page: pageNumber,
@@ -102,15 +110,17 @@ export default async function CollectionPage(props: Props) {
 
   const jsonLd = buildCollectionPageJsonLd({
     name: collection.title || "Collection",
-    description: `Browse ${collection.title} at ${siteContent.name}. Designer fabrics sold by the yard for upholstery, wall panels, soft goods, and custom work.`,
+    description: getCollectionPageCopy(collection).intro,
     path: `/${params.countryCode}/collections/${collection.handle}`,
     products,
     countryCode: params.countryCode,
   })
+  const faqJsonLd = buildFaqJsonLd(getCollectionPageCopy(collection).faqItems)
 
   return (
     <>
       <JsonLd data={jsonLd} />
+      <JsonLd data={faqJsonLd} />
       <CollectionTemplate
         collection={collection}
         page={page}

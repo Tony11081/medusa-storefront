@@ -8,6 +8,7 @@ import Accordion from "./accordion"
 import { HttpTypes } from "@medusajs/types"
 import { countryNames } from "@lib/site-content"
 import { siteContent } from "@lib/site-content"
+import { getProductDisplayTitle } from "@lib/util/product-content"
 import {
   getArchiveNotes,
   getCompositionLabel,
@@ -60,6 +61,7 @@ const ProductTabs = ({ product }: ProductTabsProps) => {
 }
 
 const ProductInfoTab = ({ product }: ProductTabsProps) => {
+  const displayTitle = getProductDisplayTitle(product)
   const sellingUnit = getSellingUnitLabel(product)
   const width = getWidthLabel(product)
   const thickness = getThicknessLabel(product)
@@ -129,7 +131,7 @@ const ProductInfoTab = ({ product }: ProductTabsProps) => {
       </div>
       {archiveNotes && (
         <div className="mt-6 border-t border-[var(--brand-line)] pt-6">
-          <span className="font-semibold">Archive notes</span>
+          <span className="font-semibold">Source notes for {displayTitle}</span>
           <p className="mt-2 max-w-xl text-[var(--brand-muted)]">
             {archiveNotes}
           </p>

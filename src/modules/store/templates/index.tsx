@@ -3,6 +3,7 @@ import { Suspense } from "react"
 import SkeletonProductGrid from "@modules/skeletons/templates/skeleton-product-grid"
 import RefinementList from "@modules/store/components/refinement-list"
 import { SortOptions } from "@modules/store/components/refinement-list/sort-products"
+import { getStoreFaqItems } from "@lib/util/archive-copy"
 
 import PaginatedProducts from "./paginated-products"
 
@@ -17,6 +18,7 @@ const StoreTemplate = ({
 }) => {
   const pageNumber = page ? parseInt(page) : 1
   const sort = sortBy || "created_at"
+  const faqItems = getStoreFaqItems()
 
   return (
     <div
@@ -75,6 +77,29 @@ const StoreTemplate = ({
             countryCode={countryCode}
           />
         </Suspense>
+        <div className="mt-10 rounded-[2rem] border border-[var(--brand-line)] bg-white/88 p-6 shadow-[0_18px_55px_rgba(16,21,31,0.05)] md:p-8">
+          <div className="max-w-2xl">
+            <p className="eyebrow">Buyer Questions</p>
+            <h2 className="mt-3 font-display text-3xl leading-none tracking-[-0.03em] text-[var(--brand-ink)] md:text-4xl">
+              The answers customers usually need before ordering.
+            </h2>
+          </div>
+          <div className="mt-6 grid gap-4 md:grid-cols-3">
+            {faqItems.map((item) => (
+              <div
+                key={item.question}
+                className="rounded-[1.4rem] border border-[var(--brand-line)] bg-[rgba(255,250,244,0.82)] p-5"
+              >
+                <p className="text-sm font-medium text-[var(--brand-ink)]">
+                  {item.question}
+                </p>
+                <p className="mt-3 text-sm leading-7 text-[var(--brand-muted)]">
+                  {item.answer}
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
       </div>
     </div>
   )

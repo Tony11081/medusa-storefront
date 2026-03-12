@@ -1,6 +1,6 @@
 import { Text } from "@medusajs/ui"
-import { listProducts } from "@lib/data/products"
 import { getProductPrice } from "@lib/util/get-product-price"
+import { getProductDisplayTitle } from "@lib/util/product-content"
 import { HttpTypes } from "@medusajs/types"
 import { countryNames } from "@lib/site-content"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
@@ -28,6 +28,7 @@ export default async function ProductPreview({
   const { cheapestPrice } = getProductPrice({
     product,
   })
+  const displayTitle = getProductDisplayTitle(product)
 
   return (
     <LocalizedClientLink href={`/products/${product.handle}`} className="group">
@@ -51,10 +52,10 @@ export default async function ProductPreview({
         <div className="mt-4 flex items-start justify-between gap-4">
           <div>
             <Text
-              className="text-base font-medium text-[var(--brand-ink)]"
+              className="line-clamp-2 text-base font-medium text-[var(--brand-ink)]"
               data-testid="product-title"
             >
-              {product.title}
+              {displayTitle}
             </Text>
             <p className="mt-2 text-xs uppercase tracking-[0.18em] text-[var(--brand-soft)]">
               {product.origin_country

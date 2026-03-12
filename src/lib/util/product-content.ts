@@ -41,6 +41,21 @@ const sentenceCase = (value: string) => {
   return value.charAt(0).toUpperCase() + value.slice(1)
 }
 
+const normalizeTitle = (value: string) =>
+  value
+    .replace(/\|.*$/u, "")
+    .replace(/!/gu, "")
+    .replace(/BrownJacquard/giu, "Brown Jacquard")
+    .replace(/\s*,\s*/gu, ", ")
+    .replace(/\s+/gu, " ")
+    .trim()
+
+const trimUseCaseTail = (value: string) =>
+  value.replace(
+    /\s+for\s+(?:bags?|shoes?|upholstery|crafting|clothing|clothes|multipurpose)(?:[\s,/-]*(?:and|or)?[\s,/-]*(?:bags?|shoes?|upholstery|crafting|clothing|clothes|multipurpose))*$/iu,
+    ""
+  )
+
 export const resolveDefaultVariant = (
   product: HttpTypes.StoreProduct,
   requestedVariantId?: string
@@ -85,6 +100,12 @@ export const getVariantColorLabel = (
   return variant?.title?.split("/")[0]?.trim() || ""
 }
 
+export const getProductDisplayTitle = (product: HttpTypes.StoreProduct) => {
+  const normalized = normalizeTitle(product.title || "")
+
+  return trimUseCaseTail(normalized) || normalized || product.title || ""
+}
+
 export const getProductBrand = (product: HttpTypes.StoreProduct) => {
   const haystack = [product.title, product.handle].filter(Boolean).join(" ")
 
@@ -112,11 +133,14 @@ export const getProductEditorialSummary = (product: HttpTypes.StoreProduct) => {
   const width = getWidthLabel(product)
   const colorwayCount = getProductColorwayCount(product)
   const useCase = getUseCaseLabel(product).replace(/^Best for\s*/iu, "").replace(/\.$/u, "")
+  const displayTitle = getProductDisplayTitle(product)
 
-  const parts = [`${product.title} is sold by the ${sellingUnit}.`]
+  const parts = [`${displayTitle} is sold by the ${sellingUnit}.`]
 
   if (width) {
     parts.push(`Approx. ${width} wide.`)
+  } else {
+    parts.push("Sold in easy-to-plan yard increments.")
   }
 
   if (colorwayCount > 1) {
@@ -129,24 +153,29 @@ export const getProductEditorialSummary = (product: HttpTypes.StoreProduct) => {
 }
 
 export const getProductSeoTitle = (product: HttpTypes.StoreProduct) => {
-  const brand = getProductBrand(product)
+  const title = getProductDisplayTitle(product)
 
-  if (brand && !product.title.toLowerCase().includes("by the yard")) {
-    return `${product.title} by the Yard`
+  if (!title.toLowerCase().includes("by the yard")) {
+    return `${title} by the Yard`
   }
 
-  return `${product.title} by the Yard`
+  return title
 }
 
 export const getProductSeoDescription = (product: HttpTypes.StoreProduct) => {
   const width = getWidthLabel(product)
   const priceRule = getPriceRuleLabel(product)
   const archiveNotes = getContinuousYardageNote(product)
+  const useCase = getUseCaseLabel(product)
+  const colorwayCount = getProductColorwayCount(product)
+  const title = getProductDisplayTitle(product)
 
   return truncate(
     [
-      `${product.title}.`,
+      `${title}.`,
       width ? `${width} wide.` : null,
+      colorwayCount > 1 ? `${colorwayCount} colorways available.` : null,
+      useCase,
       `${priceRule}.`,
       archiveNotes,
     ]
@@ -166,9 +195,9 @@ export const getProductImageAlt = ({
   variant?: HttpTypes.StoreProductVariant
 }) => {
   const color = getVariantColorLabel(variant)
-  const includesColor =
-    color && product.title.toLowerCase().includes(color.toLowerCase())
-  const base = color && !includesColor ? `${product.title} in ${color}` : product.title
+  const title = getProductDisplayTitle(product)
+  const includesColor = color && title.toLowerCase().includes(color.toLowerCase())
+  const base = color && !includesColor ? `${title} in ${color}` : title
 
   if (index === 0) {
     return `${base} product image`
@@ -199,7 +228,7 @@ export const getProductFaqItems = (product: HttpTypes.StoreProduct) => {
     {
       question: "What key product details should I review before ordering?",
       answer: width
-        ? `Review the width, finish, and intended use before placing larger orders. Source notes indicate an approximate width of ${width}.`
+        ? `Review the width, finish, and intended use before placing larger orders. Current source notes indicate an approximate width of ${width}.`
         : "Review the finish, intended use, and project requirements before placing larger orders or committing to upholstery yardage.",
     },
   ]

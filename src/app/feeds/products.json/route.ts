@@ -5,9 +5,11 @@ import { siteContent } from "@lib/site-content"
 import {
   getProductBrand,
   getProductColorwayCount,
+  getProductDisplayTitle,
   getProductEditorialSummary,
   getProductPriceData,
   getProductSeoDescription,
+  getProductSeoTitle,
 } from "@lib/util/product-content"
 import {
   getCompositionLabel,
@@ -44,7 +46,8 @@ export async function GET() {
 
         return {
           handle: product.handle,
-          title: product.title,
+          title: getProductDisplayTitle(product),
+          seoTitle: getProductSeoTitle(product),
           url: absoluteUrl(`/${COUNTRY_CODE}/products/${product.handle}`),
           brand: getProductBrand(product),
           categories: (product.categories ?? []).map((category) => category.name),
@@ -60,6 +63,7 @@ export async function GET() {
           summary: getProductEditorialSummary(product),
           seoDescription: getProductSeoDescription(product),
           thumbnail: product.thumbnail,
+          guideUrl: absoluteUrl(`/${COUNTRY_CODE}/guide`),
         }
       }),
     },
