@@ -75,6 +75,31 @@ export const resolveDefaultVariant = (
     }
   }
 
+  const displayTitle = trimUseCaseTail(normalizeTitle(product.title || "")).toLowerCase()
+  const titleMatchedVariant = product.variants.find((variant) => {
+    const label = getVariantColorLabel(variant).toLowerCase()
+    return label && displayTitle.includes(label)
+  })
+
+  if (titleMatchedVariant) {
+    return titleMatchedVariant
+  }
+
+  const primaryAxis = product.options?.find(
+    (option) => option.title?.toLowerCase() !== "size"
+  )
+  const preferredValue = primaryAxis?.values?.[0]?.value?.trim()
+
+  if (preferredValue) {
+    const preferredVariant = product.variants.find((variant) => {
+      return getVariantColorLabel(variant).toLowerCase() === preferredValue.toLowerCase()
+    })
+
+    if (preferredVariant) {
+      return preferredVariant
+    }
+  }
+
   return product.variants[0]
 }
 
@@ -89,12 +114,12 @@ export const getVariantColorLabel = (
     return metadataColor
   }
 
-  const colorOption = variant?.options?.find(
-    (option) => option.option?.title?.toLowerCase() === "color"
+  const primaryAxisOption = variant?.options?.find(
+    (option) => option.option?.title?.toLowerCase() !== "size"
   )
 
-  if (colorOption?.value?.trim()) {
-    return colorOption.value.trim()
+  if (primaryAxisOption?.value?.trim()) {
+    return primaryAxisOption.value.trim()
   }
 
   return variant?.title?.split("/")[0]?.trim() || ""
