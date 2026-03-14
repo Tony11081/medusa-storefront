@@ -77,7 +77,7 @@ const LanguageSelect = ({
   const [isPending, startTransition] = useTransition()
   const router = useRouter()
 
-  const { state, close } = toggleState
+  const { state, close, toggle } = toggleState
 
   const options = useMemo(() => {
     const localeOptions = locales.map((locale) => ({
@@ -126,11 +126,16 @@ const LanguageSelect = ({
         }
         disabled={isPending}
       >
-        <ListboxButton className="py-1 w-full">
-          <div className="txt-compact-small flex items-start gap-x-2">
-            <span>Language:</span>
+        <ListboxButton
+          className="flex w-full items-center justify-between gap-4 rounded-[2px] border border-[var(--brand-line)] bg-white px-4 py-3 text-left text-sm text-[var(--brand-ink)] shadow-[0_10px_22px_rgba(16,21,31,0.04)] transition hover:border-[var(--brand-line-strong)]"
+          onClick={toggle}
+        >
+          <div className="flex min-w-0 items-start gap-x-2">
+            <span className="text-[11px] uppercase tracking-[0.18em] text-[var(--brand-soft)]">
+              Language
+            </span>
             {current && (
-              <span className="txt-compact-small flex items-center gap-x-2">
+              <span className="flex min-w-0 items-center gap-x-2 text-sm text-[var(--brand-ink)]">
                 {current.countryCode && (
                   /* @ts-ignore */
                   <ReactCountryFlag
@@ -142,28 +147,36 @@ const LanguageSelect = ({
                     countryCode={current.countryCode}
                   />
                 )}
-                {isPending ? "..." : current.localizedName}
+                <span className="truncate">
+                  {isPending ? "..." : current.localizedName}
+                </span>
               </span>
             )}
           </div>
+          <span className="text-[10px] uppercase tracking-[0.22em] text-[var(--brand-soft)]">
+            {state ? "Close" : "Change"}
+          </span>
         </ListboxButton>
-        <div className="flex relative w-full min-w-[320px]">
+        <div className="relative flex w-full">
           <Transition
             show={state}
             as={Fragment}
+            enter="transition ease-out duration-150"
+            enterFrom="opacity-0 translate-y-2"
+            enterTo="opacity-100 translate-y-0"
             leave="transition ease-in duration-150"
-            leaveFrom="opacity-100"
-            leaveTo="opacity-0"
+            leaveFrom="opacity-100 translate-y-0"
+            leaveTo="opacity-0 translate-y-2"
           >
             <ListboxOptions
-              className="absolute -bottom-[calc(100%-36px)] left-0 xsmall:left-auto xsmall:right-0 max-h-[442px] overflow-y-scroll z-[900] bg-white drop-shadow-md text-small-regular uppercase text-black no-scrollbar rounded-rounded w-full"
+              className="absolute left-0 right-0 top-[calc(100%+0.5rem)] z-[900] max-h-72 overflow-y-auto rounded-[2px] border border-[var(--brand-line)] bg-white p-1 shadow-[0_18px_42px_rgba(16,21,31,0.12)] no-scrollbar"
               static
             >
               {options.map((o) => (
                 <ListboxOption
                   key={o.code || "default"}
                   value={o}
-                  className="py-2 hover:bg-gray-200 px-3 cursor-pointer flex items-center gap-x-2"
+                  className="flex cursor-pointer items-center gap-x-2 rounded-[2px] px-3 py-2.5 text-sm text-[var(--brand-ink)] transition hover:bg-[rgba(17,23,20,0.06)]"
                 >
                   {o.countryCode ? (
                     /* @ts-ignore */
