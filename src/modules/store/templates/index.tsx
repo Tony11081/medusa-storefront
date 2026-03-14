@@ -30,7 +30,7 @@ const StoreTemplate = ({
               className="mt-4 max-w-4xl font-display text-[3rem] leading-[0.96] tracking-[-0.05em] text-[var(--brand-ink)] sm:text-5xl md:text-7xl"
               data-testid="store-page-title"
             >
-              A curated textile archive designed for slower, more intentional browsing.
+              Designer fabrics, leather, and vinyl by the yard.
             </h1>
           </div>
           <div className="grid gap-4 md:grid-cols-3 lg:grid-cols-1">
@@ -64,11 +64,11 @@ const StoreTemplate = ({
             page={pageNumber}
             countryCode={countryCode}
             editorialInterlude={{
-              eyebrow: "Editorial Note",
-              title: "Commerce should still feel curated.",
+              eyebrow: "Buying Note",
+              title: "Compare finish, scale, and use before you commit.",
               body:
-                "This archive is meant to read more like a buying room than a discount grid. Use the collection slowly, compare texture and finish, and move into each product detail page for the project notes that support conversion.",
-              ctaLabel: "Read the sourcing guide",
+                "Use the archive to narrow the right material family first. Then move into product detail pages for width, composition, color options, and project guidance.",
+              ctaLabel: "Read the buying guide",
               ctaHref: `/${countryCode}/guide`,
             }}
           />
@@ -79,7 +79,7 @@ const StoreTemplate = ({
         <div className="max-w-2xl">
           <p className="eyebrow">Buyer Questions</p>
           <h2 className="mt-4 font-display text-[2.35rem] leading-[0.98] tracking-[-0.04em] text-[var(--brand-ink)] md:text-5xl">
-            The reassurance layer that keeps premium browsing conversion-ready.
+            Answers that help you order with less hesitation.
           </h2>
         </div>
         <div className="mt-8 grid gap-4 xl:grid-cols-3">

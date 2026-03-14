@@ -76,16 +76,16 @@ const ProductTemplate: React.FC<ProductTemplateProps> = ({
             </div>
           </Suspense>
           <div className="hidden rounded-[2px] border border-[var(--brand-line)] bg-[rgba(252,251,248,0.84)] px-5 py-5 md:block">
-            <p className="soft-caption">Trust elements</p>
+            <p className="soft-caption">Project reassurance</p>
             <div className="mt-4 grid gap-3">
               <p className="text-sm leading-7 text-[var(--brand-muted)]">
-                Free shipping messaging, easy-return reassurance, and project
-                support are surfaced here to keep the sticky module conversion-focused.
+                Review shipping, support, and unit-based buying notes before you
+                commit to a larger yardage order.
               </p>
               <div className="grid gap-2 text-[11px] uppercase tracking-[0.22em] text-[var(--brand-soft)]">
-                <span>Free shipping over qualifying orders</span>
-                <span>Project guidance before larger purchases</span>
-                <span>Clear unit-based pricing</span>
+                <span>Sold in 1 yard increments</span>
+                <span>Continuous cuts whenever the roll allows</span>
+                <span>Project guidance available before ordering</span>
               </div>
             </div>
           </div>
@@ -100,25 +100,26 @@ const ProductTemplate: React.FC<ProductTemplateProps> = ({
           <article className="editorial-surface rounded-[2px] px-6 py-8 md:px-8">
             <p className="eyebrow">Behind the design</p>
             <h2 className="mt-4 max-w-2xl font-display text-[2.35rem] leading-[0.98] tracking-[-0.05em] text-[var(--brand-ink)] md:text-5xl">
-              A product detail page should feel immersive before it asks for the add-to-cart.
+              Material notes that help you decide before you commit to yardage.
             </h2>
             <p className="mt-5 text-base leading-8 text-[var(--brand-muted)]">
-              The left column is intentionally media-led, while the right column
-              keeps variant selection, price, and reassurance fixed in view. That
-              balance is the core of the new editorial commerce direction.
+              Use the product imagery, composition details, and project notes to
+              judge whether the finish, scale, and construction fit your
+              upholstery, trim, or custom fabrication work.
             </p>
             <div className="mt-8 grid gap-5 border-t border-[var(--brand-line)] pt-6 md:grid-cols-2">
               <div>
                 <p className="soft-caption">Materials & care</p>
                 <p className="mt-3 text-sm leading-7 text-[var(--brand-muted)]">
-                  Accordions below the fold keep technical information available
-                  without crowding the purchase module.
+                  Key specifications stay organized below the fold so you can
+                  review composition, width, and use before placing an order.
                 </p>
               </div>
               <div>
                 <p className="soft-caption">Related products</p>
                 <p className="mt-3 text-sm leading-7 text-[var(--brand-muted)]">
-                  Cross-sell appears after confidence is established, not before.
+                  Compare neighboring finishes and colorways once you know the
+                  core material direction you want.
                 </p>
               </div>
             </div>

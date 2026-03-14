@@ -1,6 +1,6 @@
 "use client"
 
-import { convertToLocale } from "@lib/util/money"
+import { convertMinorUnitToLocale } from "@lib/util/money"
 import React from "react"
 
 type CartTotalsProps = {
@@ -31,13 +31,19 @@ const CartTotals: React.FC<CartTotalsProps> = ({ totals }) => {
         <div className="flex items-center justify-between">
           <span>Subtotal (excl. shipping and taxes)</span>
           <span data-testid="cart-subtotal" data-value={item_subtotal || 0}>
-            {convertToLocale({ amount: item_subtotal ?? 0, currency_code })}
+            {convertMinorUnitToLocale({
+              amount: item_subtotal ?? 0,
+              currency_code,
+            })}
           </span>
         </div>
         <div className="flex items-center justify-between">
           <span>Shipping</span>
           <span data-testid="cart-shipping" data-value={shipping_subtotal || 0}>
-            {convertToLocale({ amount: shipping_subtotal ?? 0, currency_code })}
+            {convertMinorUnitToLocale({
+              amount: shipping_subtotal ?? 0,
+              currency_code,
+            })}
           </span>
         </div>
         {!!discount_subtotal && (
@@ -49,7 +55,7 @@ const CartTotals: React.FC<CartTotalsProps> = ({ totals }) => {
               data-value={discount_subtotal || 0}
             >
               -{" "}
-              {convertToLocale({
+              {convertMinorUnitToLocale({
                 amount: discount_subtotal ?? 0,
                 currency_code,
               })}
@@ -59,7 +65,7 @@ const CartTotals: React.FC<CartTotalsProps> = ({ totals }) => {
         <div className="flex justify-between">
           <span className="flex gap-x-1 items-center ">Taxes</span>
           <span data-testid="cart-taxes" data-value={tax_total || 0}>
-            {convertToLocale({ amount: tax_total ?? 0, currency_code })}
+            {convertMinorUnitToLocale({ amount: tax_total ?? 0, currency_code })}
           </span>
         </div>
       </div>
@@ -71,7 +77,7 @@ const CartTotals: React.FC<CartTotalsProps> = ({ totals }) => {
           data-testid="cart-total"
           data-value={total || 0}
         >
-          {convertToLocale({ amount: total ?? 0, currency_code })}
+          {convertMinorUnitToLocale({ amount: total ?? 0, currency_code })}
         </span>
       </div>
       <div className="h-px w-full border-b border-gray-200 mt-4" />

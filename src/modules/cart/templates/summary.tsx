@@ -33,7 +33,8 @@ const Summary = ({ cart }: SummaryProps) => {
         Order summary
       </Heading>
       <p className="text-sm leading-7 text-[var(--brand-muted)]">
-        Clean totals, a low-friction checkout CTA, and space for reassurance.
+        Yardage, shipping, and final total are shown here before you continue to
+        checkout.
       </p>
       <DiscountCode cart={cart} />
       <Divider />
@@ -47,8 +48,13 @@ const Summary = ({ cart }: SummaryProps) => {
         </Button>
       </LocalizedClientLink>
       <div className="rounded-[2px] border border-[var(--brand-line)] bg-[rgba(252,251,248,0.78)] px-4 py-4 text-sm leading-7 text-[var(--brand-muted)]">
-        Payment logos or security reassurance belong here on the final design,
-        just beneath the main checkout CTA.
+        Secure checkout. Shipping and taxes are finalized in the next steps. If
+        you need help before placing a larger order, contact
+        {" "}
+        <a href="mailto:support@upholsteryfabric.net" className="brand-link">
+          support@upholsteryfabric.net
+        </a>
+        .
       </div>
     </div>
   )

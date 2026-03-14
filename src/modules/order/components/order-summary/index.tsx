@@ -1,4 +1,4 @@
-import { convertToLocale } from "@lib/util/money"
+import { convertMinorUnitToLocale } from "@lib/util/money"
 import { HttpTypes } from "@medusajs/types"
 
 type OrderSummaryProps = {
@@ -11,7 +11,7 @@ const OrderSummary = ({ order }: OrderSummaryProps) => {
       return
     }
 
-    return convertToLocale({
+    return convertMinorUnitToLocale({
       amount,
       currency_code: order.currency_code,
     })

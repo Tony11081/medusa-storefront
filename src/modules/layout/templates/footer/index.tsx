@@ -157,13 +157,13 @@ export default async function Footer({ countryCode }: FooterProps) {
               <span className="soft-caption text-[var(--brand-ink)]">Notes</span>
               <ul className="grid grid-cols-1 gap-y-2 txt-small text-[var(--brand-muted)]">
                 <li>
-                  Designed to feel like an independent brand site, not a marketplace.
+                  Sold by the yard for upholstery, soft goods, trim, and custom projects.
                 </li>
                 <li>
-                  Component-based UI for a Next.js + Medusa storefront.
+                  Continuous cuts are usually prepared whenever the roll allows.
                 </li>
                 <li>
-                  Premium product imagery and storytelling are part of the conversion layer.
+                  Swatch and project questions are handled directly through the studio.
                 </li>
                 <li>
                   <LocalizedClientLink

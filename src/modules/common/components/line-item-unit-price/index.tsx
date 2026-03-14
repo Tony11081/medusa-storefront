@@ -1,4 +1,4 @@
-import { convertToLocale } from "@lib/util/money"
+import { convertMinorUnitToLocale } from "@lib/util/money"
 import { HttpTypes } from "@medusajs/types"
 import { clx } from "@medusajs/ui"
 
@@ -32,7 +32,7 @@ const LineItemUnitPrice = ({
               className="line-through"
               data-testid="product-unit-original-price"
             >
-              {convertToLocale({
+              {convertMinorUnitToLocale({
                 amount: original_total / item.quantity,
                 currency_code: currencyCode,
               })}
@@ -49,7 +49,7 @@ const LineItemUnitPrice = ({
         })}
         data-testid="product-unit-price"
       >
-        {convertToLocale({
+        {convertMinorUnitToLocale({
           amount: total / item.quantity,
           currency_code: currencyCode,
         })}

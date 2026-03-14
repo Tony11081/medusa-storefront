@@ -51,38 +51,37 @@ const EditorialHome = ({ products, region }: EditorialHomeProps) => {
             <div className="max-w-3xl">
               <p className="eyebrow !text-white/70">{siteContent.eyebrow}</p>
               <h1 className="mt-4 font-display text-[3.35rem] leading-[0.9] tracking-[-0.06em] text-white sm:text-6xl md:mt-5 md:text-8xl">
-                The quieter way to shop premium materials online.
+                Designer fabrics by the yard, chosen for interiors and custom work.
               </h1>
               <p className="mt-5 max-w-xl text-[15px] leading-7 text-white/76 md:mt-6 md:text-lg md:leading-8">
-                A headless commerce storefront designed like an editorial brand
-                site: immersive imagery, clear purchase moments, and product
-                pages built to answer the questions that slow conversion.
+                Browse jacquard, leather, vinyl, and specialty linings with
+                clear pricing, project notes, and support before larger orders.
               </p>
               <div className="mt-7 flex flex-wrap gap-3 md:mt-8">
                 <LocalizedClientLink href="/store" className="brand-button">
-                  Shop the collection
+                  Shop the archive
                 </LocalizedClientLink>
                 <LocalizedClientLink
-                  href="/about"
+                  href="/guide"
                   className="brand-button brand-button-secondary !border-white/30 !text-white hover:!bg-white/8"
                 >
-                  Read the story
+                  Shipping & sourcing guide
                 </LocalizedClientLink>
               </div>
             </div>
 
             <div className="grid gap-3 self-end sm:grid-cols-3 lg:grid-cols-1 lg:gap-4">
               <HeroNote
-                title="Editorial commerce"
-                body="Hero sections, story blocks, and product rails are designed to frame the brand first and the transaction second."
+                title="Sold by the yard"
+                body="Every product is priced in clear 1 yard units so you can plan projects faster."
               />
               <HeroNote
-                title="Conversion clarity"
-                body="Sticky purchase modules, tactile variant selectors, and trust cues keep the experience commercially grounded."
+                title="Project guidance"
+                body="Ask for texture checks, swatch help, or sourcing guidance before larger orders."
               />
               <HeroNote
-                title="Modular build"
-                body="Everything is designed as reusable components for a Next.js + Medusa storefront, not one-off landing page artwork."
+                title="Interior-focused"
+                body="Selected for upholstery, panels, soft goods, trims, and custom fabrication work."
               />
             </div>
           </div>
@@ -121,19 +120,18 @@ const EditorialHome = ({ products, region }: EditorialHomeProps) => {
             <div className="relative flex h-full flex-col justify-end p-6 md:p-8">
               <p className="eyebrow !text-white/72">Editorialized collection feature</p>
               <h2 className="mt-4 max-w-xl font-display text-[2.8rem] leading-[0.94] tracking-[-0.05em] text-white md:text-6xl">
-                Quiet confidence comes from restraint, scale, and image-led browsing.
+                Start with the material family that fits the room or project.
               </h2>
               <p className="mt-5 max-w-lg text-base leading-8 text-white/74">
-                We are moving away from generic marketplace UI and toward an
-                independent DTC system that feels tactile, composed, and
-                product-first.
+                Move from jacquard to leather to vinyl without losing the finish,
+                scale, or sourcing context that helps you choose well.
               </p>
               <div className="mt-6">
                 <LocalizedClientLink
                   href={editorialLead?.handle ? `/products/${editorialLead.handle}` : "/store"}
                   className="brand-link !text-white !decoration-white/30"
                 >
-                  Explore the feature
+                  Shop this feature
                 </LocalizedClientLink>
               </div>
             </div>
@@ -152,11 +150,11 @@ const EditorialHome = ({ products, region }: EditorialHomeProps) => {
           <div className="max-w-2xl">
             <p className="eyebrow">Best sellers rail</p>
             <h2 className="mt-4 font-display text-[2.5rem] leading-[0.96] tracking-[-0.04em] text-[var(--brand-ink)] md:text-5xl">
-              A horizontal rail that feels curated, not crowded.
+              Most requested materials, ready to compare on one pass.
             </h2>
           </div>
           <LocalizedClientLink href="/store" className="brand-link">
-            Browse the full archive
+            Browse all materials
           </LocalizedClientLink>
         </div>
         <div className="no-scrollbar -mx-5 overflow-x-auto px-5 sm:-mx-8 sm:px-8 lg:-mx-10 lg:px-10">
@@ -175,15 +173,14 @@ const EditorialHome = ({ products, region }: EditorialHomeProps) => {
           <article className="editorial-surface rounded-[2px] px-6 py-8 md:px-8 md:py-10">
             <p className="eyebrow">The journal</p>
             <h2 className="mt-4 max-w-3xl font-display text-[2.5rem] leading-[0.97] tracking-[-0.05em] text-[var(--brand-ink)] md:text-6xl">
-              Storytelling should deepen trust, not distract from the product.
+              Buying designer fabric online works better when the practical details stay close.
             </h2>
             <div className="mt-8 grid gap-6 md:grid-cols-[0.72fr_1.28fr] md:gap-8">
               <div className="space-y-6 border-l border-[var(--brand-line)] pl-5">
                 <p className="text-[1.7rem] leading-[1.25] text-[var(--brand-muted)] md:text-[2rem]">
-                  “The interface should feel like a frame for the material, not
-                  a layer competing with it.”
+                  “Texture, scale, and order quantity should be easy to judge on a phone.”
                 </p>
-                <p className="soft-caption">Art direction principle</p>
+                <p className="soft-caption">Buying principle</p>
               </div>
               <div className="space-y-5 text-base leading-8 text-[var(--brand-muted)]">
                 <p>{siteContent.about.lead}</p>
@@ -222,11 +219,11 @@ const EditorialHome = ({ products, region }: EditorialHomeProps) => {
               <div>
                 <p className="eyebrow !text-white/72">Behind the design</p>
                 <h3 className="mt-4 max-w-lg font-display text-[2.35rem] leading-[0.98] tracking-[-0.05em] text-white md:text-5xl">
-                  Visual identity should help the customer slow down and choose well.
+                  Clear imagery and practical notes make it easier to commit to the right yardage.
                 </h3>
                 <p className="mt-4 max-w-lg text-base leading-8 text-white/72">
-                  Generous whitespace, large product media, and restrained
-                  typography create room for higher-quality conversion.
+                  Use the archive to compare finish, pattern, and use case before
+                  moving into product detail pages and checkout.
                 </p>
               </div>
             </div>
@@ -240,11 +237,11 @@ const EditorialHome = ({ products, region }: EditorialHomeProps) => {
             <div className="max-w-3xl">
               <p className="eyebrow">Footer signup block</p>
               <h2 className="mt-4 font-display text-[2.45rem] leading-[0.98] tracking-[-0.05em] text-[var(--brand-ink)] md:text-5xl">
-                Join for early access, sourcing notes, and the stories behind each collection.
+                Need help before ordering yardage for a larger project?
               </h2>
               <p className="mt-5 text-base leading-8 text-[var(--brand-muted)]">
-                This footer direction is designed to feel like a value exchange,
-                not a throwaway newsletter box.
+                Contact the studio for sourcing questions, swatch guidance, and
+                help narrowing the right material family.
               </p>
             </div>
             <div className="flex flex-wrap gap-3">

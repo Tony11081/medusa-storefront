@@ -71,7 +71,7 @@ export default async function AboutPage(props: AboutProps) {
             <div className="self-start">
               <p className="eyebrow !text-white/68">{siteContent.eyebrow}</p>
               <h1 className="mt-4 max-w-3xl font-display text-[3.25rem] leading-[0.9] tracking-[-0.06em] text-white md:text-7xl">
-                Built like an independent archive, not a discount catalog.
+                Sourcing designer materials with more clarity and less marketplace noise.
               </h1>
             </div>
             <div className="max-w-xl self-end rounded-[2px] border border-white/15 bg-white/10 px-5 py-5 backdrop-blur-md">
@@ -109,7 +109,7 @@ export default async function AboutPage(props: AboutProps) {
           <div className="relative flex h-full flex-col justify-end p-6 md:p-8">
             <p className="eyebrow !text-white/70">Studio note</p>
             <p className="mt-4 max-w-sm font-display text-[2.3rem] leading-[0.98] tracking-[-0.05em] text-white md:text-5xl">
-              Texture matters more when the interface steps back.
+              Texture, scale, and use matter more when the details stay easy to read.
             </p>
           </div>
         </article>
@@ -118,14 +118,15 @@ export default async function AboutPage(props: AboutProps) {
           <p className="eyebrow">Why this storefront exists</p>
           <div className="mt-6 space-y-6 text-base leading-8 text-[var(--brand-muted)]">
             <p>
-              We built {siteContent.name} to behave like a buying room: quieter,
-              more selective, and easier to trust when you are sourcing by the yard.
+              We built {siteContent.name} to feel closer to a focused sourcing
+              room: quieter, more selective, and easier to trust when you are
+              buying by the yard.
             </p>
             <p>
-              Instead of crowding the screen with marketplace noise, the design
+              Instead of crowding the screen with marketplace noise, the archive
               leaves room for scale, finish, and pattern to do the work. That
-              creates the editorial tone, but it also serves conversion by making
-              the decision process calmer.
+              makes it easier to judge what belongs on a chair, panel, cushion,
+              bag, or custom fabrication project.
             </p>
             <p>
               The archive is organized around material families and intended use.
@@ -139,8 +140,8 @@ export default async function AboutPage(props: AboutProps) {
       <section className="mt-12 editorial-surface rounded-[2px] px-6 py-8 md:px-8 md:py-12">
         <p className="eyebrow">Editorial quote</p>
         <p className="mt-5 max-w-5xl font-display text-[2.55rem] leading-[0.96] tracking-[-0.05em] text-[var(--brand-ink)] md:text-6xl">
-          “The interface should behave like a frame for the material: calm,
-          tactile, and precise enough to support purchase confidence.”
+          “We want texture, scale, and order quantity to stay clear enough that
+          you can choose confidently before checkout.”
         </p>
       </section>
 

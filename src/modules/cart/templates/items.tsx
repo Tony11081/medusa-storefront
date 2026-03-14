@@ -19,9 +19,8 @@ const ItemsTemplate = ({ cart }: ItemsTemplateProps) => {
         </Heading>
       </div>
       <p className="mt-3 max-w-2xl text-[15px] leading-7 text-[var(--brand-muted)] md:mt-4 md:text-base md:leading-8">
-        A premium cart should reduce hesitation: clear product details,
-        comfortable mobile controls, and a summary that never competes with the
-        next action.
+        Review your selected materials, confirm yardage, and move into checkout
+        once the project quantities look right.
       </p>
       <div className="mt-8 grid gap-4">
         {items

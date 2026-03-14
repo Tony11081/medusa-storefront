@@ -20,9 +20,9 @@ export default async function Nav() {
     <div className="sticky top-0 inset-x-0 z-50 group">
       <div className="hidden border-b border-[rgba(255,255,255,0.12)] bg-[rgba(20,25,22,0.94)] text-white/72 backdrop-blur-xl md:block">
         <div className="content-container flex min-h-10 items-center justify-between gap-4 text-[10px] uppercase tracking-[0.24em]">
-          <span>Editorial commerce storefront</span>
-          <span>Medusa-powered cart and checkout</span>
-          <span>Independent DTC brand direction</span>
+          <span>Designer fabrics sold by the yard</span>
+          <span>Project guidance available before larger orders</span>
+          <span>Shipping, swatches, and sourcing guidance</span>
         </div>
       </div>
       <header className="relative mx-auto border-b border-[var(--brand-line)] bg-[rgba(248,247,244,0.84)] backdrop-blur-xl duration-200">

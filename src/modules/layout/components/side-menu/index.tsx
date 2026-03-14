@@ -14,9 +14,9 @@ import LanguageSelect from "../language-select"
 
 const primaryLinks = [
   {
-    label: "Archive",
+    label: "Shop all",
     href: "/store",
-    detail: "Browse the full designer textile archive",
+    detail: "Browse the full archive of designer fabrics and coated materials",
   },
   {
     label: "Guide",
@@ -26,6 +26,11 @@ const primaryLinks = [
 ]
 
 const utilityLinks = [
+  {
+    label: "Home",
+    href: "/",
+    detail: "Return to the latest featured materials",
+  },
   {
     label: "About",
     href: "/about",
@@ -104,7 +109,8 @@ const SideMenu = ({ regions, locales, currentLocale }: SideMenuProps) => {
                                 {siteContent.name}
                               </p>
                               <p className="mt-2 max-w-sm text-sm leading-6 text-[var(--brand-muted)]">
-                                {siteContent.footerNote}
+                                Sold by the yard, with guidance for swatches,
+                                sourcing, and larger project quantities.
                               </p>
                             </div>
                           </div>
@@ -122,6 +128,36 @@ const SideMenu = ({ regions, locales, currentLocale }: SideMenuProps) => {
 
                     <div className="flex-1 overflow-y-auto px-5 py-5 sm:px-6">
                       <section>
+                        <div className="flex items-center justify-between gap-4">
+                          <p className="soft-caption">Shop by material</p>
+                          <LocalizedClientLink
+                            href="/store"
+                            onClick={close}
+                            className="text-[10px] uppercase tracking-[0.22em] text-[var(--brand-accent-soft)]"
+                          >
+                            View archive
+                          </LocalizedClientLink>
+                        </div>
+                        <div className="mt-3 grid grid-cols-2 gap-2">
+                          {siteContent.categoryCards.map((card) => (
+                            <LocalizedClientLink
+                              key={card.href}
+                              href={card.href}
+                              onClick={close}
+                              className="group rounded-[2px] border border-[var(--brand-line)] bg-[rgba(255,255,255,0.72)] px-3 py-3 transition hover:border-[var(--brand-line-strong)] hover:bg-white"
+                            >
+                              <p className="text-sm font-medium text-[var(--brand-ink)]">
+                                {card.title}
+                              </p>
+                              <p className="mt-1 line-clamp-3 text-xs leading-5 text-[var(--brand-muted)]">
+                                {card.description}
+                              </p>
+                            </LocalizedClientLink>
+                          ))}
+                        </div>
+                      </section>
+
+                      <section className="mt-6">
                         <p className="soft-caption">Start here</p>
                         <div className="mt-3 grid gap-3">
                           {primaryLinks.map((link) => (
@@ -151,13 +187,6 @@ const SideMenu = ({ regions, locales, currentLocale }: SideMenuProps) => {
                       <section className="mt-6">
                         <div className="flex items-center justify-between gap-4">
                           <p className="soft-caption">Quick links</p>
-                          <LocalizedClientLink
-                            href="/"
-                            onClick={close}
-                            className="text-[10px] uppercase tracking-[0.22em] text-[var(--brand-accent-soft)]"
-                          >
-                            Home
-                          </LocalizedClientLink>
                         </div>
                         <div className="mt-3 grid grid-cols-2 gap-2">
                           {utilityLinks.map((link) => (
@@ -178,32 +207,12 @@ const SideMenu = ({ regions, locales, currentLocale }: SideMenuProps) => {
                         </div>
                       </section>
 
-                      <section className="mt-6">
-                        <p className="soft-caption">Browse by material</p>
-                        <div className="mt-3 grid grid-cols-2 gap-2">
-                          {siteContent.categoryCards.map((card) => (
-                            <LocalizedClientLink
-                              key={card.href}
-                              href={card.href}
-                              onClick={close}
-                              className="group rounded-[2px] border border-[var(--brand-line)] bg-[rgba(255,255,255,0.72)] px-3 py-3 transition hover:border-[var(--brand-line-strong)] hover:bg-white"
-                            >
-                              <p className="text-sm font-medium text-[var(--brand-ink)]">
-                                {card.title}
-                              </p>
-                              <p className="mt-1 line-clamp-3 text-xs leading-5 text-[var(--brand-muted)]">
-                                {card.description}
-                              </p>
-                            </LocalizedClientLink>
-                          ))}
-                        </div>
-                      </section>
-
                       <section className="mt-6 rounded-[2px] border border-[var(--brand-line)] bg-[rgba(255,255,255,0.82)] p-4">
                         <p className="soft-caption">Need help before ordering?</p>
                         <p className="mt-3 text-sm leading-6 text-[var(--brand-muted)]">
                           Ask for project-fit advice, closer texture shots, or
-                          support before placing a larger yardage order.
+                          help narrowing the right material family before you
+                          place a larger order.
                         </p>
                         <div className="mt-4 flex flex-col items-start gap-3">
                           <a

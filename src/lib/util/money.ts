@@ -8,6 +8,18 @@ type ConvertToLocaleParams = {
   locale?: string
 }
 
+export const normalizeCurrencyAmount = (
+  amount: number,
+  currency_code: string
+) => {
+  const fractionDigits = new Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency: currency_code,
+  }).resolvedOptions().maximumFractionDigits
+
+  return amount / 10 ** fractionDigits
+}
+
 export const convertToLocale = ({
   amount,
   currency_code,
@@ -23,4 +35,20 @@ export const convertToLocale = ({
         maximumFractionDigits,
       }).format(amount)
     : amount.toString()
+}
+
+export const convertMinorUnitToLocale = ({
+  amount,
+  currency_code,
+  minimumFractionDigits,
+  maximumFractionDigits,
+  locale = "en-US",
+}: ConvertToLocaleParams) => {
+  return convertToLocale({
+    amount: normalizeCurrencyAmount(amount, currency_code),
+    currency_code,
+    minimumFractionDigits,
+    maximumFractionDigits,
+    locale,
+  })
 }
