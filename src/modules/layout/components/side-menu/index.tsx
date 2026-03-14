@@ -89,7 +89,7 @@ const SideMenu = ({ regions, locales, currentLocale }: SideMenuProps) => {
                 <PopoverPanel className="fixed inset-y-0 left-0 z-[51] w-full max-w-[26rem] text-[var(--brand-ink)] sm:max-w-[28rem]">
                   <div
                     data-testid="nav-menu-popup"
-                    className="flex h-full flex-col border-r border-[var(--brand-line)] bg-[var(--brand-canvas)] shadow-[0_26px_80px_rgba(16,21,31,0.16)]"
+                    className="flex h-full w-full flex-col border-r border-[var(--brand-line)] bg-[var(--brand-panel)] shadow-[0_26px_80px_rgba(16,21,31,0.16)]"
                   >
                     <div className="border-b border-[var(--brand-line)] px-5 pb-5 pt-[max(1.25rem,env(safe-area-inset-top))] sm:px-6">
                       <div className="flex items-start justify-between gap-4">
@@ -223,7 +223,7 @@ const SideMenu = ({ regions, locales, currentLocale }: SideMenuProps) => {
                       </section>
                     </div>
 
-                    <div className="border-t border-[var(--brand-line)] bg-[rgba(255,255,255,0.68)] px-5 pb-[calc(env(safe-area-inset-bottom)+1.1rem)] pt-4 sm:px-6">
+                    <div className="border-t border-[var(--brand-line)] bg-[var(--brand-paper)] px-5 pb-[calc(env(safe-area-inset-bottom)+1.1rem)] pt-4 sm:px-6">
                       <div className="grid gap-3">
                         {!!locales?.length && (
                           <div
