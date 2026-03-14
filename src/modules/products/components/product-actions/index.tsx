@@ -239,14 +239,15 @@ export default function ProductActions({
 
   return (
     <>
-      <div className="flex flex-col gap-y-2" ref={actionsRef}>
+      <div className="flex flex-col gap-y-2 pb-4 md:pb-0" ref={actionsRef}>
         <div>
           {(product.variants?.length ?? 0) > 1 && visibleOptions.length > 0 && (
-            <div className="flex flex-col gap-y-4">
+            <div className="flex flex-col gap-y-4 md:gap-y-5">
               {visibleOptions.map((option) => {
                 return (
                   <div key={option.id}>
                     <OptionSelect
+                      product={product}
                       option={option}
                       current={options[option.id]}
                       updateOption={setOptionValue}
@@ -281,7 +282,7 @@ export default function ProductActions({
             !isValidVariant
           }
           variant="primary"
-          className="w-full h-10"
+          className="brand-button !flex !w-full !rounded-[2px] !px-5 !py-4 !text-[11px] !tracking-[0.26em]"
           isLoading={isAdding}
           data-testid="add-product-button"
         >
@@ -291,21 +292,21 @@ export default function ProductActions({
             ? "Out of stock"
             : "Add to cart"}
         </Button>
-        <div className="mt-3 rounded-[1.4rem] border border-[var(--brand-line)] bg-[rgba(255,250,244,0.8)] p-4 text-sm leading-6 text-[var(--brand-muted)]">
+        <div className="mt-4 rounded-[2px] border border-[var(--brand-line)] bg-[rgba(252,251,248,0.78)] p-4 text-sm leading-6 text-[var(--brand-muted)] md:p-5">
           <div className="flex items-start justify-between gap-4">
-            <span className="text-[11px] uppercase tracking-[0.18em] text-[var(--brand-soft)]">
+            <span className="soft-caption">
               Price
             </span>
             <span className="text-right text-[var(--brand-ink)]">{priceRuleLabel}</span>
           </div>
           <div className="mt-3 flex items-start justify-between gap-4">
-            <span className="text-[11px] uppercase tracking-[0.18em] text-[var(--brand-soft)]">
+            <span className="soft-caption">
               Yardage
             </span>
             <span className="max-w-[220px] text-right">{continuousYardageNote}</span>
           </div>
           <div className="mt-3 flex items-start justify-between gap-4">
-            <span className="text-[11px] uppercase tracking-[0.18em] text-[var(--brand-soft)]">
+            <span className="soft-caption">
               Estimated total
             </span>
             <span className="text-right text-[var(--brand-ink)]">
@@ -313,7 +314,7 @@ export default function ProductActions({
             </span>
           </div>
           <div className="mt-3 flex items-start justify-between gap-4">
-            <span className="text-[11px] uppercase tracking-[0.18em] text-[var(--brand-soft)]">
+            <span className="soft-caption">
               Best for
             </span>
             <span className="max-w-[220px] text-right">{useCaseLabel}</span>
@@ -325,13 +326,13 @@ export default function ProductActions({
             <div className="mt-2 flex flex-wrap gap-3">
               <a
                 href={swatchRequestHref}
-                className="rounded-full border border-[var(--brand-line)] px-4 py-2 text-xs uppercase tracking-[0.18em] text-[var(--brand-ink)] transition hover:border-[var(--brand-accent)]"
+                className="rounded-[2px] border border-[var(--brand-line-strong)] px-4 py-2 text-[11px] uppercase tracking-[0.22em] text-[var(--brand-ink)] transition hover:border-[var(--brand-ink)]"
               >
                 Request swatch help
               </a>
               <a
                 href={`mailto:${siteContent.supportEmail}`}
-                className="text-xs uppercase tracking-[0.18em] text-[var(--brand-soft)] underline decoration-[rgba(16,21,31,0.22)] underline-offset-4"
+                className="brand-link !text-[11px] !tracking-[0.22em]"
               >
                 {siteContent.supportEmail}
               </a>
@@ -339,7 +340,7 @@ export default function ProductActions({
           </div>
         </div>
         {didAdd && (
-          <div className="rounded-[1.2rem] border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-900">
+          <div className="rounded-[2px] border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-900">
             Added to cart.{" "}
             <a
               href={`/${countryCode}/cart`}

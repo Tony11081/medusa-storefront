@@ -32,7 +32,7 @@ export default function QuantitySelect({
       )}
       <div
         className={clx(
-          "grid h-10 grid-cols-[40px_1fr_40px] items-center overflow-hidden rounded-[999px] border border-black/10 bg-white text-sm text-black transition",
+          "grid min-h-12 grid-cols-[44px_1fr_44px] items-center overflow-hidden rounded-[2px] border border-[var(--brand-line-strong)] bg-[rgba(252,251,248,0.88)] text-sm text-[var(--brand-ink)] transition",
           compact ? "w-full min-w-[88px]" : "w-full",
           disabled && "cursor-not-allowed opacity-60"
         )}
@@ -42,7 +42,7 @@ export default function QuantitySelect({
           onClick={() => canDecrease && onChange(value - 1)}
           disabled={!canDecrease}
           aria-label="Decrease quantity"
-          className="flex h-full items-center justify-center border-r border-black/10 text-lg text-black transition hover:bg-black/[0.03] disabled:cursor-not-allowed disabled:text-black/25 disabled:hover:bg-transparent"
+          className="flex h-full items-center justify-center border-r border-[var(--brand-line)] text-lg text-[var(--brand-ink)] transition hover:bg-[rgba(32,37,33,0.04)] disabled:cursor-not-allowed disabled:text-black/25 disabled:hover:bg-transparent"
         >
           -
         </button>
@@ -50,7 +50,7 @@ export default function QuantitySelect({
           id={selectId}
           aria-label="Quantity"
           aria-live="polite"
-          className="flex h-full items-center justify-center text-sm font-medium text-black"
+          className="flex h-full items-center justify-center text-sm font-medium text-[var(--brand-ink)]"
           data-testid="product-quantity-select"
         >
           {value}
@@ -60,7 +60,7 @@ export default function QuantitySelect({
           onClick={() => canIncrease && onChange(value + 1)}
           disabled={!canIncrease}
           aria-label="Increase quantity"
-          className="flex h-full items-center justify-center border-l border-black/10 text-lg text-black transition hover:bg-black/[0.03] disabled:cursor-not-allowed disabled:text-black/25 disabled:hover:bg-transparent"
+          className="flex h-full items-center justify-center border-l border-[var(--brand-line)] text-lg text-[var(--brand-ink)] transition hover:bg-[rgba(32,37,33,0.04)] disabled:cursor-not-allowed disabled:text-black/25 disabled:hover:bg-transparent"
         >
           +
         </button>

@@ -30,11 +30,11 @@ const Thumbnail: React.FC<ThumbnailProps> = ({
   return (
     <Container
       className={clx(
-        "relative w-full overflow-hidden rounded-[1.35rem] border border-black/5 bg-[linear-gradient(160deg,rgba(255,255,255,0.98),rgba(243,232,218,0.88))] shadow-[0_18px_45px_rgba(16,21,31,0.08)] transition-all duration-300 ease-in-out group-hover:shadow-[0_24px_60px_rgba(16,21,31,0.12)]",
+        "relative w-full overflow-hidden rounded-[2px] bg-[linear-gradient(160deg,rgba(252,251,248,0.98),rgba(241,237,230,0.94))] transition-all duration-500 ease-out",
         className,
         {
-          "aspect-[11/14]": isFeatured,
-          "aspect-[9/16]": !isFeatured && size !== "square",
+          "aspect-[4/5]": isFeatured,
+          "aspect-[4/5]": !isFeatured && size !== "square",
           "aspect-[1/1]": size === "square",
           "w-[180px]": size === "small",
           "w-[290px]": size === "medium",
@@ -58,7 +58,7 @@ const ImageOrPlaceholder = ({
     <Image
       src={image}
       alt={alt || "Product thumbnail"}
-      className="absolute inset-0 object-cover object-center"
+      className="absolute inset-0 object-cover object-center transition duration-700 ease-out group-hover:scale-[1.03]"
       draggable={false}
       quality={50}
       unoptimized={isExternalImageUrl(image)}
@@ -66,7 +66,7 @@ const ImageOrPlaceholder = ({
       fill
     />
   ) : (
-    <div className="absolute inset-0 flex h-full w-full items-center justify-center bg-[radial-gradient(circle_at_top,rgba(182,130,62,0.18),transparent_32%),linear-gradient(180deg,rgba(255,250,244,0.98),rgba(241,232,220,0.9))]">
+    <div className="absolute inset-0 flex h-full w-full items-center justify-center bg-[radial-gradient(circle_at_top,rgba(215,199,171,0.22),transparent_32%),linear-gradient(180deg,rgba(252,251,248,0.98),rgba(241,237,230,0.9))]">
       <PlaceholderImage size={size === "small" ? 16 : 24} />
     </div>
   )

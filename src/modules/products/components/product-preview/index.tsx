@@ -9,7 +9,6 @@ import PreviewPrice from "./price"
 
 export default async function ProductPreview({
   product,
-  isFeatured,
   region,
 }: {
   product: HttpTypes.StoreProduct
@@ -31,47 +30,56 @@ export default async function ProductPreview({
   const displayTitle = getProductDisplayTitle(product)
 
   return (
-    <LocalizedClientLink href={`/products/${product.handle}`} className="group">
-      <div
-        data-testid="product-wrapper"
-        className="h-full overflow-hidden rounded-[1.8rem] border border-[var(--brand-line)] bg-[linear-gradient(155deg,rgba(255,250,244,0.98),rgba(243,232,218,0.9))] p-4 shadow-[0_18px_50px_rgba(16,21,31,0.06)] transition duration-300 hover:-translate-y-1 hover:shadow-[0_28px_70px_rgba(16,21,31,0.1)]"
-      >
-        <div className="relative">
+    <LocalizedClientLink href={`/products/${product.handle}`} className="group block h-full">
+      <article data-testid="product-wrapper" className="flex h-full flex-col">
+        <div className="editorial-frame">
           <Thumbnail
             thumbnail={product.thumbnail}
             images={product.images}
             size="full"
-            isFeatured={isFeatured}
+            isFeatured
+            className="rounded-none"
             alt={`${product.title} fabric preview`}
           />
-          <div className="pointer-events-none absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-[rgba(15,12,10,0.72)] to-transparent" />
-          <div className="absolute left-4 top-4 rounded-full border border-white/25 bg-[rgba(20,16,13,0.58)] px-3 py-1 text-[10px] uppercase tracking-[0.22em] text-white backdrop-blur-md">
-            {product.material ?? "Designer textile"}
+          <div className="pointer-events-none absolute inset-x-0 bottom-0 hidden translate-y-5 items-center justify-between border-t border-white/20 bg-[linear-gradient(180deg,rgba(17,23,20,0),rgba(17,23,20,0.92))] px-4 py-3 opacity-0 transition duration-500 group-hover:translate-y-0 group-hover:opacity-100 md:flex">
+            <span className="text-[10px] uppercase tracking-[0.26em] text-white/70">
+              View details
+            </span>
+            <span className="brand-link !text-[10px] !tracking-[0.24em] !text-white !decoration-white/25">
+              Enter PDP
+            </span>
           </div>
         </div>
-        <div className="mt-4 flex items-start justify-between gap-4">
-          <div>
-            <Text
-              className="line-clamp-2 text-base font-medium text-[var(--brand-ink)]"
-              data-testid="product-title"
-            >
-              {displayTitle}
-            </Text>
-            <p className="mt-2 text-xs uppercase tracking-[0.18em] text-[var(--brand-soft)]">
+        <div className="flex flex-1 flex-col justify-between gap-4 pt-3 md:gap-5 md:pt-4">
+          <div className="flex flex-col gap-3 md:flex-row md:items-start md:justify-between md:gap-5">
+            <div className="min-w-0">
+              <p className="soft-caption">
+                {product.material ?? "Designer textile"}
+              </p>
+              <Text
+                className="mt-2 line-clamp-2 text-base font-medium leading-6 text-[var(--brand-ink)] md:text-lg md:leading-7"
+                data-testid="product-title"
+              >
+                {displayTitle}
+              </Text>
+            </div>
+            <div className="pt-0.5 text-left text-[var(--brand-ink)] md:text-right">
+              {cheapestPrice && <PreviewPrice price={cheapestPrice} />}
+            </div>
+          </div>
+          <div className="flex flex-col items-start gap-1.5 border-t border-[var(--brand-line)] pt-3 md:flex-row md:items-center md:justify-between md:gap-4">
+            <p className="text-[11px] uppercase tracking-[0.2em] text-[var(--brand-soft)]">
               {product.origin_country
                 ? countryNames[product.origin_country] ??
                   product.origin_country.toUpperCase()
                 : "Archive selection"}
             </p>
-            <p className="mt-3 text-[11px] uppercase tracking-[0.18em] text-[var(--brand-accent)]">
-              Sold in 1 yard units
+            <p className="text-[11px] uppercase tracking-[0.22em] text-[var(--brand-accent-soft)]">
+              Sold by the yard
             </p>
           </div>
-          <div className="rounded-full border border-[var(--brand-line)] bg-white/78 px-3 py-2 text-[var(--brand-ink)]">
-            {cheapestPrice && <PreviewPrice price={cheapestPrice} />}
-          </div>
         </div>
-      </div>
+      </article>
     </LocalizedClientLink>
   )
 }

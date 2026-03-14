@@ -21,86 +21,83 @@ const StoreTemplate = ({
   const faqItems = getStoreFaqItems()
 
   return (
-    <div
-      className="flex flex-col small:flex-row small:items-start py-6 content-container"
-      data-testid="category-container"
-    >
-      <RefinementList sortBy={sort} />
-      <div className="w-full">
-        <div className="mb-8 overflow-hidden rounded-[2rem] border border-[var(--brand-line)] bg-[linear-gradient(145deg,rgba(255,250,244,0.98),rgba(238,226,212,0.92))] shadow-[0_22px_60px_rgba(16,21,31,0.08)]">
-          <div className="grid gap-8 px-6 py-7 lg:grid-cols-[1.1fr_0.9fr] lg:px-8">
-            <div>
-              <p className="eyebrow">Textile Archive</p>
-              <h1
-                className="mt-3 font-display text-4xl leading-none tracking-[-0.03em] text-[var(--brand-ink)] md:text-5xl"
-                data-testid="store-page-title"
-              >
-                Designer fabrics by the yard
-              </h1>
-              <p className="mt-4 max-w-2xl text-sm leading-7 text-[var(--brand-muted)]">
-                Browse jacquard, leather, vinyl, lining, denim, cotton, and
-                upholstery materials from the Atelier Fabrics catalog.
+    <div className="content-container py-6 md:py-10" data-testid="category-container">
+      <section className="editorial-surface overflow-hidden rounded-[2px] px-6 py-8 md:px-8 md:py-10">
+        <div className="grid gap-8 lg:grid-cols-[1.2fr_0.8fr]">
+          <div>
+            <p className="eyebrow">The Archive</p>
+            <h1
+              className="mt-4 max-w-4xl font-display text-[3rem] leading-[0.96] tracking-[-0.05em] text-[var(--brand-ink)] sm:text-5xl md:text-7xl"
+              data-testid="store-page-title"
+            >
+              A curated textile archive designed for slower, more intentional browsing.
+            </h1>
+          </div>
+          <div className="grid gap-4 md:grid-cols-3 lg:grid-cols-1">
+            <div className="border-b border-[var(--brand-line)] pb-4 lg:border-b-0 lg:border-l lg:pl-6">
+              <p className="soft-caption">Units</p>
+              <p className="mt-3 text-base leading-7 text-[var(--brand-muted)]">
+                Every listing is structured around a clear 1 yard order line.
               </p>
             </div>
-            <div className="grid gap-3 sm:grid-cols-3 lg:grid-cols-1">
-              <div className="rounded-[1.4rem] border border-black/5 bg-white/82 px-4 py-4">
-                <p className="text-[10px] uppercase tracking-[0.24em] text-[var(--brand-soft)]">
-                  Units
-                </p>
-                <p className="mt-2 text-sm leading-6 text-[var(--brand-ink)]">
-                  1 yard per order line
-                </p>
-              </div>
-              <div className="rounded-[1.4rem] border border-black/5 bg-white/82 px-4 py-4">
-                <p className="text-[10px] uppercase tracking-[0.24em] text-[var(--brand-soft)]">
-                  Pricing
-                </p>
-                <p className="mt-2 text-sm leading-6 text-[var(--brand-ink)]">
-                  Fabric USD 35, leather and vinyl USD 45
-                </p>
-              </div>
-              <div className="rounded-[1.4rem] border border-black/5 bg-white/82 px-4 py-4">
-                <p className="text-[10px] uppercase tracking-[0.24em] text-[var(--brand-soft)]">
-                  Focus
-                </p>
-                <p className="mt-2 text-sm leading-6 text-[var(--brand-ink)]">
-                  Upholstery, soft goods, wall panels, and bespoke projects
-                </p>
-              </div>
+            <div className="border-b border-[var(--brand-line)] pb-4 lg:border-b-0 lg:border-l lg:pl-6">
+              <p className="soft-caption">Pricing</p>
+              <p className="mt-3 text-base leading-7 text-[var(--brand-muted)]">
+                Straightforward pricing, with fabric and coated materials presented clearly.
+              </p>
+            </div>
+            <div className="lg:border-l lg:pl-6">
+              <p className="soft-caption">Use cases</p>
+              <p className="mt-3 text-base leading-7 text-[var(--brand-muted)]">
+                Upholstery, decorative panels, soft goods, and custom interior projects.
+              </p>
             </div>
           </div>
         </div>
+      </section>
+
+      <section className="section-divider mt-10 pt-10">
+        <RefinementList sortBy={sort} />
         <Suspense fallback={<SkeletonProductGrid />}>
           <PaginatedProducts
             sortBy={sort}
             page={pageNumber}
             countryCode={countryCode}
+            editorialInterlude={{
+              eyebrow: "Editorial Note",
+              title: "Commerce should still feel curated.",
+              body:
+                "This archive is meant to read more like a buying room than a discount grid. Use the collection slowly, compare texture and finish, and move into each product detail page for the project notes that support conversion.",
+              ctaLabel: "Read the sourcing guide",
+              ctaHref: `/${countryCode}/guide`,
+            }}
           />
         </Suspense>
-        <div className="mt-10 rounded-[2rem] border border-[var(--brand-line)] bg-white/88 p-6 shadow-[0_18px_55px_rgba(16,21,31,0.05)] md:p-8">
-          <div className="max-w-2xl">
-            <p className="eyebrow">Buyer Questions</p>
-            <h2 className="mt-3 font-display text-3xl leading-none tracking-[-0.03em] text-[var(--brand-ink)] md:text-4xl">
-              The answers customers usually need before ordering.
-            </h2>
-          </div>
-          <div className="mt-6 grid gap-4 md:grid-cols-3">
-            {faqItems.map((item) => (
-              <div
-                key={item.question}
-                className="rounded-[1.4rem] border border-[var(--brand-line)] bg-[rgba(255,250,244,0.82)] p-5"
-              >
-                <p className="text-sm font-medium text-[var(--brand-ink)]">
-                  {item.question}
-                </p>
-                <p className="mt-3 text-sm leading-7 text-[var(--brand-muted)]">
-                  {item.answer}
-                </p>
-              </div>
-            ))}
-          </div>
+      </section>
+
+      <section className="mt-12 editorial-surface rounded-[2px] px-5 py-7 md:mt-16 md:px-8 md:py-10">
+        <div className="max-w-2xl">
+          <p className="eyebrow">Buyer Questions</p>
+          <h2 className="mt-4 font-display text-[2.35rem] leading-[0.98] tracking-[-0.04em] text-[var(--brand-ink)] md:text-5xl">
+            The reassurance layer that keeps premium browsing conversion-ready.
+          </h2>
         </div>
-      </div>
+        <div className="mt-8 grid gap-4 xl:grid-cols-3">
+          {faqItems.map((item) => (
+            <div
+              key={item.question}
+              className="rounded-[2px] border border-[var(--brand-line)] bg-[rgba(252,251,248,0.78)] p-5"
+            >
+              <p className="text-base font-medium text-[var(--brand-ink)]">
+                {item.question}
+              </p>
+              <p className="mt-3 text-sm leading-7 text-[var(--brand-muted)]">
+                {item.answer}
+              </p>
+            </div>
+          ))}
+        </div>
+      </section>
     </div>
   )
 }

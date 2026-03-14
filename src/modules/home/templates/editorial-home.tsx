@@ -27,262 +27,233 @@ const EditorialHome = ({ products, region }: EditorialHomeProps) => {
 
   const heroLead = featuredProducts[0]
   const heroImage = normalizeImageUrl(heroLead?.thumbnail)
+  const editorialLead = featuredProducts[1] ?? featuredProducts[0] ?? null
+  const editorialImage = normalizeImageUrl(editorialLead?.thumbnail)
+  const journalLead = featuredProducts[2] ?? heroLead ?? null
+  const journalImage = normalizeImageUrl(journalLead?.thumbnail)
 
   return (
-    <div className="pb-24">
-      <section className="content-container pt-8 pb-10">
-        <div className="relative overflow-hidden rounded-[2.2rem] bg-[var(--brand-ink)] text-white shadow-[0_30px_90px_rgba(16,21,31,0.18)]">
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(197,164,109,0.32),transparent_34%),radial-gradient(circle_at_bottom_left,rgba(255,255,255,0.12),transparent_28%),linear-gradient(140deg,rgba(0,0,0,0),rgba(12,8,5,0.28))]" />
-          <div className="relative grid gap-10 px-6 py-10 md:grid-cols-[1.15fr_0.85fr] md:px-10 md:py-14 xl:px-14 xl:py-16">
-            <div className="flex flex-col justify-between gap-10">
-              <div className="max-w-2xl">
-                <p className="eyebrow mb-5 text-[rgba(255,245,230,0.86)]">
-                  {siteContent.eyebrow}
-                </p>
-                <h1 className="font-display text-5xl leading-[0.92] tracking-[-0.04em] md:text-7xl">
-                  Designer fabrics for upholstery, interiors, and custom work.
-                </h1>
-                <p className="mt-6 max-w-xl text-base leading-7 text-[rgba(255,245,230,0.78)] md:text-lg">
-                  {siteContent.description}
-                </p>
-                <div className="mt-6 flex flex-wrap gap-2">
-                  {["Jacquard", "Leather", "Vinyl", "Upholstery"].map((item) => (
-                    <span
-                      key={item}
-                      className="rounded-full border border-white/15 bg-white/8 px-3 py-1 text-[10px] uppercase tracking-[0.22em] text-[rgba(255,245,230,0.82)]"
-                    >
-                      {item}
-                    </span>
-                  ))}
-                </div>
-                <div className="mt-8 flex flex-wrap gap-3">
-                  <LocalizedClientLink href="/store" className="brand-button">
-                    Shop the archive
-                  </LocalizedClientLink>
-                  <LocalizedClientLink
-                    href="/guide"
-                    className="brand-button brand-button-secondary"
-                  >
-                    Read the buying guide
-                  </LocalizedClientLink>
-                </div>
-              </div>
-
-              <div className="grid gap-3 sm:grid-cols-3">
-                <StatCard label="Catalog" value={`${products.length} fabric listings`} />
-                <StatCard label="Pricing" value="USD 35-45 per yard" />
-                <StatCard label="Focus" value="Jacquard / Leather / Vinyl" />
+    <div className="pb-20 md:pb-32">
+      <section className="content-container pt-4 md:pt-8">
+        <div className="editorial-frame min-h-[68vh] bg-[var(--brand-ink)] text-white sm:min-h-[72vh] md:min-h-[78vh]">
+          {heroImage ? (
+            <Image
+              src={heroImage}
+              alt={heroLead?.title ?? siteContent.name}
+              fill
+              priority
+              unoptimized={isExternalImageUrl(heroImage)}
+              className="object-cover"
+            />
+          ) : null}
+          <div className="absolute inset-0 bg-[linear-gradient(120deg,rgba(12,17,15,0.9),rgba(12,17,15,0.2)_48%,rgba(12,17,15,0.72))]" />
+          <div className="relative grid min-h-[68vh] items-end gap-8 px-5 py-6 sm:min-h-[72vh] md:min-h-[78vh] md:px-10 md:py-10 lg:grid-cols-[1.05fr_0.95fr] lg:gap-10">
+            <div className="max-w-3xl">
+              <p className="eyebrow !text-white/70">{siteContent.eyebrow}</p>
+              <h1 className="mt-4 font-display text-[3.35rem] leading-[0.9] tracking-[-0.06em] text-white sm:text-6xl md:mt-5 md:text-8xl">
+                The quieter way to shop premium materials online.
+              </h1>
+              <p className="mt-5 max-w-xl text-[15px] leading-7 text-white/76 md:mt-6 md:text-lg md:leading-8">
+                A headless commerce storefront designed like an editorial brand
+                site: immersive imagery, clear purchase moments, and product
+                pages built to answer the questions that slow conversion.
+              </p>
+              <div className="mt-7 flex flex-wrap gap-3 md:mt-8">
+                <LocalizedClientLink href="/store" className="brand-button">
+                  Shop the collection
+                </LocalizedClientLink>
+                <LocalizedClientLink
+                  href="/about"
+                  className="brand-button brand-button-secondary !border-white/30 !text-white hover:!bg-white/8"
+                >
+                  Read the story
+                </LocalizedClientLink>
               </div>
             </div>
 
-            <div className="grid gap-4 md:grid-rows-[minmax(340px,1fr)_auto]">
-              <div className="relative overflow-hidden rounded-[1.75rem] border border-white/10 bg-white/5">
-                {heroImage ? (
-                  <Image
-                    src={heroImage}
-                    alt={heroLead.title ?? siteContent.name}
-                    fill
-                    priority
-                    unoptimized={isExternalImageUrl(heroImage)}
-                    className="object-cover"
-                  />
-                ) : null}
-                <div className="absolute inset-0 bg-gradient-to-t from-[rgba(10,15,22,0.94)] via-[rgba(10,15,22,0.4)] to-transparent" />
-                <div className="absolute inset-x-0 bottom-0 flex items-end justify-between gap-4 p-6">
-                  <div>
-                    <p className="eyebrow text-[rgba(255,245,230,0.8)]">
-                      Featured textile
-                    </p>
-                    <h2 className="mt-2 font-display text-4xl leading-none tracking-[-0.03em]">
-                      {heroLead?.title ?? siteContent.name}
-                    </h2>
-                    <p className="mt-3 max-w-sm text-sm leading-6 text-[rgba(255,245,230,0.8)]">
-                      {heroLead?.description ??
-                        "Selected for upholstery statements, layered interiors, and custom work that benefits from strong pattern and tactile depth."}
-                    </p>
-                  </div>
-                  {heroLead?.handle ? (
-                    <LocalizedClientLink
-                      href={`/products/${heroLead.handle}`}
-                      className="rounded-full border border-white/25 px-4 py-2 text-sm uppercase tracking-[0.18em] text-white transition hover:bg-white hover:text-[var(--brand-ink)]"
-                    >
-                      View
-                    </LocalizedClientLink>
-                  ) : null}
-                </div>
-              </div>
-
-              <div className="grid gap-4 sm:grid-cols-2">
-                {featuredProducts.slice(1, 3).map((product) => (
-                  <MiniFeatureCard key={product.id} product={product} />
-                ))}
-              </div>
+            <div className="grid gap-3 self-end sm:grid-cols-3 lg:grid-cols-1 lg:gap-4">
+              <HeroNote
+                title="Editorial commerce"
+                body="Hero sections, story blocks, and product rails are designed to frame the brand first and the transaction second."
+              />
+              <HeroNote
+                title="Conversion clarity"
+                body="Sticky purchase modules, tactile variant selectors, and trust cues keep the experience commercially grounded."
+              />
+              <HeroNote
+                title="Modular build"
+                body="Everything is designed as reusable components for a Next.js + Medusa storefront, not one-off landing page artwork."
+              />
             </div>
           </div>
         </div>
       </section>
 
-      <section className="content-container grid gap-6 py-8 md:grid-cols-3">
-        {siteContent.categoryCards.map((card) => (
-          <CategoryCard
-            key={card.title}
-            title={card.title}
-            href={card.href}
-            description={card.description}
-            product={productMap.get(card.handle) ?? null}
-          />
-        ))}
+      <section className="content-container py-12 md:py-20">
+        <div className="grid gap-5 lg:grid-cols-3">
+          {siteContent.valueProps.map((item) => (
+            <article
+              key={item.title}
+              className="editorial-surface rounded-[2px] px-5 py-6 md:px-6"
+            >
+              <p className="eyebrow">{item.title}</p>
+              <p className="mt-4 text-base leading-8 text-[var(--brand-muted)]">
+                {item.body}
+              </p>
+            </article>
+          ))}
+        </div>
       </section>
 
-      <section className="content-container py-10">
-        <div className="grid gap-8 lg:grid-cols-[0.8fr_1.2fr]">
-          <div className="space-y-4">
-            <p className="eyebrow">Material Direction</p>
-            <h2 className="font-display text-4xl leading-none tracking-[-0.03em] text-[var(--brand-ink)] md:text-5xl">
-              Built as a sourcing archive, not a generic marketplace.
-            </h2>
-            <p className="max-w-md text-base leading-7 text-[var(--brand-muted)]">
-              The assortment is organized around material families and visual
-              texture. You can move from jacquard to leather to vinyl quickly,
-              compare direction at a glance, and source yardage with less noise.
-            </p>
+      <section className="content-container py-6 md:py-10">
+        <div className="grid gap-6 xl:grid-cols-[0.95fr_1.05fr] xl:gap-8">
+          <article className="editorial-frame min-h-[26rem] bg-[var(--brand-panel-strong)] md:min-h-[32rem]">
+            {editorialImage ? (
+              <Image
+                src={editorialImage}
+                alt={editorialLead?.title ?? "Editorial feature"}
+                fill
+                unoptimized={isExternalImageUrl(editorialImage)}
+                className="object-cover"
+              />
+            ) : null}
+            <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(16,21,18,0.06),rgba(16,21,18,0.72))]" />
+            <div className="relative flex h-full flex-col justify-end p-6 md:p-8">
+              <p className="eyebrow !text-white/72">Editorialized collection feature</p>
+              <h2 className="mt-4 max-w-xl font-display text-[2.8rem] leading-[0.94] tracking-[-0.05em] text-white md:text-6xl">
+                Quiet confidence comes from restraint, scale, and image-led browsing.
+              </h2>
+              <p className="mt-5 max-w-lg text-base leading-8 text-white/74">
+                We are moving away from generic marketplace UI and toward an
+                independent DTC system that feels tactile, composed, and
+                product-first.
+              </p>
+              <div className="mt-6">
+                <LocalizedClientLink
+                  href={editorialLead?.handle ? `/products/${editorialLead.handle}` : "/store"}
+                  className="brand-link !text-white !decoration-white/30"
+                >
+                  Explore the feature
+                </LocalizedClientLink>
+              </div>
+            </div>
+          </article>
+
+          <div className="grid gap-5 sm:grid-cols-2 md:gap-6">
+            {featuredProducts.slice(0, 4).map((product) => (
+              <ProductPreview key={product.id} product={product} region={region} />
+            ))}
           </div>
-          <div className="grid gap-4 md:grid-cols-3">
-            {siteContent.valueProps.map((item) => (
-              <div
-                key={item.title}
-                className="rounded-[1.5rem] border border-[var(--brand-line)] bg-white/85 p-6 shadow-[0_18px_50px_rgba(16,21,31,0.06)]"
-              >
-                <p className="text-xs uppercase tracking-[0.22em] text-[var(--brand-accent)]">
-                  {item.title}
-                </p>
-                <p className="mt-4 text-sm leading-7 text-[var(--brand-muted)]">
-                  {item.body}
-                </p>
+        </div>
+      </section>
+
+      <section className="content-container py-12 md:py-20">
+        <div className="mb-8 flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
+          <div className="max-w-2xl">
+            <p className="eyebrow">Best sellers rail</p>
+            <h2 className="mt-4 font-display text-[2.5rem] leading-[0.96] tracking-[-0.04em] text-[var(--brand-ink)] md:text-5xl">
+              A horizontal rail that feels curated, not crowded.
+            </h2>
+          </div>
+          <LocalizedClientLink href="/store" className="brand-link">
+            Browse the full archive
+          </LocalizedClientLink>
+        </div>
+        <div className="no-scrollbar -mx-5 overflow-x-auto px-5 sm:-mx-8 sm:px-8 lg:-mx-10 lg:px-10">
+          <div className="flex min-w-max gap-5 pb-2">
+            {featuredProducts.concat(featuredProducts).slice(0, 8).map((product, index) => (
+              <div key={`${product.id}-${index}`} className="w-[15.25rem] shrink-0 md:w-[22rem]">
+                <ProductPreview product={product} region={region} />
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      <section className="content-container py-10">
-        <div className="rounded-[2rem] border border-[var(--brand-line)] bg-[linear-gradient(145deg,rgba(255,255,255,0.92),rgba(244,237,226,0.94))] p-6 shadow-[0_18px_60px_rgba(16,21,31,0.06)] md:p-10">
-          <div className="grid gap-8 lg:grid-cols-[0.9fr_1.1fr]">
-            <div>
-              <p className="eyebrow">Purchase Clarity</p>
-              <h2 className="font-display text-4xl leading-none tracking-[-0.03em] text-[var(--brand-ink)] md:text-5xl">
-                The details serious buyers usually ask before checkout.
-              </h2>
-              <p className="mt-4 max-w-md text-base leading-7 text-[var(--brand-muted)]">
-                We now surface the practical notes customers care about most:
-                how yardage is prepared, when to ask for a swatch, and how to
-                confirm material suitability before a larger project order.
-              </p>
-              <div className="mt-6 flex flex-wrap gap-3">
-                <LocalizedClientLink
-                  href="/guide"
-                  className="brand-button brand-button-secondary"
-                >
-                  Shipping, swatches & sourcing
+      <section className="content-container py-8 md:py-12">
+        <div className="grid gap-6 xl:grid-cols-[1.05fr_0.95fr] xl:gap-8">
+          <article className="editorial-surface rounded-[2px] px-6 py-8 md:px-8 md:py-10">
+            <p className="eyebrow">The journal</p>
+            <h2 className="mt-4 max-w-3xl font-display text-[2.5rem] leading-[0.97] tracking-[-0.05em] text-[var(--brand-ink)] md:text-6xl">
+              Storytelling should deepen trust, not distract from the product.
+            </h2>
+            <div className="mt-8 grid gap-6 md:grid-cols-[0.72fr_1.28fr] md:gap-8">
+              <div className="space-y-6 border-l border-[var(--brand-line)] pl-5">
+                <p className="text-[1.7rem] leading-[1.25] text-[var(--brand-muted)] md:text-[2rem]">
+                  “The interface should feel like a frame for the material, not
+                  a layer competing with it.”
+                </p>
+                <p className="soft-caption">Art direction principle</p>
+              </div>
+              <div className="space-y-5 text-base leading-8 text-[var(--brand-muted)]">
+                <p>{siteContent.about.lead}</p>
+                {siteContent.about.paragraphs.map((paragraph) => (
+                  <p key={paragraph}>{paragraph}</p>
+                ))}
+                <LocalizedClientLink href="/about" className="brand-link">
+                  Read the brand story
                 </LocalizedClientLink>
-                <a
-                  href={`mailto:${siteContent.supportEmail}`}
-                  className="rounded-full border border-[var(--brand-line)] px-4 py-3 text-xs uppercase tracking-[0.22em] text-[var(--brand-soft)] transition hover:border-[var(--brand-accent)] hover:text-[var(--brand-ink)]"
-                >
-                  {siteContent.supportEmail}
-                </a>
               </div>
             </div>
-            <div className="grid gap-4 md:grid-cols-3">
-              {[
-                {
-                  title: "Swatch Questions",
-                  body: "Email us before buying larger cuts if you need closer imagery, finish clarification, or project guidance.",
-                },
-                {
-                  title: "Continuous Yardage",
-                  body: "Multiple yards are generally prepared as one continuous cut whenever the roll allows.",
-                },
-                {
-                  title: "Project Fit",
-                  body: "Each material family is better suited to certain applications, from upholstery panels to trim and soft goods.",
-                },
-              ].map((item) => (
-                <div
-                  key={item.title}
-                  className="rounded-[1.5rem] border border-[var(--brand-line)] bg-white p-5"
-                >
-                  <p className="text-xs uppercase tracking-[0.22em] text-[var(--brand-accent)]">
-                    {item.title}
-                  </p>
-                  <p className="mt-4 text-sm leading-7 text-[var(--brand-muted)]">
-                    {item.body}
-                  </p>
-                </div>
-              ))}
+          </article>
+
+          <article className="editorial-frame min-h-[24rem] bg-[var(--brand-panel-strong)] md:min-h-[30rem]">
+            {journalImage ? (
+              <Image
+                src={journalImage}
+                alt={journalLead?.title ?? "Journal feature"}
+                fill
+                unoptimized={isExternalImageUrl(journalImage)}
+                className="object-cover"
+              />
+            ) : null}
+            <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(12,17,15,0.05),rgba(12,17,15,0.78))]" />
+            <div className="relative flex h-full flex-col justify-between p-6 md:p-8">
+              <div className="max-w-xs rounded-[2px] border border-white/18 bg-white/10 px-4 py-3 backdrop-blur-md">
+                <p className="text-[11px] uppercase tracking-[0.24em] text-white/70">
+                  Material spotlight
+                </p>
+                <p className="mt-2 text-sm leading-7 text-white/76">
+                  {journalLead?.origin_country
+                    ? `Origin ${countryNames[journalLead.origin_country] ?? journalLead.origin_country.toUpperCase()}`
+                    : "Selected for a stronger tactile point of view"}
+                </p>
+              </div>
+              <div>
+                <p className="eyebrow !text-white/72">Behind the design</p>
+                <h3 className="mt-4 max-w-lg font-display text-[2.35rem] leading-[0.98] tracking-[-0.05em] text-white md:text-5xl">
+                  Visual identity should help the customer slow down and choose well.
+                </h3>
+                <p className="mt-4 max-w-lg text-base leading-8 text-white/72">
+                  Generous whitespace, large product media, and restrained
+                  typography create room for higher-quality conversion.
+                </p>
+              </div>
             </div>
-          </div>
+          </article>
         </div>
       </section>
 
-      <section className="content-container py-8">
-        <div className="mb-8 flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
-          <div>
-            <p className="eyebrow">Material Highlights</p>
-            <h2 className="font-display text-4xl leading-none tracking-[-0.03em] text-[var(--brand-ink)] md:text-5xl">
-              Signature textiles from the current archive.
-            </h2>
-          </div>
-          <LocalizedClientLink
-            href="/store"
-            className="text-sm uppercase tracking-[0.22em] text-[var(--brand-accent)] transition hover:text-[var(--brand-ink)]"
-          >
-            View full store
-          </LocalizedClientLink>
-        </div>
-        <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-4">
-          {featuredProducts.map((product) => (
-            <ProductPreview
-              key={product.id}
-              product={product}
-              region={region}
-              isFeatured
-            />
-          ))}
-        </div>
-      </section>
-
-      <section className="content-container py-14">
-        <div className="rounded-[2rem] border border-[var(--brand-line)] bg-[linear-gradient(145deg,rgba(255,255,255,0.86),rgba(244,237,226,0.92))] px-6 py-8 shadow-[0_18px_60px_rgba(16,21,31,0.07)] md:px-10 md:py-12">
-          <div className="grid gap-8 lg:grid-cols-[0.9fr_1.1fr]">
-            <div>
-              <p className="eyebrow">From archive to project</p>
-              <h2 className="font-display text-4xl leading-none tracking-[-0.03em] text-[var(--brand-ink)] md:text-5xl">
-                Quietly luxurious. Priced clearly. Ready to specify.
+      <section className="content-container pt-12 md:pt-20">
+        <div className="editorial-surface rounded-[2px] px-6 py-8 md:px-8 md:py-10">
+          <div className="grid gap-8 lg:grid-cols-[1fr_auto] lg:items-end">
+            <div className="max-w-3xl">
+              <p className="eyebrow">Footer signup block</p>
+              <h2 className="mt-4 font-display text-[2.45rem] leading-[0.98] tracking-[-0.05em] text-[var(--brand-ink)] md:text-5xl">
+                Join for early access, sourcing notes, and the stories behind each collection.
               </h2>
+              <p className="mt-5 text-base leading-8 text-[var(--brand-muted)]">
+                This footer direction is designed to feel like a value exchange,
+                not a throwaway newsletter box.
+              </p>
             </div>
-            <div className="grid gap-6 md:grid-cols-2">
-              {featuredProducts.slice(0, 2).map((product) => (
-                <div
-                  key={product.id}
-                  className="rounded-[1.5rem] border border-[var(--brand-line)] bg-white p-5"
-                >
-                  <p className="text-xs uppercase tracking-[0.2em] text-[var(--brand-accent)]">
-                    {product.material ?? "Designer textile"}
-                  </p>
-                  <h3 className="mt-3 text-xl font-medium text-[var(--brand-ink)]">
-                    {product.title}
-                  </h3>
-                  <p className="mt-3 text-sm leading-7 text-[var(--brand-muted)]">
-                    {product.description}
-                  </p>
-                  <p className="mt-4 text-xs uppercase tracking-[0.18em] text-[var(--brand-soft)]">
-                    {product.origin_country
-                      ? `Origin ${countryNames[product.origin_country] ?? product.origin_country.toUpperCase()}`
-                      : "Selected for upholstery and interiors"}
-                  </p>
-                </div>
-              ))}
+            <div className="flex flex-wrap gap-3">
+              <a href={`mailto:${siteContent.supportEmail}`} className="brand-button">
+                Email the studio
+              </a>
+              <LocalizedClientLink href="/guide" className="brand-button brand-button-secondary">
+                Read the guide
+              </LocalizedClientLink>
             </div>
           </div>
         </div>
@@ -291,96 +262,14 @@ const EditorialHome = ({ products, region }: EditorialHomeProps) => {
   )
 }
 
-function StatCard({ label, value }: { label: string; value: string }) {
+function HeroNote({ title, body }: { title: string; body: string }) {
   return (
-    <div className="rounded-[1.4rem] border border-white/10 bg-white/5 px-4 py-4">
-      <p className="text-[11px] uppercase tracking-[0.22em] text-[rgba(255,245,230,0.6)]">
-        {label}
+    <div className="rounded-[2px] border border-white/12 bg-white/8 px-5 py-5 backdrop-blur-md">
+      <p className="text-[10px] font-semibold uppercase tracking-[0.26em] text-white/60">
+        {title}
       </p>
-      <p className="mt-2 text-sm leading-6 text-[rgba(255,245,230,0.92)]">
-        {value}
-      </p>
+      <p className="mt-3 text-sm leading-7 text-white/76">{body}</p>
     </div>
-  )
-}
-
-function CategoryCard({
-  title,
-  href,
-  description,
-  product,
-}: {
-  title: string
-  href: string
-  description: string
-  product: HttpTypes.StoreProduct | null
-}) {
-  const imageUrl = normalizeImageUrl(product?.thumbnail)
-
-  return (
-    <LocalizedClientLink
-      href={href}
-      className="group relative overflow-hidden rounded-[1.75rem] border border-[var(--brand-line)] bg-[linear-gradient(155deg,rgba(255,255,255,0.98),rgba(243,232,218,0.9))] p-6 shadow-[0_18px_50px_rgba(16,21,31,0.06)] transition duration-300 hover:-translate-y-1 hover:shadow-[0_30px_70px_rgba(16,21,31,0.1)]"
-    >
-      <div className="absolute inset-x-0 top-0 h-1 bg-[linear-gradient(90deg,var(--brand-accent),transparent)]" />
-      <div className="relative z-10 max-w-[15rem]">
-        <p className="eyebrow">{title}</p>
-        <h3 className="mt-3 font-display text-4xl leading-none tracking-[-0.03em] text-[var(--brand-ink)]">
-          {title}
-        </h3>
-        <p className="mt-4 text-sm leading-7 text-[var(--brand-muted)]">
-          {description}
-        </p>
-        <span className="mt-6 inline-flex text-xs uppercase tracking-[0.22em] text-[var(--brand-accent)]">
-          Explore
-        </span>
-      </div>
-
-      {imageUrl ? (
-        <div className="absolute bottom-0 right-0 h-44 w-40 overflow-hidden rounded-tl-[1.6rem] border-l border-t border-black/5 opacity-95 transition duration-500 group-hover:scale-[1.02]">
-          <Image
-            src={imageUrl}
-            alt={product.title ?? title}
-            fill
-            unoptimized={isExternalImageUrl(imageUrl)}
-            className="object-cover"
-          />
-        </div>
-      ) : null}
-    </LocalizedClientLink>
-  )
-}
-
-function MiniFeatureCard({ product }: { product: HttpTypes.StoreProduct }) {
-  const imageUrl = normalizeImageUrl(product.thumbnail)
-
-  return (
-    <LocalizedClientLink
-      href={`/products/${product.handle}`}
-      className="group relative overflow-hidden rounded-[1.4rem] border border-white/10 bg-white/5 p-4 transition hover:bg-white/10"
-    >
-      {imageUrl ? (
-        <div className="absolute inset-y-0 right-0 w-24 overflow-hidden opacity-70 transition duration-500 group-hover:opacity-90">
-          <Image
-            src={imageUrl}
-            alt={product.title ?? "Featured textile"}
-            fill
-            unoptimized={isExternalImageUrl(imageUrl)}
-            className="object-cover"
-          />
-          <div className="absolute inset-0 bg-gradient-to-l from-transparent to-[rgba(16,21,31,0.92)]" />
-        </div>
-      ) : null}
-      <div className="relative pr-20">
-        <p className="text-[11px] uppercase tracking-[0.22em] text-[rgba(255,245,230,0.58)]">
-          {product.material ?? "Designer textile"}
-        </p>
-        <p className="mt-3 text-lg font-medium text-white">{product.title}</p>
-        <p className="mt-2 text-sm leading-6 text-[rgba(255,245,230,0.74)]">
-          {product.description}
-        </p>
-      </div>
-    </LocalizedClientLink>
   )
 }
 

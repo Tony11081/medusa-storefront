@@ -1,4 +1,3 @@
-import { EllipseMiniSolid } from "@medusajs/icons"
 import { Label, RadioGroup, Text, clx } from "@medusajs/ui"
 
 type FilterRadioGroupProps = {
@@ -20,17 +19,18 @@ const FilterRadioGroup = ({
   "data-testid": dataTestId,
 }: FilterRadioGroupProps) => {
   return (
-    <div className="flex gap-x-3 flex-col gap-y-3">
-      <Text className="txt-compact-small-plus text-ui-fg-muted">{title}</Text>
-      <RadioGroup data-testid={dataTestId} onValueChange={handleChange}>
+    <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
+      <Text className="soft-caption text-[var(--brand-soft)]">{title}</Text>
+      <RadioGroup
+        data-testid={dataTestId}
+        onValueChange={handleChange}
+        className="-mx-1 flex min-w-full gap-2 overflow-x-auto px-1 pb-1 no-scrollbar md:mx-0 md:min-w-0 md:flex-wrap md:overflow-visible md:px-0 md:pb-0"
+      >
         {items?.map((i) => (
           <div
             key={i.value}
-            className={clx("flex gap-x-2 items-center", {
-              "ml-[-23px]": i.value === value,
-            })}
+            className="flex items-center"
           >
-            {i.value === value && <EllipseMiniSolid />}
             <RadioGroup.Item
               checked={i.value === value}
               className="hidden peer"
@@ -40,9 +40,12 @@ const FilterRadioGroup = ({
             <Label
               htmlFor={i.value}
               className={clx(
-                "!txt-compact-small !transform-none text-ui-fg-subtle hover:cursor-pointer",
+                "cursor-pointer rounded-full border px-4 py-2 text-[11px] font-semibold uppercase tracking-[0.22em] transition",
                 {
-                  "text-ui-fg-base": i.value === value,
+                  "border-[var(--brand-ink)] bg-[var(--brand-ink)] text-[var(--brand-paper)]":
+                    i.value === value,
+                  "border-[var(--brand-line-strong)] bg-[rgba(252,251,248,0.7)] text-[var(--brand-soft)] hover:border-[var(--brand-ink)] hover:text-[var(--brand-ink)]":
+                    i.value !== value,
                 }
               )}
               data-testid="radio-label"

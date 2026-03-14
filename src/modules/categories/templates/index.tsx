@@ -39,69 +39,66 @@ export default function CategoryTemplate({
   getParents(category)
 
   return (
-    <div
-      className="flex flex-col small:flex-row small:items-start py-6 content-container"
-      data-testid="category-container"
-    >
-      <RefinementList sortBy={sort} data-testid="sort-by-container" />
-      <div className="w-full">
-        <div className="mb-8 overflow-hidden rounded-[2rem] border border-[var(--brand-line)] bg-[linear-gradient(145deg,rgba(255,250,244,0.98),rgba(238,226,212,0.92))] shadow-[0_22px_60px_rgba(16,21,31,0.08)]">
-          <div className="grid gap-8 px-6 py-7 lg:grid-cols-[1.1fr_0.9fr] lg:px-8">
-            <div>
-              <div className="mb-4 flex flex-wrap items-center gap-3 text-[11px] uppercase tracking-[0.2em] text-[var(--brand-soft)]">
-                {parents &&
-                  parents.map((parent) => (
-                    <LocalizedClientLink
-                      key={parent.id}
-                      className="transition hover:text-[var(--brand-ink)]"
-                      href={`/categories/${parent.handle}`}
-                      data-testid="sort-by-link"
-                    >
-                      {parent.name}
-                    </LocalizedClientLink>
-                  ))}
-                <span>{copy.eyebrow}</span>
-              </div>
-              <h1
-                className="font-display text-4xl leading-none tracking-[-0.03em] text-[var(--brand-ink)] md:text-5xl"
-                data-testid="category-page-title"
-              >
-                {category.name} fabric by the yard
-              </h1>
-              <p className="mt-4 max-w-2xl text-sm leading-7 text-[var(--brand-muted)]">
-                {copy.intro}
-              </p>
-            </div>
-            <div className="grid gap-3 sm:grid-cols-3 lg:grid-cols-1">
-              {copy.buyerPoints.map((item) => (
-                <div
-                  key={item.label}
-                  className="rounded-[1.4rem] border border-black/5 bg-white/82 px-4 py-4"
+    <div className="content-container py-6 md:py-10" data-testid="category-container">
+      <section className="editorial-surface overflow-hidden rounded-[2px] px-6 py-8 md:px-8 md:py-10">
+        <div className="grid gap-8 lg:grid-cols-[1.15fr_0.85fr]">
+          <div>
+            <div className="mb-4 flex flex-wrap items-center gap-3 text-[11px] uppercase tracking-[0.22em] text-[var(--brand-soft)]">
+              {parents.map((parent) => (
+                <LocalizedClientLink
+                  key={parent.id}
+                  className="transition hover:text-[var(--brand-ink)]"
+                  href={`/categories/${parent.handle}`}
+                  data-testid="sort-by-link"
                 >
-                  <p className="text-[10px] uppercase tracking-[0.24em] text-[var(--brand-soft)]">
-                    {item.label}
-                  </p>
-                  <p className="mt-2 text-sm leading-6 text-[var(--brand-ink)]">
-                    {item.value}
-                  </p>
-                </div>
+                  {parent.name}
+                </LocalizedClientLink>
               ))}
+              <span>{copy.eyebrow}</span>
             </div>
+            <h1
+              className="max-w-4xl font-display text-[3rem] leading-[0.96] tracking-[-0.05em] text-[var(--brand-ink)] sm:text-5xl md:text-7xl"
+              data-testid="category-page-title"
+            >
+              {category.name} as an editorial category, not just a filter bucket.
+            </h1>
+            <p className="mt-5 max-w-3xl text-base leading-8 text-[var(--brand-muted)]">
+              {copy.intro}
+            </p>
+          </div>
+          <div className="grid gap-4 md:grid-cols-3 lg:grid-cols-1">
+            {copy.buyerPoints.map((item) => (
+              <div
+                key={item.label}
+                className="border-b border-[var(--brand-line)] pb-4 last:border-b-0 lg:border-l lg:pl-6"
+              >
+                <p className="soft-caption">{item.label}</p>
+                <p className="mt-3 text-base leading-7 text-[var(--brand-muted)]">
+                  {item.value}
+                </p>
+              </div>
+            ))}
           </div>
         </div>
-        {category.category_children && (
-          <div className="mb-8 text-base-large">
-            <ul className="grid grid-cols-1 gap-2">
-              {category.category_children?.map((c) => (
-                <li key={c.id}>
-                  <InteractiveLink href={`/categories/${c.handle}`}>
-                    {c.name}
-                  </InteractiveLink>
-                </li>
-              ))}
-            </ul>
-          </div>
-        )}
+      </section>
+
+      {category.category_children && (
+        <section className="mt-10">
+          <p className="soft-caption mb-4">Sub-categories</p>
+          <ul className="flex flex-wrap gap-3">
+            {category.category_children?.map((c) => (
+              <li key={c.id}>
+                <InteractiveLink href={`/categories/${c.handle}`}>
+                  {c.name}
+                </InteractiveLink>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
+
+      <section className="section-divider mt-10 pt-10">
+        <RefinementList sortBy={sort} data-testid="sort-by-container" />
         <Suspense
           fallback={
             <SkeletonProductGrid
@@ -114,24 +111,33 @@ export default function CategoryTemplate({
             page={pageNumber}
             categoryId={category.id}
             countryCode={countryCode}
+            editorialInterlude={{
+              eyebrow: copy.eyebrow,
+              title: `Why ${category.name.toLowerCase()} works in a premium DTC setting.`,
+              body:
+                "Strong category pages should do more than filter products. They should frame mood, material use, and buying confidence so the shopper feels guided rather than overwhelmed.",
+              ctaLabel: "Read the category guide",
+              ctaHref: `/${countryCode}/guide`,
+            }}
           />
         </Suspense>
-        <div className="mt-10 grid gap-4 md:grid-cols-3">
-          {copy.faqItems.map((item) => (
-            <div
-              key={item.question}
-              className="rounded-[1.4rem] border border-[var(--brand-line)] bg-white/88 p-5"
-            >
-              <p className="text-sm font-medium text-[var(--brand-ink)]">
-                {item.question}
-              </p>
-              <p className="mt-3 text-sm leading-7 text-[var(--brand-muted)]">
-                {item.answer}
-              </p>
-            </div>
-          ))}
-        </div>
-      </div>
+      </section>
+
+      <section className="mt-12 grid gap-4 xl:mt-16 xl:grid-cols-3">
+        {copy.faqItems.map((item) => (
+          <div
+            key={item.question}
+            className="rounded-[2px] border border-[var(--brand-line)] bg-[rgba(252,251,248,0.82)] p-5"
+          >
+            <p className="text-base font-medium text-[var(--brand-ink)]">
+              {item.question}
+            </p>
+            <p className="mt-3 text-sm leading-7 text-[var(--brand-muted)]">
+              {item.answer}
+            </p>
+          </div>
+        ))}
+      </section>
     </div>
   )
 }

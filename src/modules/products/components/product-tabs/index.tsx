@@ -43,7 +43,7 @@ const ProductTabs = ({ product }: ProductTabsProps) => {
   ]
 
   return (
-    <div className="w-full rounded-[1.8rem] border border-[var(--brand-line)] bg-white/88 p-4">
+    <div className="w-full rounded-[2px] border border-[var(--brand-line)] bg-[rgba(252,251,248,0.88)] p-4 md:p-5">
       <Accordion type="multiple">
         {tabs.map((tab, i) => (
           <Accordion.Item
@@ -74,7 +74,7 @@ const ProductInfoTab = ({ product }: ProductTabsProps) => {
 
   return (
     <div className="text-small-regular py-6">
-      <div className="grid grid-cols-2 gap-x-8">
+      <div className="grid gap-8 md:grid-cols-2 md:gap-x-8">
         <div className="flex flex-col gap-y-4">
           <div>
             <span className="font-semibold">Material</span>

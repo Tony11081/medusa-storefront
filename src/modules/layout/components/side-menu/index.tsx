@@ -63,10 +63,10 @@ const SideMenu = ({ regions, locales, currentLocale }: SideMenuProps) => {
                 leaveFrom="opacity-100 backdrop-blur-2xl"
                 leaveTo="opacity-0"
               >
-                <PopoverPanel className="flex flex-col absolute w-full pr-4 sm:pr-0 sm:w-1/3 2xl:w-1/4 sm:min-w-min h-[calc(100vh-1rem)] z-[51] inset-x-0 text-sm text-ui-fg-on-color m-2 backdrop-blur-2xl">
+                <PopoverPanel className="absolute inset-x-0 z-[51] m-2 flex h-[calc(100vh-1rem)] w-[calc(100vw-1rem)] flex-col text-sm text-ui-fg-on-color backdrop-blur-2xl sm:right-auto sm:w-1/3 sm:min-w-[22rem] 2xl:w-1/4">
                   <div
                     data-testid="nav-menu-popup"
-                    className="flex flex-col h-full justify-between rounded-[1.6rem] border border-white/10 bg-[rgba(10,15,22,0.9)] p-6"
+                    className="flex h-full flex-col justify-between rounded-[1.6rem] border border-white/10 bg-[rgba(10,15,22,0.9)] px-5 pb-[calc(env(safe-area-inset-bottom)+1.25rem)] pt-5 sm:p-6"
                   >
                     <div className="flex justify-end" id="xmark">
                       <button data-testid="close-menu-button" onClick={close}>
@@ -78,7 +78,7 @@ const SideMenu = ({ regions, locales, currentLocale }: SideMenuProps) => {
                         <p className="text-[11px] uppercase tracking-[0.22em] text-[rgba(255,245,230,0.6)]">
                           {siteContent.eyebrow}
                         </p>
-                        <p className="mt-3 font-display text-4xl uppercase tracking-[0.22em] text-white">
+                        <p className="mt-3 font-display text-3xl uppercase tracking-[0.2em] text-white sm:text-4xl sm:tracking-[0.22em]">
                           {siteContent.shortName}
                         </p>
                         <p className="mt-3 max-w-xs text-sm leading-6 text-[rgba(255,245,230,0.72)]">
@@ -91,7 +91,7 @@ const SideMenu = ({ regions, locales, currentLocale }: SideMenuProps) => {
                             <li key={name}>
                               <LocalizedClientLink
                                 href={href}
-                                className="font-display text-4xl leading-none tracking-[-0.03em] text-white transition hover:text-[rgba(255,245,230,0.6)]"
+                                className="font-display text-[2rem] leading-none tracking-[-0.03em] text-white transition hover:text-[rgba(255,245,230,0.6)] sm:text-4xl"
                                 onClick={close}
                                 data-testid={`${name.toLowerCase()}-link`}
                               >

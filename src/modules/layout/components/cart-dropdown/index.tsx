@@ -79,10 +79,10 @@ const CartDropdown = ({
       onMouseEnter={openAndCancel}
       onMouseLeave={close}
     >
-      <Popover className="relative h-full">
-        <PopoverButton className="h-full">
-          <LocalizedClientLink
-            className="hover:text-ui-fg-base"
+        <Popover className="relative h-full">
+          <PopoverButton className="h-full">
+            <LocalizedClientLink
+            className="inline-flex min-h-10 items-center text-[11px] uppercase tracking-[0.18em] text-[var(--brand-soft)] transition hover:text-[var(--brand-ink)]"
             href="/cart"
             data-testid="nav-cart-link"
           >{`Cart (${totalItems})`}</LocalizedClientLink>

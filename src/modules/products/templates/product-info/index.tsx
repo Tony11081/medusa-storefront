@@ -41,11 +41,11 @@ const ProductInfo = ({ product }: ProductInfoProps) => {
 
   return (
     <div id="product-info">
-      <div className="mx-auto flex flex-col gap-y-5 rounded-[1.8rem] border border-[var(--brand-line)] bg-[linear-gradient(160deg,rgba(255,250,244,0.98),rgba(243,232,218,0.92))] p-6 shadow-[0_18px_55px_rgba(16,21,31,0.06)] lg:max-w-[520px]">
+      <div className="mx-auto flex flex-col gap-y-4 md:gap-y-5 lg:max-w-[520px]">
         {product.collection && (
           <LocalizedClientLink
             href={`/collections/${product.collection.handle}`}
-            className="text-medium text-[var(--brand-soft)] transition hover:text-[var(--brand-ink)]"
+            className="soft-caption transition hover:text-[var(--brand-ink)]"
           >
             {product.collection.title}
           </LocalizedClientLink>
@@ -55,13 +55,13 @@ const ProductInfo = ({ product }: ProductInfoProps) => {
             categories.map((category) => (
               <span
                 key={category}
-                className="rounded-full border border-[var(--brand-line)] px-3 py-1 text-[11px] uppercase tracking-[0.18em] text-[var(--brand-accent)]"
+                className="rounded-full border border-[var(--brand-line)] px-3 py-1 text-[11px] uppercase tracking-[0.2em] text-[var(--brand-accent-soft)]"
               >
                 {category}
               </span>
             ))
           ) : (
-            <span className="rounded-full border border-[var(--brand-line)] px-3 py-1 text-[11px] uppercase tracking-[0.18em] text-[var(--brand-accent)]">
+            <span className="rounded-full border border-[var(--brand-line)] px-3 py-1 text-[11px] uppercase tracking-[0.2em] text-[var(--brand-accent-soft)]">
               Designer textile
             </span>
           )}
@@ -71,38 +71,38 @@ const ProductInfo = ({ product }: ProductInfoProps) => {
         </div>
         <Heading
           level="h1"
-          className="font-display text-5xl leading-[0.95] tracking-[-0.04em] text-[var(--brand-ink)]"
+          className="font-display text-[3rem] leading-[0.94] tracking-[-0.05em] text-[var(--brand-ink)] sm:text-5xl md:text-6xl"
           data-testid="product-title"
         >
           {displayTitle}
         </Heading>
-        <div className="flex flex-wrap gap-3 text-[11px] uppercase tracking-[0.18em] text-[var(--brand-soft)]">
+        <div className="flex flex-wrap gap-2.5 text-[11px] uppercase tracking-[0.18em] text-[var(--brand-soft)]">
           <span>{priceRuleLabel}</span>
           <span>{sellingUnit} increments</span>
           {colorwayCount > 1 ? <span>{variantAxisCountLabel}</span> : null}
         </div>
 
         <Text
-          className="whitespace-pre-line text-base leading-7 text-[var(--brand-muted)]"
+          className="whitespace-pre-line text-[15px] leading-7 text-[var(--brand-muted)] md:text-base md:leading-8"
           data-testid="product-description"
         >
           {editorialSummary}
         </Text>
         <div className="grid gap-3 border-t border-[var(--brand-line)] pt-4 text-sm leading-6 text-[var(--brand-muted)]">
-          <div className="flex items-center justify-between gap-4">
+          <div className="flex items-start justify-between gap-4">
             <span className="text-[11px] uppercase tracking-[0.16em] text-[var(--brand-soft)]">
               Price
             </span>
             <span>{priceRuleLabel}</span>
           </div>
-          <div className="flex items-center justify-between gap-4">
+          <div className="flex items-start justify-between gap-4">
             <span className="text-[11px] uppercase tracking-[0.16em] text-[var(--brand-soft)]">
               Material
             </span>
             <span>{materialLabel}</span>
           </div>
           {width && (
-            <div className="flex items-center justify-between gap-4">
+            <div className="flex items-start justify-between gap-4">
               <span className="text-[11px] uppercase tracking-[0.16em] text-[var(--brand-soft)]">
                 Width
               </span>
@@ -110,14 +110,14 @@ const ProductInfo = ({ product }: ProductInfoProps) => {
             </div>
           )}
           {thickness && (
-            <div className="flex items-center justify-between gap-4">
+            <div className="flex items-start justify-between gap-4">
               <span className="text-[11px] uppercase tracking-[0.16em] text-[var(--brand-soft)]">
                 Thickness
               </span>
               <span>{thickness}</span>
             </div>
           )}
-          <div className="flex items-center justify-between gap-4">
+          <div className="flex items-start justify-between gap-4">
             <span className="text-[11px] uppercase tracking-[0.16em] text-[var(--brand-soft)]">
               Origin
             </span>

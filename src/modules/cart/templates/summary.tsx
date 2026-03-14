@@ -28,10 +28,13 @@ const Summary = ({ cart }: SummaryProps) => {
   const step = getCheckoutStep(cart)
 
   return (
-    <div className="flex flex-col gap-y-4">
-      <Heading level="h2" className="text-[2rem] leading-[2.75rem]">
-        Summary
+    <div className="flex flex-col gap-y-5">
+      <Heading level="h2" className="font-display text-[2rem] leading-[1] tracking-[-0.04em] text-[var(--brand-ink)] md:text-[2.2rem]">
+        Order summary
       </Heading>
+      <p className="text-sm leading-7 text-[var(--brand-muted)]">
+        Clean totals, a low-friction checkout CTA, and space for reassurance.
+      </p>
       <DiscountCode cart={cart} />
       <Divider />
       <CartTotals totals={cart} />
@@ -39,8 +42,14 @@ const Summary = ({ cart }: SummaryProps) => {
         href={"/checkout?step=" + step}
         data-testid="checkout-button"
       >
-        <Button className="w-full h-10">Go to checkout</Button>
+        <Button className="brand-button !flex !w-full !rounded-[2px] !px-5 !py-4 !text-[11px] !tracking-[0.26em]">
+          Go to checkout
+        </Button>
       </LocalizedClientLink>
+      <div className="rounded-[2px] border border-[var(--brand-line)] bg-[rgba(252,251,248,0.78)] px-4 py-4 text-sm leading-7 text-[var(--brand-muted)]">
+        Payment logos or security reassurance belong here on the final design,
+        just beneath the main checkout CTA.
+      </div>
     </div>
   )
 }

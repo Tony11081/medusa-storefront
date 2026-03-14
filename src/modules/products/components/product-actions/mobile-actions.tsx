@@ -67,7 +67,7 @@ const MobileActions: React.FC<MobileActionsProps> = ({
   return (
     <>
       <div
-        className={clx("lg:hidden inset-x-0 bottom-0 fixed z-50", {
+        className={clx("fixed inset-x-0 bottom-0 z-50 lg:hidden", {
           "pointer-events-none": !show,
         })}
       >
@@ -82,14 +82,16 @@ const MobileActions: React.FC<MobileActionsProps> = ({
           leaveTo="opacity-0"
         >
           <div
-            className="bg-white flex flex-col gap-y-3 justify-center items-center text-large-regular p-4 h-full w-full border-t border-gray-200"
+            className="flex h-full w-full flex-col items-center justify-center gap-y-2 border-t border-[var(--brand-line)] bg-[rgba(252,251,248,0.96)] px-4 pb-[calc(env(safe-area-inset-bottom)+0.9rem)] pt-3 backdrop-blur-xl"
             data-testid="mobile-actions"
           >
-            <div className="flex items-center gap-x-2">
-              <span data-testid="mobile-title">{product.title}</span>
+            <div className="flex w-full items-center gap-x-2 text-sm text-[var(--brand-muted)]">
+              <span className="line-clamp-1" data-testid="mobile-title">
+                {product.title}
+              </span>
               <span>—</span>
               {selectedPrice ? (
-                <div className="flex items-end gap-x-2 text-ui-fg-base">
+                <div className="flex items-end gap-x-2 text-[var(--brand-ink)]">
                   {selectedPrice.price_type === "sale" && (
                     <p>
                       <span className="line-through text-small-regular">
@@ -111,24 +113,24 @@ const MobileActions: React.FC<MobileActionsProps> = ({
               )}
             </div>
             <div
-              className={clx("grid w-full gap-x-4", {
+              className={clx("grid w-full gap-x-3", {
                 "grid-cols-3": hasVisibleOptions,
                 "grid-cols-2": !hasVisibleOptions,
               })}
             >
-              {hasVisibleOptions && <Button
-                onClick={open}
-                variant="secondary"
-                className="w-full"
-                data-testid="mobile-actions-button"
-              >
-                <div className="flex items-center justify-between w-full">
-                  <span>
-                    {selectedOptionsLabel || "Select Options"}
-                  </span>
-                  <ChevronDown />
-                </div>
-              </Button>}
+              {hasVisibleOptions && (
+                <Button
+                  onClick={open}
+                  variant="secondary"
+                  className="!min-h-12 !rounded-[2px] !border-[var(--brand-line-strong)] !bg-[rgba(252,251,248,0.88)] !px-3 !text-[11px] !uppercase !tracking-[0.16em] !text-[var(--brand-ink)]"
+                  data-testid="mobile-actions-button"
+                >
+                  <div className="flex w-full items-center justify-between">
+                    <span>{selectedOptionsLabel || "Select options"}</span>
+                    <ChevronDown />
+                  </div>
+                </Button>
+              )}
               <QuantitySelect
                 value={quantity}
                 onChange={updateQuantity}
@@ -139,7 +141,7 @@ const MobileActions: React.FC<MobileActionsProps> = ({
               <Button
                 onClick={handleAddToCart}
                 disabled={!inStock || !variant}
-                className="w-full"
+                className="brand-button !w-full !rounded-[2px] !px-4 !text-[11px] !tracking-[0.2em]"
                 isLoading={isAdding}
                 data-testid="mobile-cart-button"
               >
@@ -164,40 +166,41 @@ const MobileActions: React.FC<MobileActionsProps> = ({
             leaveFrom="opacity-100"
             leaveTo="opacity-0"
           >
-            <div className="fixed inset-0 bg-gray-700 bg-opacity-75 backdrop-blur-sm" />
+            <div className="fixed inset-0 bg-[rgba(18,22,20,0.55)] backdrop-blur-sm" />
           </Transition.Child>
 
-          <div className="fixed bottom-0 inset-x-0">
-            <div className="flex min-h-full h-full items-center justify-center text-center">
+          <div className="fixed inset-x-0 bottom-0">
+            <div className="flex min-h-full h-full items-end justify-center text-center">
               <Transition.Child
                 as={Fragment}
                 enter="ease-out duration-300"
-                enterFrom="opacity-0"
-                enterTo="opacity-100"
+                enterFrom="translate-y-6 opacity-0"
+                enterTo="translate-y-0 opacity-100"
                 leave="ease-in duration-200"
-                leaveFrom="opacity-100"
-                leaveTo="opacity-0"
+                leaveFrom="translate-y-0 opacity-100"
+                leaveTo="translate-y-6 opacity-0"
               >
                 <Dialog.Panel
-                  className="w-full h-full transform overflow-hidden text-left flex flex-col gap-y-3"
+                  className="flex w-full max-w-none transform flex-col gap-y-4 overflow-hidden rounded-t-[1.6rem] border border-white/10 bg-[var(--brand-panel)] px-5 pb-[calc(env(safe-area-inset-bottom)+1.25rem)] pt-5 text-left shadow-[0_-28px_70px_rgba(18,22,20,0.28)]"
                   data-testid="mobile-actions-modal"
                 >
-                  <div className="w-full flex justify-end pr-6">
+                  <div className="flex w-full justify-end">
                     <button
                       onClick={close}
-                      className="bg-white w-12 h-12 rounded-full text-ui-fg-base flex justify-center items-center"
+                      className="flex h-11 w-11 items-center justify-center rounded-full border border-[var(--brand-line)] bg-white text-ui-fg-base"
                       data-testid="close-modal-button"
                     >
                       <X />
                     </button>
                   </div>
-                  <div className="bg-white px-6 py-12">
+                  <div className="max-h-[70vh] overflow-y-auto pb-2">
                     {(product.variants?.length ?? 0) > 1 && hasVisibleOptions && (
                       <div className="flex flex-col gap-y-6">
                         {visibleOptions.map((option) => {
                           return (
                             <div key={option.id}>
                               <OptionSelect
+                                product={product}
                                 option={option}
                                 current={options[option.id]}
                                 updateOption={updateOptions}

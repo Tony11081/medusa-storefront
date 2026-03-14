@@ -3,20 +3,25 @@
 @import "tailwindcss/utilities";
 
 :root {
-  --brand-ink: #18110d;
-  --brand-paper: #efe4d5;
-  --brand-panel: #fff8ef;
-  --brand-accent: #b6823e;
-  --brand-line: rgba(24, 17, 13, 0.1);
-  --brand-muted: rgba(24, 17, 13, 0.72);
-  --brand-soft: rgba(24, 17, 13, 0.48);
+  --brand-ink: #202521;
+  --brand-paper: #f8f7f4;
+  --brand-panel: #fcfbf8;
+  --brand-panel-strong: #f1ede6;
+  --brand-accent: #395244;
+  --brand-accent-soft: #5e7669;
+  --brand-highlight: #d7c7ab;
+  --brand-line: rgba(32, 37, 33, 0.1);
+  --brand-line-strong: rgba(32, 37, 33, 0.18);
+  --brand-muted: rgba(32, 37, 33, 0.74);
+  --brand-soft: rgba(32, 37, 33, 0.5);
 }
 
 html {
   background:
-    radial-gradient(circle at top left, rgba(182, 130, 62, 0.18), transparent 24%),
-    radial-gradient(circle at top right, rgba(72, 51, 34, 0.08), transparent 18%),
-    linear-gradient(180deg, #f8f1e7 0%, var(--brand-paper) 58%, #e9dccb 100%);
+    radial-gradient(circle at top left, rgba(215, 199, 171, 0.3), transparent 24%),
+    radial-gradient(circle at top right, rgba(57, 82, 68, 0.1), transparent 18%),
+    linear-gradient(180deg, #fbfaf7 0%, var(--brand-paper) 56%, #f0ece6 100%);
+  color: var(--brand-ink);
 }
 
 body {
@@ -75,7 +80,7 @@ body {
 
 @layer components {
   .content-container {
-    @apply max-w-[1400px] w-full mx-auto px-5 sm:px-6 lg:px-8;
+    @apply mx-auto w-full max-w-[1520px] px-4 sm:px-6 lg:px-10;
   }
 
   .contrast-btn {
@@ -87,25 +92,73 @@ body {
   }
 
   .eyebrow {
-    @apply text-[11px] uppercase tracking-[0.22em];
-    color: var(--brand-accent);
+    @apply text-[10px] font-semibold uppercase tracking-[0.28em];
+    color: var(--brand-accent-soft);
   }
 
   .brand-button {
-    @apply inline-flex items-center justify-center rounded-full px-5 py-3 text-xs font-semibold uppercase tracking-[0.22em] transition;
+    @apply inline-flex min-h-12 items-center justify-center rounded-[2px] px-5 py-3 text-[11px] font-semibold uppercase tracking-[0.26em] transition duration-300;
     background: var(--brand-accent);
-    color: #fff8ef;
+    color: var(--brand-paper);
+    box-shadow: 0 14px 32px rgba(57, 82, 68, 0.18);
   }
 
   .brand-button:hover {
-    @apply opacity-95;
-    transform: translateY(-1px);
+    background: #31463a;
+    transform: translateY(-1px) scale(1.01);
   }
 
   .brand-button-secondary {
     background: transparent;
-    border: 1px solid rgba(255, 255, 255, 0.24);
-    color: white;
+    border: 1px solid var(--brand-line-strong);
+    color: var(--brand-ink);
+    box-shadow: none;
+  }
+
+  .brand-button-secondary:hover {
+    background: rgba(32, 37, 33, 0.04);
+  }
+
+  .brand-link {
+    @apply inline-flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.24em] transition;
+    color: var(--brand-ink);
+    text-decoration: underline;
+    text-decoration-color: rgba(32, 37, 33, 0.22);
+    text-underline-offset: 0.35rem;
+  }
+
+  .brand-link:hover {
+    color: var(--brand-accent);
+    text-decoration-color: rgba(57, 82, 68, 0.45);
+  }
+
+  .editorial-surface {
+    background: linear-gradient(
+      150deg,
+      rgba(252, 251, 248, 0.98),
+      rgba(241, 237, 230, 0.96)
+    );
+    border: 1px solid var(--brand-line);
+    box-shadow: 0 22px 70px rgba(24, 27, 25, 0.07);
+  }
+
+  .editorial-frame {
+    @apply relative overflow-hidden rounded-[2px];
+    background: var(--brand-panel);
+    border: 1px solid var(--brand-line);
+  }
+
+  .editorial-grid {
+    @apply grid gap-6 lg:gap-8;
+  }
+
+  .section-divider {
+    border-top: 1px solid var(--brand-line);
+  }
+
+  .soft-caption {
+    @apply text-[11px] uppercase tracking-[0.22em];
+    color: var(--brand-soft);
   }
 
   .text-xsmall-regular {

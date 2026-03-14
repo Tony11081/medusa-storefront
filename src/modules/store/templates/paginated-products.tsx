@@ -14,6 +14,14 @@ type PaginatedProductsParams = {
   order?: string
 }
 
+type EditorialInterlude = {
+  eyebrow: string
+  title: string
+  body: string
+  ctaLabel?: string
+  ctaHref?: string
+}
+
 export default async function PaginatedProducts({
   sortBy,
   page,
@@ -21,6 +29,7 @@ export default async function PaginatedProducts({
   categoryId,
   productsIds,
   countryCode,
+  editorialInterlude,
 }: {
   sortBy?: SortOptions
   page: number
@@ -28,6 +37,7 @@ export default async function PaginatedProducts({
   categoryId?: string
   productsIds?: string[]
   countryCode: string
+  editorialInterlude?: EditorialInterlude
 }) {
   const queryParams: PaginatedProductsParams = {
     limit: 12,
@@ -69,15 +79,45 @@ export default async function PaginatedProducts({
   return (
     <>
       <ul
-        className="grid grid-cols-2 w-full small:grid-cols-3 medium:grid-cols-4 gap-x-6 gap-y-8"
+        className="grid w-full grid-cols-2 gap-x-3 gap-y-8 md:gap-x-6 md:gap-y-14 xl:grid-cols-3"
         data-testid="products-list"
       >
-        {products.map((p) => {
-          return (
+        {products.flatMap((p, index) => {
+          const items = [
             <li key={p.id}>
               <ProductPreview product={p} region={region} />
-            </li>
-          )
+            </li>,
+          ]
+
+          if (editorialInterlude && index === 5) {
+            items.push(
+              <li
+                key={`${editorialInterlude.title}-${index}`}
+                className="col-span-full"
+              >
+                <article className="editorial-surface grid gap-6 rounded-[2px] px-5 py-6 md:px-8 md:py-10 lg:grid-cols-[0.9fr_1.1fr] lg:gap-8">
+                  <div className="space-y-4">
+                    <p className="eyebrow">{editorialInterlude.eyebrow}</p>
+                    <h3 className="font-display text-[2.35rem] leading-[0.98] tracking-[-0.04em] text-[var(--brand-ink)] md:text-5xl">
+                      {editorialInterlude.title}
+                    </h3>
+                  </div>
+                  <div className="flex flex-col justify-between gap-5">
+                    <p className="max-w-2xl text-base leading-8 text-[var(--brand-muted)]">
+                      {editorialInterlude.body}
+                    </p>
+                    {editorialInterlude.ctaHref && editorialInterlude.ctaLabel ? (
+                      <a href={editorialInterlude.ctaHref} className="brand-link">
+                        {editorialInterlude.ctaLabel}
+                      </a>
+                    ) : null}
+                  </div>
+                </article>
+              </li>
+            )
+          }
+
+          return items
         })}
       </ul>
       {totalPages > 1 && (

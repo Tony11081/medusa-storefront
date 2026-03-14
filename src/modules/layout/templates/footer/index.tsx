@@ -42,27 +42,33 @@ export default async function Footer({ countryCode }: FooterProps) {
   })
 
   return (
-    <footer className="mt-8 w-full border-t border-[var(--brand-line)] bg-[rgba(255,250,244,0.72)]">
+    <footer className="mt-12 w-full border-t border-[var(--brand-line)] bg-[rgba(252,251,248,0.84)]">
       <div className="content-container flex w-full flex-col">
-        <div className="grid gap-10 py-16 md:grid-cols-[0.95fr_1.05fr]">
-          <div className="max-w-md">
-            <p className="eyebrow">{siteContent.eyebrow}</p>
+        <div className="grid gap-10 py-12 md:py-16 lg:grid-cols-[0.92fr_1.08fr] lg:gap-12 lg:py-20">
+          <div className="max-w-xl">
+            <p className="eyebrow">Join for early access and stories</p>
             <LocalizedClientLink
               href="/"
-              className="mt-4 inline-block font-display text-4xl uppercase tracking-[0.2em] text-[var(--brand-ink)]"
+              className="mt-5 inline-block font-display text-[2.4rem] uppercase tracking-[0.14em] text-[var(--brand-ink)] md:text-5xl md:tracking-[0.18em]"
             >
               {siteContent.name}
             </LocalizedClientLink>
-            <p className="mt-5 text-sm leading-7 text-[var(--brand-muted)]">
+            <p className="mt-6 text-base leading-8 text-[var(--brand-muted)]">
               {siteContent.footerNote}
             </p>
+            <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
+              <a href={`mailto:${siteContent.supportEmail}`} className="brand-button">
+                Contact the studio
+              </a>
+              <LocalizedClientLink href="/guide" className="brand-button brand-button-secondary">
+                Shipping & sourcing guide
+              </LocalizedClientLink>
+            </div>
           </div>
-          <div className="grid grid-cols-2 gap-10 text-small-regular md:grid-cols-3 md:gap-x-16">
+          <div className="grid grid-cols-1 gap-10 text-small-regular md:grid-cols-3 md:gap-x-14">
             {productCategories && productCategories?.length > 0 && (
               <div className="flex flex-col gap-y-2">
-                <span className="txt-small-plus text-[var(--brand-ink)]">
-                  Categories
-                </span>
+                <span className="soft-caption text-[var(--brand-ink)]">Categories</span>
                 <ul
                   className="grid grid-cols-1 gap-2"
                   data-testid="footer-categories"
@@ -117,9 +123,7 @@ export default async function Footer({ countryCode }: FooterProps) {
               </div>
             )}
             <div className="flex flex-col gap-y-2">
-              <span className="txt-small-plus text-[var(--brand-ink)]">
-                Navigate
-              </span>
+              <span className="soft-caption text-[var(--brand-ink)]">Navigate</span>
               <ul className="grid grid-cols-1 gap-y-2 txt-small text-[var(--brand-muted)]">
                 {siteContent.navLinks.map((link) => (
                   <li key={link.href}>
@@ -150,18 +154,16 @@ export default async function Footer({ countryCode }: FooterProps) {
               </ul>
             </div>
             <div className="flex flex-col gap-y-2">
-              <span className="txt-small-plus text-[var(--brand-ink)]">
-                Notes
-              </span>
+              <span className="soft-caption text-[var(--brand-ink)]">Notes</span>
               <ul className="grid grid-cols-1 gap-y-2 txt-small text-[var(--brand-muted)]">
                 <li>
-                  Designer materials organized for faster sourcing.
+                  Designed to feel like an independent brand site, not a marketplace.
                 </li>
                 <li>
-                  Priced around a clear 1 yard selling unit.
+                  Component-based UI for a Next.js + Medusa storefront.
                 </li>
                 <li>
-                  Built for upholstery, panels, trim, and custom fabrication.
+                  Premium product imagery and storytelling are part of the conversion layer.
                 </li>
                 <li>
                   <LocalizedClientLink
