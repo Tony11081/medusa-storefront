@@ -1,4 +1,4 @@
-import { Container, clx } from "@medusajs/ui"
+import { clx } from "@medusajs/ui"
 import Image from "next/image"
 import React from "react"
 
@@ -28,13 +28,12 @@ const Thumbnail: React.FC<ThumbnailProps> = ({
   const initialImage = normalizeImageUrl(thumbnail || images?.[0]?.url)
 
   return (
-    <Container
+    <div
       className={clx(
         "relative w-full overflow-hidden rounded-[2px] bg-[linear-gradient(160deg,rgba(252,251,248,0.98),rgba(241,237,230,0.94))] transition-all duration-500 ease-out",
         className,
         {
-          "aspect-[4/5]": isFeatured,
-          "aspect-[4/5]": !isFeatured && size !== "square",
+          "aspect-[4/5]": size !== "square",
           "aspect-[1/1]": size === "square",
           "w-[180px]": size === "small",
           "w-[290px]": size === "medium",
@@ -45,7 +44,7 @@ const Thumbnail: React.FC<ThumbnailProps> = ({
       data-testid={dataTestid}
     >
       <ImageOrPlaceholder image={initialImage} size={size} alt={alt} />
-    </Container>
+    </div>
   )
 }
 
