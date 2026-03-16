@@ -18,6 +18,7 @@ import { Button } from "@medusajs/ui"
 import Divider from "@modules/common/components/divider"
 import OptionSelect from "@modules/products/components/product-actions/option-select"
 import QuantitySelect from "@modules/products/components/product-actions/quantity-select"
+import ProductShare from "@modules/products/components/product-share"
 import { isEqual } from "lodash"
 import { useParams, usePathname, useSearchParams } from "next/navigation"
 import { useEffect, useMemo, useRef, useState } from "react"
@@ -237,6 +238,17 @@ export default function ProductActions({
     return formatter.format((priceData.calculated_price_number || 0) * quantity)
   }, [priceData, quantity])
 
+  const shareImage = useMemo(() => {
+    const variantImage =
+      typeof selectedVariant?.metadata === "object" &&
+      selectedVariant?.metadata &&
+      "image_url" in selectedVariant.metadata
+        ? String(selectedVariant.metadata.image_url || "")
+        : ""
+
+    return variantImage || product.thumbnail || null
+  }, [product.thumbnail, selectedVariant])
+
   return (
     <>
       <div className="flex flex-col gap-y-2 pb-4 md:pb-0" ref={actionsRef}>
@@ -337,6 +349,11 @@ export default function ProductActions({
                 {siteContent.supportEmail}
               </a>
             </div>
+            <ProductShare
+              productId={product.id}
+              productTitle={product.title}
+              imageUrl={shareImage}
+            />
           </div>
         </div>
         {didAdd && (
