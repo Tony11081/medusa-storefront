@@ -1,12 +1,10 @@
 "use client"
 
 import { siteContent } from "@lib/site-content"
-import { trackEvent } from "@modules/analytics/lib/track-event"
 import { usePathname, useSearchParams } from "next/navigation"
 import { useEffect, useMemo, useState } from "react"
 
 type ProductShareProps = {
-  productId: string
   productTitle: string
   imageUrl?: string | null
 }
@@ -20,7 +18,6 @@ const openShareWindow = (url: string) => {
 }
 
 export default function ProductShare({
-  productId,
   productTitle,
   imageUrl,
 }: ProductShareProps) {
@@ -50,11 +47,6 @@ export default function ProductShare({
     if (!navigator.share) {
       await navigator.clipboard.writeText(shareUrl)
       setCopied(true)
-      trackEvent("copy_link_clicked", {
-        item_id: productId,
-        item_name: productTitle,
-        source: "pdp_share_fallback",
-      })
       return
     }
 
@@ -63,22 +55,11 @@ export default function ProductShare({
       text: shareText,
       url: shareUrl,
     })
-
-    trackEvent("native_share_clicked", {
-      item_id: productId,
-      item_name: productTitle,
-      source: "pdp_share",
-    })
   }
 
   const handleCopyLink = async () => {
     await navigator.clipboard.writeText(shareUrl)
     setCopied(true)
-    trackEvent("copy_link_clicked", {
-      item_id: productId,
-      item_name: productTitle,
-      source: "pdp_share",
-    })
   }
 
   const handleOpenNetwork = (network: "pinterest" | "facebook" | "x") => {
@@ -93,13 +74,6 @@ export default function ProductShare({
     }
 
     openShareWindow(destinations[network])
-
-    trackEvent("share_clicked", {
-      item_id: productId,
-      item_name: productTitle,
-      network,
-      source: "pdp_share",
-    })
   }
 
   return (

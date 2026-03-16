@@ -350,7 +350,6 @@ export default function ProductActions({
               </a>
             </div>
             <ProductShare
-              productId={product.id}
               productTitle={product.title}
               imageUrl={shareImage}
             />
