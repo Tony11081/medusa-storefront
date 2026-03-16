@@ -1,8 +1,8 @@
 import { clx } from "@medusajs/ui"
-import Image from "next/image"
 import React from "react"
 
-import { isExternalImageUrl, normalizeImageUrl } from "@lib/util/images"
+import ImageWithFallback from "@modules/common/components/image-with-fallback"
+import { getNormalizedImageCandidates } from "@lib/util/images"
 import PlaceholderImage from "@modules/common/icons/placeholder-image"
 
 type ThumbnailProps = {
@@ -25,7 +25,11 @@ const Thumbnail: React.FC<ThumbnailProps> = ({
   alt,
   "data-testid": dataTestid,
 }) => {
-  const initialImage = normalizeImageUrl(thumbnail || images?.[0]?.url)
+  const imageCandidates = getNormalizedImageCandidates(
+    thumbnail,
+    ...(images?.map((image) => image?.url) || [])
+  )
+  const initialImage = imageCandidates[0]
 
   return (
     <div
@@ -43,24 +47,33 @@ const Thumbnail: React.FC<ThumbnailProps> = ({
       )}
       data-testid={dataTestid}
     >
-      <ImageOrPlaceholder image={initialImage} size={size} alt={alt} />
+      <ImageOrPlaceholder
+        image={initialImage}
+        fallbackImages={imageCandidates.slice(1)}
+        size={size}
+        alt={alt}
+      />
     </div>
   )
 }
 
 const ImageOrPlaceholder = ({
   image,
+  fallbackImages,
   size,
   alt,
-}: Pick<ThumbnailProps, "size" | "alt"> & { image?: string }) => {
+}: Pick<ThumbnailProps, "size" | "alt"> & {
+  image?: string
+  fallbackImages?: Array<string | null | undefined>
+}) => {
   return image ? (
-    <Image
+    <ImageWithFallback
       src={image}
+      fallbackSrcs={fallbackImages}
       alt={alt || "Product thumbnail"}
       className="absolute inset-0 object-cover object-center transition duration-700 ease-out group-hover:scale-[1.03]"
       draggable={false}
       quality={50}
-      unoptimized={isExternalImageUrl(image)}
       sizes="(max-width: 576px) 280px, (max-width: 768px) 360px, (max-width: 992px) 480px, 800px"
       fill
     />

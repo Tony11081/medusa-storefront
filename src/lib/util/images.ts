@@ -29,3 +29,9 @@ export function normalizeImageUrl(input?: string | null): string | undefined {
 export function isExternalImageUrl(input?: string | null): boolean {
   return Boolean(input && /^https?:\/\//i.test(input))
 }
+
+export function getNormalizedImageCandidates(
+  ...inputs: Array<string | null | undefined>
+): string[] {
+  return [...new Set(inputs.map((input) => normalizeImageUrl(input)).filter(Boolean))] as string[]
+}
