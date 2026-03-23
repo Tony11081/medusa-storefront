@@ -1,4 +1,5 @@
 import { listProducts } from "@lib/data/products"
+import { PRODUCT_CARD_FIELDS } from "@lib/data/product-fields"
 import { getRegion } from "@lib/data/regions"
 import { HttpTypes } from "@medusajs/types"
 import Product from "../product-preview"
@@ -34,7 +35,10 @@ export default async function RelatedProducts({
   queryParams.is_giftcard = false
 
   const products = await listProducts({
-    queryParams,
+    queryParams: {
+      ...queryParams,
+      fields: PRODUCT_CARD_FIELDS,
+    },
     countryCode,
   }).then(({ response }) => {
     return response.products.filter(

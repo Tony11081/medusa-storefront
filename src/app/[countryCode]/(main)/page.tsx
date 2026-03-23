@@ -1,6 +1,7 @@
 import { Metadata } from "next"
 
 import { listProducts } from "@lib/data/products"
+import { PRODUCT_CARD_FIELDS } from "@lib/data/product-fields"
 import { siteContent } from "@lib/site-content"
 import { getRegion } from "@lib/data/regions"
 import JsonLd from "@modules/common/components/json-ld"
@@ -43,8 +44,7 @@ export default async function Home(props: HomeProps) {
     countryCode,
     queryParams: {
       limit: 24,
-      fields:
-        "*categories,*variants.calculated_price,*variants.prices,*variants.price_set,+variants.inventory_quantity,*variants.images,+metadata,+tags,",
+      fields: PRODUCT_CARD_FIELDS,
     },
   })
 

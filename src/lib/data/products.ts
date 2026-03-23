@@ -5,6 +5,7 @@ import { sortProducts } from "@lib/util/sort-products"
 import { HttpTypes } from "@medusajs/types"
 import { SortOptions } from "@modules/store/components/refinement-list/sort-products"
 import { getAuthHeaders, getCacheOptions } from "./cookies"
+import { PRODUCT_CARD_FIELDS } from "./product-fields"
 import { getRegion, retrieveRegion } from "./regions"
 
 export const listProducts = async ({
@@ -148,6 +149,7 @@ export const listProductsWithSort = async ({
       queryParams: {
         ...queryParams,
         limit,
+        fields: queryParams?.fields || PRODUCT_CARD_FIELDS,
         order: queryParams?.order || "-created_at",
       },
       countryCode,
@@ -160,6 +162,7 @@ export const listProductsWithSort = async ({
     pageParam: 1,
     queryParams: {
       ...queryParams,
+      fields: queryParams?.fields || PRODUCT_CARD_FIELDS,
       limit: Math.min(Math.max(page * limit * 2, 48), 100),
     },
     countryCode,

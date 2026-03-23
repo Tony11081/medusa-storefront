@@ -1,4 +1,5 @@
 import { listProducts } from "@lib/data/products"
+import { PRODUCT_CARD_FIELDS } from "@lib/data/product-fields"
 import { HttpTypes } from "@medusajs/types"
 import { Text } from "@medusajs/ui"
 
@@ -18,7 +19,7 @@ export default async function ProductRail({
     regionId: region.id,
     queryParams: {
       collection_id: collection.id,
-      fields: "*variants.calculated_price,*variants.prices,*variants.price_set",
+      fields: PRODUCT_CARD_FIELDS,
     },
   })
 
