@@ -1,5 +1,4 @@
 import { listCategories } from "@lib/data/categories"
-import { listProducts } from "@lib/data/products"
 import { siteContent } from "@lib/site-content"
 import { Text, clx } from "@medusajs/ui"
 
@@ -11,35 +10,8 @@ type FooterProps = {
 }
 
 export default async function Footer({ countryCode }: FooterProps) {
-  const [allCategories, { response: siteProducts }] = await Promise.all([
-    listCategories(),
-    listProducts({
-      countryCode,
-      queryParams: {
-        limit: 100,
-        fields: "*categories",
-      },
-    }),
-  ])
-
-  const siteCategoryIds = new Set(
-    siteProducts.products.flatMap((product) =>
-      (product.categories ?? []).map((category) => category.id).filter(Boolean)
-    )
-  )
-
-  const productCategories = allCategories.filter((category) => {
-    if (!category.parent_category) {
-      return (
-        siteCategoryIds.has(category.id) ||
-        (category.category_children ?? []).some((child) =>
-          siteCategoryIds.has(child.id)
-        )
-      )
-    }
-
-    return siteCategoryIds.has(category.id)
-  })
+  const allCategories = await listCategories({ limit: 24 })
+  const productCategories = allCategories.filter((category) => !category.parent_category)
 
   return (
     <footer className="mt-12 w-full border-t border-[var(--brand-line)] bg-[rgba(252,251,248,0.84)]">

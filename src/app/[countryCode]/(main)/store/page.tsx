@@ -45,20 +45,13 @@ export default async function StorePage(props: Params) {
   const params = await props.params
   const searchParams = await props.searchParams
   const { sortBy, page } = searchParams
-  const pageNumber = page ? parseInt(page) : 1
-  const sort = sortBy || "created_at"
-  const products = await listProductsWithSort({
-    sortBy: sort,
-    page: pageNumber,
-    countryCode: params.countryCode,
-  }).then(({ response }) => response.products)
 
   const jsonLd = buildCollectionPageJsonLd({
     name: "Designer Fabric Archive",
     description:
       "Browse designer jacquard, vinyl, leather, lining, denim, cotton, and upholstery fabric by the yard from Atelier Fabrics.",
     path: `/${params.countryCode}/store`,
-    products,
+    products: [],
     countryCode: params.countryCode,
   })
 

@@ -99,20 +99,11 @@ export default async function CollectionPage(props: Props) {
   const pageNumber = page ? parseInt(page) : 1
   const sort = sortBy || "created_at"
 
-  const products = await listProductsWithSort({
-    sortBy: sort,
-    page: pageNumber,
-    queryParams: {
-      collection_id: [collection.id],
-    },
-    countryCode: params.countryCode,
-  }).then(({ response }) => response.products)
-
   const jsonLd = buildCollectionPageJsonLd({
     name: collection.title || "Collection",
     description: getCollectionPageCopy(collection).intro,
     path: `/${params.countryCode}/collections/${collection.handle}`,
-    products,
+    products: [],
     countryCode: params.countryCode,
   })
   const faqJsonLd = buildFaqJsonLd(getCollectionPageCopy(collection).faqItems)

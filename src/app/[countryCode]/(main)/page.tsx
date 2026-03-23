@@ -42,7 +42,7 @@ export default async function Home(props: HomeProps) {
   const { response } = await listProducts({
     countryCode,
     queryParams: {
-      limit: 100,
+      limit: 24,
       fields:
         "*categories,*variants.calculated_price,*variants.prices,*variants.price_set,+variants.inventory_quantity,*variants.images,+metadata,+tags,",
     },

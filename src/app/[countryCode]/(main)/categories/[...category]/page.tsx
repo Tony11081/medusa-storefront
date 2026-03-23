@@ -94,20 +94,12 @@ export default async function CategoryPage(props: Props) {
 
   const pageNumber = page ? parseInt(page) : 1
   const sort = sortBy || "created_at"
-  const products = await listProductsWithSort({
-    sortBy: sort,
-    page: pageNumber,
-    queryParams: {
-      category_id: [productCategory.id],
-    },
-    countryCode: params.countryCode,
-  }).then(({ response }) => response.products)
 
   const jsonLd = buildCollectionPageJsonLd({
     name: productCategory.name || "Category",
     description: getCategoryPageCopy(productCategory).intro,
     path: `/${params.countryCode}/categories/${params.category.join("/")}`,
-    products,
+    products: [],
     countryCode: params.countryCode,
   })
   const faqJsonLd = buildFaqJsonLd(getCategoryPageCopy(productCategory).faqItems)
