@@ -38,9 +38,9 @@ const Review = ({ cart }: { cart: any }) => {
           <div className="flex items-start gap-x-1 w-full mb-6">
             <div className="w-full">
               <Text className="txt-medium-plus text-ui-fg-base mb-1">
-                Review your delivery and payment details one last time, then
-                place the order. Please avoid tapping the button more than once
-                while it is processing.
+                Review your delivery details one last time, then open the secure
+                Inflyway payment step. Please avoid tapping the button more than
+                once while it is processing.
               </Text>
             </div>
           </div>
