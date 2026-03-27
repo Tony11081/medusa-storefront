@@ -195,8 +195,8 @@ const Payment = ({
             data-testid="submit-payment-button"
           >
             {!activeSession && isStripeLike(selectedPaymentMethod)
-              ? " Enter card details"
-              : "Continue to review"}
+              ? "Enter card details"
+              : "Continue to place order"}
           </Button>
         </div>
 

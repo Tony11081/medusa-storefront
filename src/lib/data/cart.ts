@@ -402,27 +402,45 @@ export async function placeOrder(cartId?: string) {
     ...(await getAuthHeaders()),
   }
 
-  const cartRes = await sdk.store.cart
-    .complete(id, {}, headers)
-    .then(async (cartRes) => {
+  try {
+    const cartRes = await sdk.store.cart.complete(id, {}, headers).then(async (cartRes) => {
       const cartCacheTag = await getCacheTag("carts")
       revalidateTag(cartCacheTag)
       return cartRes
     })
-    .catch(medusaError)
 
-  if (cartRes?.type === "order") {
-    const countryCode =
-      cartRes.order.shipping_address?.country_code?.toLowerCase()
+    if (cartRes?.type === "order") {
+      const countryCode =
+        cartRes.order.shipping_address?.country_code?.toLowerCase()
 
-    const orderCacheTag = await getCacheTag("orders")
-    revalidateTag(orderCacheTag)
+      const orderCacheTag = await getCacheTag("orders")
+      revalidateTag(orderCacheTag)
 
-    removeCartId()
-    redirect(`/${countryCode}/order/${cartRes?.order.id}/confirmed`)
+      removeCartId()
+      redirect(`/${countryCode}/order/${cartRes?.order.id}/confirmed`)
+    }
+
+    return { type: "cart" as const, cart: cartRes.cart }
+  } catch (error: any) {
+    let message = "We couldn't place your order. Please try again."
+
+    try {
+      medusaError(error)
+    } catch (normalizedError: any) {
+      message = normalizedError?.message || message
+    }
+
+    if (
+      /another request|idempotency|already being completed|acquire lock|conflicted with another request/i.test(
+        message
+      )
+    ) {
+      message =
+        "Your order is already being processed. Please wait a few seconds before trying again."
+    }
+
+    return { type: "error" as const, message }
   }
-
-  return cartRes.cart
 }
 
 /**

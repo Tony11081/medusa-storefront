@@ -5,7 +5,7 @@ import { placeOrder } from "@lib/data/cart"
 import { HttpTypes } from "@medusajs/types"
 import { Button } from "@medusajs/ui"
 import { useElements, useStripe } from "@stripe/react-stripe-js"
-import React, { useState } from "react"
+import React, { useRef, useState } from "react"
 import ErrorMessage from "../error-message"
 
 type PaymentButtonProps = {
@@ -55,15 +55,24 @@ const StripePaymentButton = ({
 }) => {
   const [submitting, setSubmitting] = useState(false)
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
+  const orderInFlightRef = useRef(false)
 
   const onPaymentCompleted = async () => {
-    await placeOrder()
-      .catch((err) => {
-        setErrorMessage(err.message)
-      })
-      .finally(() => {
-        setSubmitting(false)
-      })
+    if (orderInFlightRef.current) {
+      return
+    }
+
+    orderInFlightRef.current = true
+    setErrorMessage(null)
+
+    const result = await placeOrder().finally(() => {
+      orderInFlightRef.current = false
+      setSubmitting(false)
+    })
+
+    if (result?.type === "error") {
+      setErrorMessage(result.message)
+    }
   }
 
   const stripe = useStripe()
@@ -77,6 +86,11 @@ const StripePaymentButton = ({
   const disabled = !stripe || !elements ? true : false
 
   const handlePayment = async () => {
+    if (submitting || orderInFlightRef.current) {
+      return
+    }
+
+    setErrorMessage(null)
     setSubmitting(true)
 
     if (!stripe || !elements || !card || !cart) {
@@ -135,7 +149,7 @@ const StripePaymentButton = ({
   return (
     <>
       <Button
-        disabled={disabled || notReady}
+        disabled={disabled || notReady || submitting}
         onClick={handlePayment}
         size="large"
         isLoading={submitting}
@@ -154,27 +168,40 @@ const StripePaymentButton = ({
 const ManualTestPaymentButton = ({ notReady }: { notReady: boolean }) => {
   const [submitting, setSubmitting] = useState(false)
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
+  const orderInFlightRef = useRef(false)
 
   const onPaymentCompleted = async () => {
-    await placeOrder()
-      .catch((err) => {
-        setErrorMessage(err.message)
-      })
-      .finally(() => {
-        setSubmitting(false)
-      })
+    if (orderInFlightRef.current) {
+      return
+    }
+
+    orderInFlightRef.current = true
+    setErrorMessage(null)
+
+    const result = await placeOrder().finally(() => {
+      orderInFlightRef.current = false
+      setSubmitting(false)
+    })
+
+    if (result?.type === "error") {
+      setErrorMessage(result.message)
+    }
   }
 
   const handlePayment = () => {
-    setSubmitting(true)
+    if (submitting || orderInFlightRef.current) {
+      return
+    }
 
+    setSubmitting(true)
+    setErrorMessage(null)
     onPaymentCompleted()
   }
 
   return (
     <>
       <Button
-        disabled={notReady}
+        disabled={notReady || submitting}
         isLoading={submitting}
         onClick={handlePayment}
         size="large"
