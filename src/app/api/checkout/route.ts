@@ -84,6 +84,15 @@ function normalizeProductKey(cart: any) {
   )
 }
 
+async function runCheckoutStep<T>(label: string, task: () => Promise<T>) {
+  try {
+    return await task()
+  } catch (error) {
+    const message = error instanceof Error ? error.message : "Unknown error"
+    throw new Error(`${label}: ${message}`)
+  }
+}
+
 export async function POST(request: NextRequest) {
   try {
     const { cartId, countryCode } = await request.json()
@@ -92,7 +101,9 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ message: "cartId is required" }, { status: 400 })
     }
 
-    const cartResponse = await medusaServerFetch(`/store/carts/${cartId}`)
+    const cartResponse = await runCheckoutStep("loadCart", () =>
+      medusaServerFetch(`/store/carts/${cartId}`)
+    )
     let cart = cartResponse?.cart
 
     if (!cart) {
@@ -111,8 +122,8 @@ export async function POST(request: NextRequest) {
     }
 
     if (!cart.shipping_methods?.length) {
-      const shippingOptions = await medusaServerFetch(
-        `/store/shipping-options?cart_id=${cartId}`
+      const shippingOptions = await runCheckoutStep("loadShippingOptions", () =>
+        medusaServerFetch(`/store/shipping-options?cart_id=${cartId}`)
       )
       const optionId = shippingOptions?.shipping_options?.[0]?.id
 
@@ -123,12 +134,18 @@ export async function POST(request: NextRequest) {
         )
       }
 
-      await medusaServerFetch(`/store/carts/${cartId}/shipping-methods`, {
-        method: "POST",
-        body: JSON.stringify({ option_id: optionId }),
-      })
+      await runCheckoutStep("attachShippingMethod", () =>
+        medusaServerFetch(`/store/carts/${cartId}/shipping-methods`, {
+          method: "POST",
+          body: JSON.stringify({ option_id: optionId }),
+        })
+      )
 
-      cart = (await medusaServerFetch(`/store/carts/${cartId}`))?.cart
+      cart = (
+        await runCheckoutStep("reloadCartAfterShipping", () =>
+          medusaServerFetch(`/store/carts/${cartId}`)
+        )
+      )?.cart
     }
 
     const total = cart?.total ?? 0
@@ -146,32 +163,36 @@ export async function POST(request: NextRequest) {
         .trim()
         .toLowerCase() || "gb"
 
-    const payment = await createInflywayCheckout({
-      amount: formatAmount(total),
-      currency: cart?.currency_code || "USD",
-      email: cart?.email || undefined,
-      mobile: cart?.shipping_address?.phone || undefined,
-      note: buildCheckoutNote(orderRef, cartId, cart?.email || undefined),
-      orderRef,
-      productKey: normalizeProductKey(cart),
-      raw: buildCheckoutRaw(orderRef, cartId, cart, {
-        ...cart?.shipping_address,
-        email: cart?.email,
-      }),
-      shippingInfo: {
-        ...cart?.shipping_address,
-        email: cart?.email,
-      },
-      title: buildCheckoutTitle(cart),
-      type: "default",
-    })
+    const payment = await runCheckoutStep("createInflywayCheckout", () =>
+      createInflywayCheckout({
+        amount: formatAmount(total),
+        currency: cart?.currency_code || "USD",
+        email: cart?.email || undefined,
+        mobile: cart?.shipping_address?.phone || undefined,
+        note: buildCheckoutNote(orderRef, cartId, cart?.email || undefined),
+        orderRef,
+        productKey: normalizeProductKey(cart),
+        raw: buildCheckoutRaw(orderRef, cartId, cart, {
+          ...cart?.shipping_address,
+          email: cart?.email,
+        }),
+        shippingInfo: {
+          ...cart?.shipping_address,
+          email: cart?.email,
+        },
+        title: buildCheckoutTitle(cart),
+        type: "default",
+      })
+    )
 
-    await rememberInflywayCheckout(cartId, {
-      inflyway_order_id: payment.orderId,
-      inflyway_order_ref: orderRef,
-      inflyway_payment_status: "pending",
-      inflyway_payment_url: payment.orderUrl,
-    })
+    await runCheckoutStep("rememberInflywayCheckout", () =>
+      rememberInflywayCheckout(cartId, {
+        inflyway_order_id: payment.orderId,
+        inflyway_order_ref: orderRef,
+        inflyway_payment_status: "pending",
+        inflyway_payment_url: payment.orderUrl,
+      })
+    )
 
     const searchParams = new URLSearchParams({
       cartId,
