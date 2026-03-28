@@ -61,6 +61,14 @@ async function inflywayRequest<T extends InflywayApiResponse>(
   path: string,
   body: Record<string, unknown>
 ): Promise<T> {
+  if (!INFLYWAY_API_KEY) {
+    throw new InflywayRequestError(
+      "Inflyway API key missing in storefront runtime",
+      500,
+      null
+    )
+  }
+
   const response = await fetch(`${INFLYWAY_API_BASE_URL}${path}`, {
     method: "POST",
     headers: getHeaders(),
